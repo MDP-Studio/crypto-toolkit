@@ -130,6 +130,41 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </div>
 
+      <section aria-labelledby="about-cryptotoolkit" className="grid grid-cols-1 lg:grid-cols-[0.95fr_1.35fr] gap-5 border-y border-border/70 py-6">
+        <div className="space-y-3">
+          <p className="text-xs font-mono uppercase text-primary tracking-normal">About this project</p>
+          <h2 id="about-cryptotoolkit" className="text-2xl font-semibold tracking-normal">
+            Cryptography by doing, not just reading static notes.
+          </h2>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            CryptoToolkit is an interactive educational platform for learning how crypto works, why it works,
+            and how it breaks. The attack modules are designed to run the actual exploit path instead of revealing
+            pre-computed answers.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {[
+            {
+              title: 'Real computation',
+              body: 'Modules use BigInt arithmetic, Web Crypto comparisons, WASM Argon2id, and test vectors so the result comes from the algorithm.',
+            },
+            {
+              title: 'Browser-only lab',
+              body: 'Computation runs client-side. There is no tracking server, and learning inputs do not leave the browser.',
+            },
+            {
+              title: 'Clear boundary',
+              body: 'This is a learning tool, not a production crypto library. Timing and memory-safety limitations stay visible.',
+            },
+          ].map(item => (
+            <div key={item.title} className="rounded-lg border border-border/70 bg-card/50 p-4">
+              <h3 className="text-sm font-semibold text-foreground">{item.title}</h3>
+              <p className="mt-2 text-xs text-muted-foreground leading-relaxed">{item.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Category Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {CATEGORIES.map(cat => (
