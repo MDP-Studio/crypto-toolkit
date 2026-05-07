@@ -34,13 +34,21 @@ self.onmessage = (ev: MessageEvent<CryptoWorkerRequest>) => {
     return;
   }
 
-  if (typeof bits !== 'number' || bits < 16 || bits > 4096) {
+  if (typeof bits !== 'number' || !Number.isInteger(bits) || bits < 16 || bits > 4096) {
     self.postMessage({ id, result: null, error: 'bits must be 16-4096' });
     return;
   }
 
   try {
     const eBig = BigInt(e);
+    if (eBig <= 1n) {
+      self.postMessage({ id, result: null, error: 'e must be greater than 1' });
+      return;
+    }
+    if (eBig % 2n === 0n) {
+      self.postMessage({ id, result: null, error: 'e must be odd' });
+      return;
+    }
     const keys = generateRSAKeys(bits, eBig);
     const response: CryptoWorkerResponse = {
       id,

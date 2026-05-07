@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
 import { InlineWarning } from '@/components/SecurityBanner';
 import { modPow, modInverse } from '@/lib/ec-math';
+import { gcd } from '@/lib/crypto-math';
 import { parseBigInt } from '@/lib/parse';
 import { icbrt } from '@/lib/num-util';
 
@@ -32,8 +33,20 @@ export function CoppersmithAttack() {
 
   function doEncrypt() {
     setError('');
+    setRecovered(null);
+    setCrtValue(null);
     const m = parseBigInt(mStr), n1 = parseBigInt(n1Str), n2 = parseBigInt(n2Str), n3 = parseBigInt(n3Str);
     if (m === null || !n1 || !n2 || !n3) { setError('Enter all parameters'); return; }
+    if (m < 0n) { setError('m must be non-negative'); return; }
+    if (m >= n1 || m >= n2 || m >= n3) { setError('m must be smaller than each modulus'); return; }
+    if (gcd(n1, n2) !== 1n || gcd(n1, n3) !== 1n || gcd(n2, n3) !== 1n) {
+      setError('n1, n2, and n3 must be pairwise coprime for CRT');
+      return;
+    }
+    if (m ** 3n >= n1 * n2 * n3) {
+      setError('Attack precondition failed: m^3 must be smaller than n1*n2*n3');
+      return;
+    }
     // e = 3 (small public exponent)
     const c1 = modPow(m, 3n, n1);
     const c2 = modPow(m, 3n, n2);
@@ -43,24 +56,32 @@ export function CoppersmithAttack() {
   }
 
   function doAttack() {
-    const n1 = parseBigInt(n1Str)!, n2 = parseBigInt(n2Str)!, n3 = parseBigInt(n3Str)!;
-    const [c1, c2, c3] = ciphertexts;
+    setError('');
+    try {
+      const n1 = parseBigInt(n1Str)!, n2 = parseBigInt(n2Str)!, n3 = parseBigInt(n3Str)!;
+      const [c1, c2, c3] = ciphertexts;
+      if (ciphertexts.length !== 3) { setError('Encrypt first to create three ciphertexts'); return; }
+      if (gcd(n1, n2) !== 1n || gcd(n1, n3) !== 1n || gcd(n2, n3) !== 1n) {
+        setError('n1, n2, and n3 must be pairwise coprime for CRT');
+        return;
+      }
 
-    // CRT: find x such that x ≡ c1 (mod n1), x ≡ c2 (mod n2), x ≡ c3 (mod n3)
-    const N = n1 * n2 * n3;
-    const N1 = N / n1, N2 = N / n2, N3 = N / n3;
+      // CRT: find x matching all three ciphertext congruences.
+      const N = n1 * n2 * n3;
+      const N1 = N / n1, N2 = N / n2, N3 = N / n3;
 
-    const y1 = modInverse(N1, n1);
-    const y2 = modInverse(N2, n2);
-    const y3 = modInverse(N3, n3);
+      const y1 = modInverse(N1, n1);
+      const y2 = modInverse(N2, n2);
+      const y3 = modInverse(N3, n3);
 
-    const x = (c1 * N1 * y1 + c2 * N2 * y2 + c3 * N3 * y3) % N;
-    setCrtValue(x);
+      const x = (c1 * N1 * y1 + c2 * N2 * y2 + c3 * N3 * y3) % N;
+      setCrtValue(x);
 
-    // x = m³ (exact integer, not modular). Take integer cube root.
-    const m = icbrt(x);
-    setRecovered(m * m * m === x ? m : null);
-    setPhase('attack');
+      // x = m^3 (exact integer, not modular). Take integer cube root.
+      const m = icbrt(x);
+      setRecovered(m * m * m === x ? m : null);
+      setPhase('attack');
+    } catch (e) { setError(String(e)); }
   }
 
   const getStatus = usePhaseStatus<Phase>(['setup', 'encrypt', 'attack'], phase);
@@ -109,6 +130,7 @@ export function CoppersmithAttack() {
           </FormulaBox>
         )}
         <Button onClick={doAttack} className="w-full">Apply CRT + Cube Root</Button>
+        {error && <p className="text-sm text-destructive">{error}</p>}
       </StepCard>
 
       <StepCard step={3} title="CRT Recovery" status={getStatus('attack')}>

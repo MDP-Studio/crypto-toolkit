@@ -1,6 +1,6 @@
 # CryptoToolkit - Task Tracker
 
-## Current State: 36 pages, 99 tests, code-split, deployed
+## Current State: 36 pages, 105 tests, code-split, deployed
 
 ## Completed Phases
 
@@ -287,6 +287,23 @@
 
 ### Verification targets
 - [x] Added tests for RFC 4231 raw-hex HMAC walkthrough behavior, text-vs-hex key distinction, hex separators, and malformed AES hex rejection.
+
+---
+
+## Phase 17: Module-by-Module Audit
+
+### Correctness / Security
+- [x] **Base Converter byte encoding** - text conversions now use UTF-8 bytes for hex, binary, decimal, and base64. Malformed byte inputs fail loudly instead of producing garbage.
+- [x] **EC infinity sentinel** - point at infinity is now an explicit flag, so a real affine point `(0,0)` is no longer misclassified.
+- [x] **ECDSA nonce reuse defaults** - demo now uses the validated order-7 prime subgroup from the ECDSA workflow and checks q, d, k, r, and s ranges.
+- [x] **Birthday Collision 32-bit truncation** - replaced 32-bit JS bitwise truncation with BigInt masking and tested the 32-bit edge case.
+- [x] **Paillier input handling** - encryption, homomorphic sum, and decryption now show explicit validation errors and reject invalid ciphertext tokens instead of dropping them.
+- [x] **Attack-page crash guards** - GCM nonce reuse, padding oracle, and Hastad/Coppersmith paths now catch edited invalid inputs before they hit the ErrorBoundary.
+- [x] **Hash extension byte length** - padding length now uses UTF-8 byte counts, not JavaScript string length.
+- [x] **Worker validation** - Argon2 and RSA workers validate request envelopes and critical numeric ranges.
+
+### Verification targets
+- [x] Added tests for UTF-8 conversion roundtrips, malformed byte encodings, EC `(0,0)` handling, nonce-reuse subgroup order, leading-bit birthday truncation, and the 32-bit birthday edge case.
 
 ---
 

@@ -29,16 +29,19 @@ export function PaillierWorkflow() {
   const [encResult, setEncResult] = useState<{
     gm: bigint; rn: bigint; c: bigint;
   } | null>(null);
+  const [encError, setEncError] = useState('');
 
   // Homomorphic
   const [ciphertexts, setCiphertexts] = useState<string>('');
   const [homoResult, setHomoResult] = useState<{ product: bigint; decrypted: bigint } | null>(null);
+  const [homoError, setHomoError] = useState('');
 
   // Decrypt
   const [decCStr, setDecCStr] = useState('');
   const [decResult, setDecResult] = useState<{
     cLambda: bigint; lVal: bigint; m: bigint;
   } | null>(null);
+  const [decError, setDecError] = useState('');
 
   function doKeygen() {
     setKeyError('');
@@ -60,12 +63,15 @@ export function PaillierWorkflow() {
   }
 
   function doEncrypt() {
+    setEncError('');
     if (!keyResult) return;
     const m = parseBigInt(mStr), r = parseBigInt(rStr);
-    if (m === null || !r) return;
+    if (m === null || r === null) { setEncError('Enter message m and random r'); return; }
     const { n, nSq } = keyResult;
     const g = parseBigInt(gStr)!;
-    if (gcd(r, n) !== 1n) { return; }
+    if (m < 0n || m >= n) { setEncError(`m must be in the range 0..${n - 1n}`); return; }
+    if (r <= 0n || r >= n) { setEncError(`r must be in the range 1..${n - 1n}`); return; }
+    if (gcd(r, n) !== 1n) { setEncError('r must be coprime to n'); return; }
     const gm = modPow(g, m, nSq);
     const rn = modPow(r, n, nSq);
     const c = mod(gm * rn, nSq);
@@ -75,10 +81,21 @@ export function PaillierWorkflow() {
   }
 
   function doHomomorphic() {
+    setHomoError('');
+    setHomoResult(null);
     if (!keyResult) return;
     const { nSq, lambda, mu, n } = keyResult;
-    const parts = ciphertexts.split(',').map(s => parseBigInt(s.trim())).filter(Boolean) as bigint[];
-    if (parts.length < 2) return;
+    const tokens = ciphertexts.split(',').map(s => s.trim());
+    if (tokens.some(token => token.length === 0)) { setHomoError('Enter comma-separated ciphertext integers with no empty entries'); return; }
+    const parts: bigint[] = [];
+    for (const token of tokens) {
+      const c = parseBigInt(token);
+      if (c === null) { setHomoError(`Invalid ciphertext: ${token}`); return; }
+      if (c <= 0n || c >= nSq) { setHomoError(`Ciphertext ${c} must be in the range 1..n^2-1`); return; }
+      if (gcd(c, nSq) !== 1n) { setHomoError(`Ciphertext ${c} is not a unit modulo n^2`); return; }
+      parts.push(c);
+    }
+    if (parts.length < 2) { setHomoError('Enter at least two ciphertexts'); return; }
     let product = 1n;
     for (const c of parts) product = mod(product * c, nSq);
     // Decrypt the product
@@ -90,10 +107,13 @@ export function PaillierWorkflow() {
   }
 
   function doDecrypt() {
+    setDecError('');
     if (!keyResult) return;
     const c = parseBigInt(decCStr);
-    if (!c) return;
+    if (c === null) { setDecError('Enter ciphertext c'); return; }
     const { lambda, mu, n, nSq } = keyResult;
+    if (c <= 0n || c >= nSq) { setDecError(`c must be in the range 1..${nSq - 1n}`); return; }
+    if (gcd(c, nSq) !== 1n) { setDecError('c must be a unit modulo n^2'); return; }
     const cLambda = modPow(c, lambda, nSq);
     const lVal = paillierL(cLambda, n);
     const m = mod(lVal * mu, n);
@@ -164,6 +184,7 @@ export function PaillierWorkflow() {
           <div><Label className="text-xs">r (random, gcd(r,n)=1)</Label><Input value={rStr} onChange={e => setRStr(e.target.value)} className="font-mono" /></div>
         </div>
         <Button onClick={doEncrypt} className="w-full">Encrypt: E(m) = g^m · r^n mod n²</Button>
+        {encError && <p className="text-sm text-destructive">{encError}</p>}
         {encResult && (
           <FormulaBox>
             <ComputationRow label="g^m mod n²" value={encResult.gm.toString()} />
@@ -182,6 +203,7 @@ export function PaillierWorkflow() {
           <p className="text-xs text-muted-foreground mt-1">E(m₁) × E(m₂) mod n² = E(m₁ + m₂)</p>
         </div>
         <Button onClick={doHomomorphic} className="w-full">Compute Homomorphic Sum</Button>
+        {homoError && <p className="text-sm text-destructive">{homoError}</p>}
         {homoResult && (
           <FormulaBox>
             <ComputationRow label="Product mod n²" value={homoResult.product.toString()} />
@@ -195,6 +217,7 @@ export function PaillierWorkflow() {
         <p className="text-xs text-muted-foreground">Decryption uses the private key (&#955;, &#956;) and the L function L(x) = (x-1)/n. The result is the exact plaintext integer mod n -- no discrete log needed, unlike exponential ElGamal.</p>
         <div><Label className="text-xs">Ciphertext c</Label><Input value={decCStr} onChange={e => setDecCStr(e.target.value)} className="font-mono" /></div>
         <Button onClick={doDecrypt} className="w-full">Decrypt: m = L(c^λ mod n²) · μ mod n</Button>
+        {decError && <p className="text-sm text-destructive">{decError}</p>}
         {decResult && (
           <FormulaBox>
             <ComputationRow label="c^λ mod n²" value={decResult.cLambda.toString()} />

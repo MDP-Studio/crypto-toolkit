@@ -76,11 +76,20 @@ export function PaddingOracleAttack() {
   }
 
   function doAttack() {
+    setError('');
     setAttacking(true);
     setRecoveredBytes([]);
     setOracleQueries(0);
 
-    const key = hexToBytesAES(keyHex);
+    let key: number[];
+    try {
+      key = hexToBytesAES(keyHex);
+      if (key.length !== 16) { setError('Key must be 16 bytes'); setAttacking(false); return; }
+    } catch (e) {
+      setError(String(e));
+      setAttacking(false);
+      return;
+    }
     let queries = 0;
     const allRecovered: number[] = [];
 
@@ -183,6 +192,7 @@ export function PaddingOracleAttack() {
         <Button onClick={doAttack} disabled={attacking} className="w-full">
           {attacking ? 'Running Oracle Attack...' : 'Launch Padding Oracle Attack'}
         </Button>
+        {error && <p className="text-sm text-destructive">{error}</p>}
       </StepCard>
 
       <StepCard step={3} title="Attack Result" status={getStatus('attack')}>

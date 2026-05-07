@@ -69,13 +69,15 @@ export function Argon2Workflow() {
     setArgonResult(null);
     setShaResult(null);
 
-    const mem = parseInt(memoryKB);
-    const iter = parseInt(iterations);
-    const par = parseInt(parallelism);
-    const hLen = parseInt(hashLength);
+    const mem = Number.parseInt(memoryKB, 10);
+    const iter = Number.parseInt(iterations, 10);
+    const par = Number.parseInt(parallelism, 10);
+    const hLen = Number.parseInt(hashLength, 10);
 
-    if (mem < 8 || mem > 262144) { setError('Memory must be 8-262144 KB'); setComputing(false); return; }
-    if (iter < 1 || iter > 10) { setError('Iterations must be 1-10'); setComputing(false); return; }
+    if (!Number.isInteger(mem) || mem < 8 || mem > 262144) { setError('Memory must be an integer from 8-262144 KB'); setComputing(false); return; }
+    if (!Number.isInteger(iter) || iter < 1 || iter > 10) { setError('Iterations must be an integer from 1-10'); setComputing(false); return; }
+    if (!Number.isInteger(par) || par < 1 || par > 8) { setError('Parallelism must be an integer from 1-8'); setComputing(false); return; }
+    if (!Number.isInteger(hLen) || hLen < 4 || hLen > 128) { setError('Hash length must be an integer from 4-128 bytes'); setComputing(false); return; }
 
     // Argon2id runs in Web Worker — UI stays responsive even with 19MB+ memory
     const id = ++idRef.current;

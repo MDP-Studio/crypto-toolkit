@@ -4,8 +4,13 @@ import { SHA256 } from '../lib/sha256';
 import { hmacSHA256 } from '../lib/web-crypto';
 import { bytesToHex, encodeBytes, parseHexBytes } from '../lib/encoding';
 import { computeHmacSha256Steps } from '../lib/hmac';
-import { mod, modPow, modInverse, scalarMultiply, pointAdd, isInfinity, tonelliShanks, type ECPoint } from '../lib/ec-math';
-import { isPrime, gcd, eulerTotient, factorize, pollardRho, factorizeFast } from '../lib/crypto-math';
+import { mod, modPow, modInverse, scalarMultiply, pointAdd, isInfinity, tonelliShanks, isOnCurve, pointStr, type ECPoint } from '../lib/ec-math';
+import {
+  isPrime, gcd, eulerTotient, factorize, pollardRho, factorizeFast,
+  textToHex, hexToText, textToBinary, binaryToText,
+  textToDecimal, decimalToText, textToBase64, base64ToText,
+} from '../lib/crypto-math';
+import { birthdayExpectedAttempts, birthdayOutputSpace, truncateHashBits } from '../lib/hash-birthday';
 import { generateLWEKeys, lweEncrypt, lweDecrypt, matVecMul } from '../lib/lwe-math';
 
 // ============= AES-128 FIPS 197 Appendix B =============
@@ -167,6 +172,64 @@ describe('EC Math', () => {
     const r = tonelliShanks(4n, 7n);
     expect(r).not.toBeNull();
     expect(mod(r! * r!, 7n)).toBe(4n);
+  });
+
+  it('does not confuse the real point (0,0) with point at infinity', () => {
+    // y^2 = x^3 + x over F_5 contains the valid affine point (0,0).
+    const zeroPoint: ECPoint = { x: 0n, y: 0n };
+    expect(isInfinity(zeroPoint)).toBe(false);
+    expect(isOnCurve(zeroPoint, 1n, 0n, 5n)).toBe(true);
+    expect(pointStr(zeroPoint)).toBe('(0, 0)');
+    expect(isInfinity(pointAdd(zeroPoint, zeroPoint, 1n, 5n))).toBe(true);
+    expect(isInfinity(scalarMultiply(2n, zeroPoint, 1n, 5n))).toBe(true);
+  });
+
+  it('ECDSA demo default generator has prime order 7', () => {
+    const G: ECPoint = { x: 13n, y: 16n };
+    expect(isOnCurve(G, 1n, 1n, 23n)).toBe(true);
+    expect(isInfinity(scalarMultiply(7n, G, 1n, 23n))).toBe(true);
+    const R = scalarMultiply(3n, G, 1n, 23n);
+    expect(R).toMatchObject({ x: 17n, y: 20n });
+  });
+});
+
+// ============= Base Encoding =============
+
+describe('Base conversions', () => {
+  const unicodeText = 'Hi μ 🔐';
+
+  it('round-trips UTF-8 text through hex, binary, decimal, and base64', () => {
+    expect(hexToText(textToHex(unicodeText))).toBe(unicodeText);
+    expect(binaryToText(textToBinary(unicodeText))).toBe(unicodeText);
+    expect(decimalToText(textToDecimal(unicodeText))).toBe(unicodeText);
+    expect(base64ToText(textToBase64(unicodeText))).toBe(unicodeText);
+  });
+
+  it('rejects malformed byte encodings instead of silently decoding garbage', () => {
+    expect(() => hexToText('abc')).toThrow('even number');
+    expect(() => hexToText('zz')).toThrow('0-9 and a-f');
+    expect(() => binaryToText('0102')).toThrow('only 0 and 1');
+    expect(() => binaryToText('010')).toThrow('multiple of 8');
+    expect(() => decimalToText('256')).toThrow('0 to 255');
+    expect(() => base64ToText('%%%%')).toThrow();
+  });
+});
+
+// ============= Birthday Collision Helpers =============
+
+describe('Birthday collision helpers', () => {
+  it('handles 32-bit truncation without JavaScript bitwise overflow', () => {
+    const truncated = truncateHashBits('ffffffff00000000', 32);
+    expect(truncated.key).toBe((2 ** 32 - 1).toString());
+    expect(truncated.hex).toBe('ffffffff');
+    expect(birthdayOutputSpace(32)).toBe(2 ** 32);
+    expect(birthdayExpectedAttempts(32)).toBe(Math.round(Math.sqrt(Math.PI / 2 * 2 ** 32)));
+  });
+
+  it('keeps the leading n hash bits for non-nibble-aligned truncation', () => {
+    const truncated = truncateHashBits('abc00000', 9);
+    expect(truncated.key).toBe('343');
+    expect(truncated.hex).toBe('157');
   });
 });
 

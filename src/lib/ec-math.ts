@@ -6,12 +6,13 @@ import { isqrt } from './num-util';
 export interface ECPoint {
   x: bigint;
   y: bigint;
+  infinity?: boolean;
 }
 
-export const INFINITY: ECPoint = { x: 0n, y: 0n };
+export const INFINITY: ECPoint = { x: 0n, y: 0n, infinity: true };
 
 export function isInfinity(P: ECPoint): boolean {
-  return P.x === 0n && P.y === 0n;
+  return P.infinity === true;
 }
 
 /** Format an EC point as a human-readable string. */

@@ -24,6 +24,7 @@ export function HashExtensionAttack() {
   const [extendedHash, setExtendedHash] = useState('');
   const [serverHash, setServerHash] = useState('');
   const [paddingHex, setPaddingHex] = useState('');
+  const [resumeLen, setResumeLen] = useState(0);
 
   function doOriginal() {
     setError('');
@@ -36,6 +37,7 @@ export function HashExtensionAttack() {
   }
 
   function doExtend() {
+    setError('');
     // REAL length extension attack:
     // 1. Parse internal state from the original hash
     // 2. Compute padding for secret||message (attacker knows/guesses secret length)
@@ -43,13 +45,29 @@ export function HashExtensionAttack() {
     // 4. The result matches SHA-256(secret || message || padding || extension)
 
     // Attacker guesses secret length (doesn't know it!)
-    const guessedSecretLen = parseInt(secretLenGuess) || 0;
-    const guessedInputLen = guessedSecretLen + message.length;
+    const guessedSecretLen = Number.parseInt(secretLenGuess, 10);
+    if (!Number.isInteger(guessedSecretLen) || guessedSecretLen < 0 || guessedSecretLen > 1024) {
+      setError('Secret length guess must be an integer from 0 to 1024 bytes');
+      return;
+    }
+    const encoder = new TextEncoder();
+    const messageBytes = encoder.encode(message);
+    const extensionBytes = encoder.encode(extension);
+    const secretMessageBytes = encoder.encode(secret + message);
+    const guessedInputLen = guessedSecretLen + messageBytes.length;
     const padding = mdPaddingBytes(guessedInputLen);
+    setResumeLen(guessedInputLen + padding.length);
     setPaddingHex(Array.from(padding).map(b => b.toString(16).padStart(2, '0')).join(' '));
 
     // Step 1: Parse the state from the original hash
-    const state = SHA256.parseState(originalHash);
+    if (!originalHash) { setError('Compute the original MAC first'); return; }
+    let state: number[];
+    try {
+      state = SHA256.parseState(originalHash);
+    } catch (e) {
+      setError(String(e));
+      return;
+    }
 
     // Step 2: Compute total length based on GUESSED secret length
     const processedLen = guessedInputLen + padding.length;
@@ -57,17 +75,16 @@ export function HashExtensionAttack() {
     // Step 3: Create a NEW SHA-256 initialized from the captured state
     // This is the core of the attack — we resume hashing WITHOUT knowing the secret
     const extender = new SHA256(state, processedLen);
-    extender.update(new TextEncoder().encode(extension));
+    extender.update(extensionBytes);
     const forgedHash = extender.digest();
     setExtendedHash(forgedHash);
 
     // Step 4: Server verifies — computes SHA-256(secret || message || guessed_padding || extension)
     // This only matches when the guessed secret length is CORRECT
-    const encoder = new TextEncoder();
     const fullInput = new Uint8Array([
-      ...encoder.encode(secret + message),
+      ...secretMessageBytes,
       ...padding,
-      ...encoder.encode(extension),
+      ...extensionBytes,
     ]);
     const serverResult = SHA256.hashBytes(fullInput);
     setServerHash(serverResult);
@@ -140,7 +157,7 @@ export function HashExtensionAttack() {
             <Label className="text-xs">Guess secret length (attacker doesn't know this!)</Label>
             <Input value={secretLenGuess} onChange={e => setSecretLenGuess(e.target.value)} className="font-mono" />
             <p className="text-xs text-muted-foreground mt-0.5">
-              Real attacker tries lengths 1..N. Correct = {secret.length}. Wrong guess = forged MAC won't match.
+              Real attacker tries lengths 1..N. Correct = {new TextEncoder().encode(secret).length} bytes. Wrong guess = forged MAC won't match.
             </p>
           </div>
         </div>
@@ -154,7 +171,7 @@ export function HashExtensionAttack() {
               <p className="text-xs text-muted-foreground mb-2">Attack steps (no secret knowledge required):</p>
               <ComputationRow label="1. Parse state" value={`[${internalState.map(w => w.toString(16).padStart(8, '0')).join(', ')}]`} />
               <ComputationRow label="2. MD padding" value={paddingHex} />
-              <ComputationRow label="3. Resume SHA-256" value={`new SHA256(state, ${secret.length + message.length + mdPaddingBytes(secret.length + message.length).length})`} />
+              <ComputationRow label="3. Resume SHA-256" value={`new SHA256(state, ${resumeLen})`} />
               <ComputationRow label="4. Hash extension" value={`update("${extension}").digest()`} />
               <div className="mt-2 pt-2 border-t">
                 <ComputationRow label="Forged MAC" value={extendedHash} highlight />

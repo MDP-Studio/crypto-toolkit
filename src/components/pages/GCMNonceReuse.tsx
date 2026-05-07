@@ -50,19 +50,22 @@ export function GCMNonceReuse() {
   }
 
   function doAttack() {
+    setError('');
     if (!result1 || !result2) return;
     // XOR the two ciphertexts — reveals XOR of plaintexts
-    const minLen = Math.min(result1.ct.length, result2.ct.length);
-    const ctXor = result1.ct.slice(0, minLen).map((b, i) => b ^ result2.ct[i]);
-    setXorResult(bytesToHexAES(ctXor));
+    try {
+      const minLen = Math.min(result1.ct.length, result2.ct.length);
+      const ctXor = result1.ct.slice(0, minLen).map((b, i) => b ^ result2.ct[i]);
+      setXorResult(bytesToHexAES(ctXor));
 
-    // Verify: XOR of plaintexts matches
-    const p1 = hexToBytesAES(pt1Hex);
-    const p2 = hexToBytesAES(pt2Hex);
-    const expectedXor = p1.slice(0, minLen).map((b, i) => b ^ (p2[i] || 0));
-    setPtXor(bytesToHexAES(expectedXor));
+      // Verify: XOR of plaintexts matches
+      const p1 = hexToBytesAES(pt1Hex);
+      const p2 = hexToBytesAES(pt2Hex);
+      const expectedXor = p1.slice(0, minLen).map((b, i) => b ^ (p2[i] || 0));
+      setPtXor(bytesToHexAES(expectedXor));
 
-    setPhase('attack');
+      setPhase('attack');
+    } catch (e) { setError(String(e)); }
   }
 
   const getStatus = usePhaseStatus<Phase>(['setup', 'encrypt1', 'encrypt2', 'attack'], phase);
@@ -122,6 +125,7 @@ export function GCMNonceReuse() {
           Since both ciphertexts were XORed with the same keystream, XORing them cancels the keystream and reveals the XOR of the two plaintexts.
         </p>
         <Button onClick={doAttack} className="w-full">XOR Ciphertexts to Recover Plaintext Relationship</Button>
+        {error && <p className="text-sm text-destructive">{error}</p>}
       </StepCard>
 
       <StepCard step={4} title="Result" status={getStatus('attack')}>

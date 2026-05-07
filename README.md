@@ -62,7 +62,7 @@ All computation runs client-side using BigInt arithmetic with `crypto.getRandomV
 
 ## Test Vectors & Coverage
 
-99 tests across 6 test suites. Key vector sources:
+105 tests across 6 test suites. Key vector sources:
 
 | Module | Source |
 |--------|--------|
@@ -84,7 +84,7 @@ Branch coverage is not yet configured (`vitest --coverage` with v8 provider is o
 - **React 19** + **Vite 8** — Code-split with React.lazy (main bundle 220KB, 67KB gzipped)
 - **TypeScript 5.9** — Strict mode, noUnusedLocals, verbatimModuleSyntax
 - **Tailwind CSS v4** + **shadcn/ui** — Dark/light theme, responsive 320px–1280px+
-- **Vitest** - 99 tests with NIST/RFC vector attribution
+- **Vitest** - 105 tests with NIST/RFC vector attribution
 - **BigInt** — Arbitrary precision, no external math libraries
 - **Web Crypto API** — CSPRNG via `crypto.getRandomValues()`, `crypto.subtle` for ECDSA/AES/HMAC comparison
 - **hash-wasm** — Argon2id WASM in dedicated Web Worker
@@ -94,7 +94,7 @@ Branch coverage is not yet configured (`vitest --coverage` with v8 provider is o
 npm install
 npm run dev      # dev server at localhost:5173
 npm run build    # production build
-npm test         # 99 tests
+npm test         # 105 tests
 npm run ci       # full check: tsc + lint + test + build + prod audit
 ```
 
@@ -107,6 +107,7 @@ src/
     crypto-math.ts     # RSA, primality, factorization, ciphers, Paillier, discrete log
     aes-math.ts        # AES encrypt/decrypt (FIPS 197), CTR, GCM, GHASH, GF(2^8/2^128)
     sha256.ts          # Custom SHA-256 with exposed internal state (for hash extension)
+    hash-birthday.ts   # Birthday-bound truncation helpers
     lwe-math.ts        # LWE key generation, encrypt, decrypt
     web-crypto.ts      # HMAC, HKDF, AES-GCM, ECDH, ECDSA via crypto.subtle
     parse.ts           # Shared BigInt parsing with 2000-char length guard

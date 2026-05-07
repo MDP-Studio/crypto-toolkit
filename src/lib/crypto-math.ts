@@ -1,6 +1,7 @@
 // General cryptographic math utilities using BigInt
 
 import { mod, modPow, modInverse as ecModInverse } from './ec-math';
+import { parseHexBytes } from './encoding';
 import { randModBig } from './num-util';
 
 export { mod, modPow };
@@ -283,46 +284,72 @@ export function rsaDecrypt(c: bigint, d: bigint, n: bigint): bigint {
 
 // ============= Base Conversions =============
 
+function encodeUtf8(text: string): Uint8Array {
+  return new TextEncoder().encode(text);
+}
+
+function decodeUtf8(bytes: Uint8Array): string {
+  return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+}
+
+function bytesToSpacedHex(bytes: Uint8Array): string {
+  return Array.from(bytes, b => b.toString(16).padStart(2, '0')).join(' ');
+}
+
 export function textToHex(text: string): string {
-  return Array.from(text).map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join(' ');
+  return bytesToSpacedHex(encodeUtf8(text));
 }
 
 export function hexToText(hex: string): string {
-  const clean = hex.replace(/\s+/g, '');
-  let result = '';
-  for (let i = 0; i < clean.length; i += 2) {
-    result += String.fromCharCode(parseInt(clean.substring(i, i + 2), 16));
-  }
-  return result;
+  return decodeUtf8(parseHexBytes(hex));
 }
 
 export function textToBinary(text: string): string {
-  return Array.from(text).map(c => c.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
+  return Array.from(encodeUtf8(text), b => b.toString(2).padStart(8, '0')).join(' ');
 }
 
 export function binaryToText(bin: string): string {
   const clean = bin.replace(/\s+/g, '');
-  let result = '';
+  if (!clean) return '';
+  if (!/^[01]+$/.test(clean)) throw new Error('Binary input must contain only 0 and 1');
+  if (clean.length % 8 !== 0) throw new Error('Binary input length must be a multiple of 8 bits');
+  const bytes = new Uint8Array(clean.length / 8);
   for (let i = 0; i < clean.length; i += 8) {
-    result += String.fromCharCode(parseInt(clean.substring(i, i + 8), 2));
+    bytes[i / 8] = parseInt(clean.substring(i, i + 8), 2);
   }
-  return result;
+  return decodeUtf8(bytes);
 }
 
 export function textToDecimal(text: string): string {
-  return Array.from(text).map(c => c.charCodeAt(0).toString()).join(' ');
+  return Array.from(encodeUtf8(text), b => b.toString()).join(' ');
 }
 
 export function decimalToText(dec: string): string {
-  return dec.trim().split(/\s+/).map(n => String.fromCharCode(parseInt(n))).join('');
+  const tokens = dec.trim().split(/\s+/).filter(Boolean);
+  if (tokens.length === 0) return '';
+  const bytes = new Uint8Array(tokens.length);
+  tokens.forEach((token, i) => {
+    if (!/^\d+$/.test(token)) throw new Error('Decimal input must contain byte values from 0 to 255');
+    const value = Number(token);
+    if (!Number.isInteger(value) || value < 0 || value > 255) {
+      throw new Error('Decimal input must contain byte values from 0 to 255');
+    }
+    bytes[i] = value;
+  });
+  return decodeUtf8(bytes);
 }
 
 export function textToBase64(text: string): string {
-  return btoa(text);
+  let binary = '';
+  for (const b of encodeUtf8(text)) binary += String.fromCharCode(b);
+  return btoa(binary);
 }
 
 export function base64ToText(b64: string): string {
-  return atob(b64);
+  const binary = atob(b64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return decodeUtf8(bytes);
 }
 
 export function numberToBase(n: bigint, base: number): string {

@@ -133,3 +133,14 @@ HMAC chaining workflows often pass the previous HMAC output as the next key. If 
 
 ### Hex parsers should reject bad bytes early
 `parseInt(pair, 16)` quietly returns `NaN` for invalid pairs and also accepts a final one-nibble byte when the input length is odd. Crypto demos should fail with a clear input error before malformed bytes reach the algorithm.
+
+## 2026-05-07 - Module-by-Module Audit
+
+### JavaScript strings are not crypto bytes
+Base conversion and hash-padding demos must operate on UTF-8 bytes, not UTF-16 code units or `string.length`. Non-ASCII text changes byte length, and `btoa(text)` fails for Unicode. Use `TextEncoder`/`TextDecoder` and strict byte parsers everywhere a demo claims to show raw bytes.
+
+### Do not encode special EC points as valid coordinates
+Using `(0,0)` as the point at infinity works only until a real curve contains `(0,0)`. Infinity needs an explicit sentinel flag so curve math keeps affine points distinct from the group identity.
+
+### JavaScript bitwise operators are 32-bit
+`1 << 32` wraps to `1`, and bitwise masks truncate to signed 32-bit integers. For hash truncation above 31 bits, use `2 ** bits` for counts and `BigInt` masks for truncated hash values.

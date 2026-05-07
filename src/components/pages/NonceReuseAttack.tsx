@@ -12,6 +12,7 @@ import {
   mod,
   scalarMultiply,
   isOnCurve,
+  isInfinity,
   modInverse,
   pointStr,
   type ECPoint,
@@ -24,14 +25,14 @@ export function NonceReuseAttack() {
   const [phase, setPhase] = useState<Phase>('setup');
 
   // Setup
-  // Using curve y²=x³+2x+3 mod 97, order q=89 (prime), G=(3,6)
-  const [aStr, setAStr] = useState('2');
-  const [bStr, setBStr] = useState('3');
-  const [pStr, setPStr] = useState('97');
-  const [gxStr, setGxStr] = useState('3');
-  const [gyStr, setGyStr] = useState('6');
-  const [qStr, setQStr] = useState('89');
-  const [dStr, setDStr] = useState('7');
+  // Default curve uses the same order-7 prime subgroup as ECDSAWorkflow.
+  const [aStr, setAStr] = useState('1');
+  const [bStr, setBStr] = useState('1');
+  const [pStr, setPStr] = useState('23');
+  const [gxStr, setGxStr] = useState('13');
+  const [gyStr, setGyStr] = useState('16');
+  const [qStr, setQStr] = useState('7');
+  const [dStr, setDStr] = useState('3');
   const [pubKey, setPubKey] = useState<ECPoint | null>(null);
   const [setupError, setSetupError] = useState('');
 
@@ -39,6 +40,7 @@ export function NonceReuseAttack() {
   const [h1Str, setH1Str] = useState('10');
   const [kStr, setKStr] = useState('3');
   const [sig1, setSig1] = useState<{ r: bigint; s: bigint; R: ECPoint } | null>(null);
+  const [signError, setSignError] = useState('');
 
   // Sign 2
   const [h2Str, setH2Str] = useState('20');
@@ -56,35 +58,52 @@ export function NonceReuseAttack() {
     const q = parseBigInt(qStr), d = parseBigInt(dStr);
     if (!p || A === null || B === null || gx === null || gy === null || !q || !d) { setSetupError('Fill all fields'); return; }
     if (!isPrime(p)) { setSetupError('p must be prime'); return; }
+    if (q <= 2n) { setSetupError('q must be > 2'); return; }
+    if (!isPrime(q)) { setSetupError('q must be prime for ECDSA arithmetic'); return; }
+    if (d <= 0n || d >= q) { setSetupError('d must be in the range 1..q-1'); return; }
     const G: ECPoint = { x: gx, y: gy };
     if (!isOnCurve(G, A, B, p)) { setSetupError('G is not on the curve'); return; }
+    if (q <= (1n << 64n) && !isInfinity(scalarMultiply(q, G, A, p))) {
+      setSetupError('q is not the order of G: q*G is not infinity');
+      return;
+    }
     setPubKey(scalarMultiply(d, G, A, p));
     setPhase('sign1');
   }
 
   function doSign1() {
+    setSignError('');
     const A = parseBigInt(aStr)!, p = parseBigInt(pStr)!, q = parseBigInt(qStr)!, d = parseBigInt(dStr)!;
     const gx = parseBigInt(gxStr)!, gy = parseBigInt(gyStr)!;
     const h1 = parseBigInt(h1Str), k = parseBigInt(kStr);
-    if (h1 === null || !k) return;
+    if (h1 === null || k === null) { setSignError('Enter H(m1) and k'); return; }
+    if (k <= 0n || k >= q) { setSignError('k must be in the range 1..q-1'); return; }
     const G: ECPoint = { x: gx, y: gy };
-    const R = scalarMultiply(k, G, A, p);
-    const r = mod(R.x, q);
-    const kInv = modInverse(k, q);
-    const s = mod(kInv * (h1 + r * d), q);
-    setSig1({ r, s, R });
-    setPhase('sign2');
+    try {
+      const R = scalarMultiply(k, G, A, p);
+      const r = mod(R.x, q);
+      if (r === 0n) { setSignError('r = 0, choose different k'); return; }
+      const kInv = modInverse(k, q);
+      const s = mod(kInv * (h1 + r * d), q);
+      if (s === 0n) { setSignError('s = 0, choose different k or message hash'); return; }
+      setSig1({ r, s, R });
+      setPhase('sign2');
+    } catch (e) { setSignError(String(e)); }
   }
 
   function doSign2() {
+    setSignError('');
     const q = parseBigInt(qStr)!, d = parseBigInt(dStr)!, k = parseBigInt(kStr)!;
     const h2 = parseBigInt(h2Str);
-    if (h2 === null || !sig1) return;
+    if (h2 === null || !sig1) { setSignError('Sign message 1 first, then enter H(m2)'); return; }
     // Same k! Same r!
-    const kInv = modInverse(k, q);
-    const s = mod(kInv * (h2 + sig1.r * d), q);
-    setSig2({ r: sig1.r, s });
-    setPhase('extract');
+    try {
+      const kInv = modInverse(k, q);
+      const s = mod(kInv * (h2 + sig1.r * d), q);
+      if (s === 0n) { setSignError('s2 = 0, choose a different second hash'); return; }
+      setSig2({ r: sig1.r, s });
+      setPhase('extract');
+    } catch (e) { setSignError(String(e)); }
   }
 
   const [extractError, setExtractError] = useState('');
@@ -161,6 +180,7 @@ export function NonceReuseAttack() {
           <div><Label className="text-xs">k (nonce)</Label><Input value={kStr} onChange={e => setKStr(e.target.value)} className="font-mono" /></div>
         </div>
         <Button onClick={doSign1} className="w-full">Sign Message 1</Button>
+        {signError && <p className="text-sm text-destructive">{signError}</p>}
         {sig1 && (
           <FormulaBox>
             <ComputationRow label="R = kG" value={pointStr(sig1.R)} />
@@ -181,6 +201,7 @@ export function NonceReuseAttack() {
           <Input value={h2Str} onChange={e => setH2Str(e.target.value)} className="font-mono" />
         </div>
         <Button onClick={doSign2} className="w-full">Sign Message 2 (same k)</Button>
+        {signError && <p className="text-sm text-destructive">{signError}</p>}
         {sig2 && sig1 && (
           <FormulaBox>
             <ComputationRow label="r (same!)" value={sig2.r.toString()} highlight />

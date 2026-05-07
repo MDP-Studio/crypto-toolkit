@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
 import { SHA256 } from '@/lib/sha256';
 import { randBytes } from '@/lib/num-util';
+import { birthdayExpectedAttempts, birthdayOutputSpace, truncateHashBits } from '@/lib/hash-birthday';
 
 export function BirthdayCollision() {
   const [truncBits, setTruncBits] = useState('24');
@@ -17,20 +18,26 @@ export function BirthdayCollision() {
   } | null>(null);
   const [error, setError] = useState('');
 
+  const parsedBits = Number.parseInt(truncBits, 10);
+  const displayBits = Number.isInteger(parsedBits) ? parsedBits : 0;
+  const outputSpace = displayBits >= 1 && displayBits <= 32 ? birthdayOutputSpace(displayBits) : 0;
+  const expectedDisplay = displayBits >= 1 && displayBits <= 32
+    ? birthdayExpectedAttempts(displayBits)
+    : 0;
+
   function doFind() {
     setError('');
     setResult(null);
-    const bits = parseInt(truncBits);
-    if (bits < 8 || bits > 32) { setError('Truncation must be 8-32 bits'); return; }
+    const bits = Number.parseInt(truncBits, 10);
+    if (!Number.isInteger(bits) || bits < 8 || bits > 32) { setError('Truncation must be 8-32 bits'); return; }
 
     setComputing(true);
 
     // Chunked async iteration: process CHUNK_SIZE hashes per frame to keep the
     // UI responsive. At 24 bits we need up to 2^24 = 16M iterations — running
     // synchronously would freeze the browser for seconds.
-    const mask = (1 << bits) - 1;
-    const seen = new Map<number, string>();
-    const maxAttempts = 1 << Math.min(bits, 24);
+    const seen = new Map<string, string>();
+    const maxAttempts = 2 ** Math.min(bits, 24);
     const CHUNK_SIZE = 10_000;
     const seed = Array.from(randBytes(4)).map(b => b.toString(16).padStart(2, '0')).join('');
     let offset = 0;
@@ -40,22 +47,22 @@ export function BirthdayCollision() {
       for (let i = offset; i < end; i++) {
         const msg = `msg_${seed}_${i}`;
         const fullHash = SHA256.hash(msg);
-        const truncated = parseInt(fullHash.substring(0, Math.ceil(bits / 4)), 16) & mask;
+        const truncated = truncateHashBits(fullHash, bits);
 
-        const existing = seen.get(truncated);
+        const existing = seen.get(truncated.key);
         if (existing && existing !== msg) {
-          const expectedAttempts = Math.round(Math.sqrt(Math.PI / 2 * (1 << bits)));
+          const expectedAttempts = birthdayExpectedAttempts(bits);
           setResult({
             msg1: existing,
             msg2: msg,
-            hash: truncated.toString(16).padStart(Math.ceil(bits / 4), '0'),
+            hash: truncated.hex,
             attempts: i + 1,
             expectedAttempts,
           });
           setComputing(false);
           return;
         }
-        seen.set(truncated, msg);
+        seen.set(truncated.key, msg);
       }
       offset = end;
       if (offset >= maxAttempts) {
@@ -95,8 +102,8 @@ export function BirthdayCollision() {
           <Input value={truncBits} onChange={e => setTruncBits(e.target.value)} className="font-mono w-24" />
         </div>
         <div className="text-xs text-muted-foreground space-y-1">
-          <p>Output space: 2^{truncBits} = {(1 << Math.min(parseInt(truncBits) || 0, 30)).toLocaleString()} values</p>
-          <p>Expected collisions after: ~2^{Math.ceil((parseInt(truncBits) || 0) / 2)} = ~{Math.round(Math.sqrt(Math.PI / 2 * (1 << Math.min(parseInt(truncBits) || 0, 30)))).toLocaleString()} hashes</p>
+          <p>Output space: 2^{truncBits} = {outputSpace.toLocaleString()} values</p>
+          <p>Expected collisions after: ~2^{Math.ceil(displayBits / 2)} = ~{expectedDisplay.toLocaleString()} hashes</p>
         </div>
         <Button onClick={doFind} disabled={computing} className="w-full">
           {computing ? 'Searching for collision...' : 'Find Birthday Collision'}
