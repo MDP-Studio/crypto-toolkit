@@ -125,3 +125,11 @@ Every workflow page had identical `phaseOrder`/`phaseIdx`/`getStatus` code. Extr
 
 ### `verbatimModuleSyntax` requires `type` keyword on type-only imports
 `import { Vec2 } from ...` fails `tsc -b` if `Vec2` is a type. Must use `import { type Vec2 }`. This only surfaces in the build pipeline (`tsc -b`), not in `tsc --noEmit` which is more lenient.
+
+## 2026-05-07 - HMAC Encoding Patch
+
+### Hex-looking text is not the same as raw bytes
+HMAC chaining workflows often pass the previous HMAC output as the next key. If the UI has only a text key field, pasting a hex digest uses the ASCII bytes for those hex characters, not the raw digest bytes. Any keyed crypto page that accepts derived keys needs an explicit text vs hex-byte encoding choice, and manual computation plus native verification must use the same parsed bytes.
+
+### Hex parsers should reject bad bytes early
+`parseInt(pair, 16)` quietly returns `NaN` for invalid pairs and also accepts a final one-nibble byte when the input length is odd. Crypto demos should fail with a clear input error before malformed bytes reach the algorithm.

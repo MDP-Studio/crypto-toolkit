@@ -1,6 +1,6 @@
 # CryptoToolkit - Task Tracker
 
-## Current State: 36 pages, 95 tests, code-split, deployed
+## Current State: 36 pages, 99 tests, code-split, deployed
 
 ## Completed Phases
 
@@ -276,7 +276,21 @@
 
 ---
 
-## Open backlog (low priority — DX/docs, not correctness)
+## Phase 16: HMAC Encoding Patch
+
+### Critical
+- [x] **HMAC key encoding ambiguity** - HMAC walkthrough now has Text vs Hex bytes key modes. Raw hex HMAC outputs such as SigV4 kDate are parsed as key bytes instead of UTF-8 hex-looking text. Manual HMAC and Web Crypto verification use the same parsed key bytes.
+
+### Medium
+- [x] **Malformed hex silently accepted** - shared AES hex parser now rejects odd-length or non-hex input instead of producing `NaN` bytes.
+- [x] **Dev dependency advisory** - `npm audit fix` updated the lockfile and cleared the moderate `ip-address` transitive advisory.
+
+### Verification targets
+- [x] Added tests for RFC 4231 raw-hex HMAC walkthrough behavior, text-vs-hex key distinction, hex separators, and malformed AES hex rejection.
+
+---
+
+## Open backlog (low priority - DX/docs, not correctness)
 
 - [ ] **Vercel/_headers sync check** — no automated diff; manual process. Could add a CI script or pre-commit hook.
 - [ ] **Sidebar search/filter** — 37 modules approaching scan limit. `/` hotkey filter over NAV_ITEMS.

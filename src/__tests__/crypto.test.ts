@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { aesECB, aesECBDecrypt, aesGCM, mixColumns, invMixColumns, hexToBytesAES, bytesToHexAES } from '../lib/aes-math';
 import { SHA256 } from '../lib/sha256';
 import { hmacSHA256 } from '../lib/web-crypto';
+import { bytesToHex, encodeBytes, parseHexBytes } from '../lib/encoding';
+import { computeHmacSha256Steps } from '../lib/hmac';
 import { mod, modPow, modInverse, scalarMultiply, pointAdd, isInfinity, tonelliShanks, type ECPoint } from '../lib/ec-math';
 import { isPrime, gcd, eulerTotient, factorize, pollardRho, factorizeFast } from '../lib/crypto-math';
 import { generateLWEKeys, lweEncrypt, lweDecrypt, matVecMul } from '../lib/lwe-math';
@@ -63,6 +65,11 @@ describe('AES-128', () => {
     const ct = aesECB(randomPt, randomKey);
     const dec = aesECBDecrypt(ct, randomKey);
     expect(dec).toEqual(randomPt);
+  });
+
+  it('rejects malformed hex input instead of silently producing NaN bytes', () => {
+    expect(() => hexToBytesAES('abc')).toThrow('even number');
+    expect(() => hexToBytesAES('zz')).toThrow('0-9 and a-f');
   });
 });
 
@@ -295,6 +302,26 @@ describe('HMAC-SHA256', () => {
     const mac = await hmacSHA256(key, data);
     const hex = Array.from(mac).map(b => b.toString(16).padStart(2, '0')).join('');
     expect(hex).toBe('5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843');
+  });
+
+  it('walkthrough computes RFC 4231 Test Case 1 from raw hex key bytes', () => {
+    const key = encodeBytes('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex');
+    const data = encodeBytes('Hi There', 'text');
+    const steps = computeHmacSha256Steps(key, data);
+    expect(steps.keyBytesHex).toBe('0b'.repeat(20));
+    expect(steps.outerHash).toBe('b0344c61d8db38535ca8afceaf0bf12b881dc200c9833da726e9376c2e32cff7');
+  });
+
+  it('raw hex key bytes differ from the same characters encoded as text', () => {
+    const hexKey = '0b'.repeat(20);
+    const rawKey = encodeBytes(hexKey, 'hex');
+    const textKey = encodeBytes(hexKey, 'text');
+    expect(bytesToHex(rawKey)).toBe(hexKey);
+    expect(bytesToHex(textKey)).not.toBe(hexKey);
+  });
+
+  it('hex byte parser tolerates common byte separators', () => {
+    expect(bytesToHex(parseHexBytes('0x0b 0b:0b_0b-0b'))).toBe('0b0b0b0b0b');
   });
 });
 

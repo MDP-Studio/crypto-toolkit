@@ -5,13 +5,19 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
-import { SHA256 } from '@/lib/sha256';
+import { bytesToHex, encodeBytes, type ByteInputEncoding } from '@/lib/encoding';
+import { computeHmacSha256Steps } from '@/lib/hmac';
+import { hmacSHA256 } from '@/lib/web-crypto';
 
 export function HMACWalkthrough() {
   const [key, setKey] = useState('mysecretkey');
+  const [keyEncoding, setKeyEncoding] = useState<ByteInputEncoding>('text');
   const [message, setMessage] = useState('Hello World');
   const [computed, setComputed] = useState(false);
+  const [inputError, setInputError] = useState('');
 
+  const [keyBytesHex, setKeyBytesHex] = useState('');
+  const [normalizedKeyHex, setNormalizedKeyHex] = useState('');
   const [keyPadded, setKeyPadded] = useState('');
   const [ipadXor, setIpadXor] = useState('');
   const [opadXor, setOpadXor] = useState('');
@@ -20,63 +26,33 @@ export function HMACWalkthrough() {
   const [webCryptoHash, setWebCryptoHash] = useState('');
 
   async function doCompute() {
-    const encoder = new TextEncoder();
-    const blockSize = 64; // SHA-256 block size
+    setInputError('');
+    setComputed(false);
 
-    // Step 1: Key padding
-    let keyBytes = encoder.encode(key);
-    if (keyBytes.length > blockSize) {
-      // Hash key if longer than block size
-      keyBytes = new Uint8Array(
-        SHA256.hashBytes(keyBytes).match(/.{2}/g)!.map(h => parseInt(h, 16))
-      );
-    }
-    const paddedKey = new Uint8Array(blockSize);
-    paddedKey.set(keyBytes);
-    setKeyPadded(Array.from(paddedKey).map(b => b.toString(16).padStart(2, '0')).join(''));
-
-    // Step 2: XOR with ipad (0x36)
-    const ipad = new Uint8Array(blockSize);
-    for (let i = 0; i < blockSize; i++) ipad[i] = paddedKey[i] ^ 0x36;
-    setIpadXor(Array.from(ipad).map(b => b.toString(16).padStart(2, '0')).join(''));
-
-    // Step 3: XOR with opad (0x5c)
-    const opad = new Uint8Array(blockSize);
-    for (let i = 0; i < blockSize; i++) opad[i] = paddedKey[i] ^ 0x5c;
-    setOpadXor(Array.from(opad).map(b => b.toString(16).padStart(2, '0')).join(''));
-
-    // Step 4: Inner hash = SHA-256(ipad || message)
-    const msgBytes = encoder.encode(message);
-    const innerInput = new Uint8Array(blockSize + msgBytes.length);
-    innerInput.set(ipad);
-    innerInput.set(msgBytes, blockSize);
-    const innerResult = SHA256.hashBytes(innerInput);
-    setInnerHash(innerResult);
-
-    // Step 5: Outer hash = SHA-256(opad || inner_hash)
-    const innerHashBytes = new Uint8Array(innerResult.match(/.{2}/g)!.map(h => parseInt(h, 16)));
-    const outerInput = new Uint8Array(blockSize + 32);
-    outerInput.set(opad);
-    outerInput.set(innerHashBytes, blockSize);
-    const outerResult = SHA256.hashBytes(outerInput);
-    setOuterHash(outerResult);
-
-    // Step 6: Verify with Web Crypto HMAC
     try {
-      const cryptoKey = await crypto.subtle.importKey(
-        'raw',
-        encoder.encode(key),
-        { name: 'HMAC', hash: 'SHA-256' },
-        false,
-        ['sign']
-      );
-      const sig = await crypto.subtle.sign('HMAC', cryptoKey, encoder.encode(message));
-      setWebCryptoHash(Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join(''));
-    } catch {
-      setWebCryptoHash('Web Crypto HMAC unavailable');
-    }
+      const keyBytes = encodeBytes(key, keyEncoding);
+      const msgBytes = new TextEncoder().encode(message);
+      const steps = computeHmacSha256Steps(keyBytes, msgBytes);
 
-    setComputed(true);
+      setKeyBytesHex(steps.keyBytesHex);
+      setNormalizedKeyHex(steps.normalizedKeyHex);
+      setKeyPadded(steps.paddedKeyHex);
+      setIpadXor(steps.ipadXorHex);
+      setOpadXor(steps.opadXorHex);
+      setInnerHash(steps.innerHash);
+      setOuterHash(steps.outerHash);
+
+      try {
+        const sig = await hmacSHA256(keyBytes, msgBytes);
+        setWebCryptoHash(bytesToHex(sig));
+      } catch {
+        setWebCryptoHash('Web Crypto HMAC unavailable');
+      }
+
+      setComputed(true);
+    } catch (e) {
+      setInputError(e instanceof Error ? e.message : String(e));
+    }
   }
 
   return (
@@ -101,18 +77,55 @@ export function HMACWalkthrough() {
       <StepCard step={1} title="Input" status={computed ? 'complete' : 'active'}>
         <p className="text-xs text-muted-foreground">Enter any key and message. The walkthrough will show each intermediate value in the HMAC-SHA256 computation, then verify the result against the browser's native Web Crypto implementation.</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div><Label className="text-xs">Key</Label><Input value={key} onChange={e => setKey(e.target.value)} className="font-mono" /></div>
+          <div className="space-y-1">
+            <div className="flex items-center justify-between gap-2">
+              <Label className="text-xs">Key</Label>
+              <div className="flex gap-1" aria-label="Key encoding">
+                <Button
+                  type="button"
+                  size="xs"
+                  variant={keyEncoding === 'text' ? 'default' : 'outline'}
+                  aria-pressed={keyEncoding === 'text'}
+                  onClick={() => setKeyEncoding('text')}
+                >
+                  Text
+                </Button>
+                <Button
+                  type="button"
+                  size="xs"
+                  variant={keyEncoding === 'hex' ? 'default' : 'outline'}
+                  aria-pressed={keyEncoding === 'hex'}
+                  onClick={() => setKeyEncoding('hex')}
+                >
+                  Hex bytes
+                </Button>
+              </div>
+            </div>
+            <Input
+              value={key}
+              onChange={e => setKey(e.target.value)}
+              className="font-mono"
+              placeholder={keyEncoding === 'hex' ? '0b0b0b0b...' : 'mysecretkey'}
+            />
+            <p className="text-[11px] text-muted-foreground">
+              Hex bytes mode treats pasted HMAC outputs as raw key bytes.
+            </p>
+          </div>
           <div><Label className="text-xs">Message</Label><Input value={message} onChange={e => setMessage(e.target.value)} className="font-mono" /></div>
         </div>
         <Button onClick={doCompute} className="w-full">Compute HMAC-SHA256</Button>
+        {inputError && <p className="text-sm text-destructive">{inputError}</p>}
       </StepCard>
 
       {computed && (
         <>
           <StepCard step={2} title="Key Padding (to 64 bytes)" status="complete">
             <FormulaBox>
-              <ComputationRow label="Key" value={key} />
-              <ComputationRow label="Key (hex)" value={Array.from(new TextEncoder().encode(key)).map(b => b.toString(16).padStart(2, '0')).join('')} />
+              <ComputationRow label={`Key input (${keyEncoding})`} value={key || '(empty)'} />
+              <ComputationRow label="Key bytes (hex)" value={keyBytesHex || '(empty)'} />
+              {normalizedKeyHex !== keyBytesHex && (
+                <ComputationRow label="Hashed key (hex)" value={normalizedKeyHex} />
+              )}
               <ComputationRow label="Padded key (64B)" value={keyPadded.substring(0, 40) + '...'} highlight />
               <p className="text-xs text-muted-foreground mt-1">
                 If key &gt; 64 bytes: hash it first. If key &lt; 64 bytes: zero-pad to 64.

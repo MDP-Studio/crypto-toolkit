@@ -27,7 +27,7 @@ All computation runs client-side using BigInt arithmetic with `crypto.getRandomV
 ### Protocol Composition
 - **AES-GCM** — CTR stream cipher + GHASH polynomial authentication over GF(2^128). Web Crypto comparison.
 - **TLS 1.3 Handshake** — ECDHE → HKDF → ECDSA (real `crypto.subtle`) → AES-GCM encrypted application data.
-- **HMAC-SHA256** — Step-by-step ipad/opad XOR, inner/outer hash with Web Crypto verification.
+- **HMAC-SHA256** - Step-by-step ipad/opad XOR, inner/outer hash with text or raw-hex key input and Web Crypto verification.
 - **Argon2id** — Memory-hard password hashing via WASM Web Worker. SHA-256 timing comparison, OWASP presets.
 
 ### Workflows
@@ -62,7 +62,7 @@ All computation runs client-side using BigInt arithmetic with `crypto.getRandomV
 
 ## Test Vectors & Coverage
 
-95 tests across 6 test suites. Key vector sources:
+99 tests across 6 test suites. Key vector sources:
 
 | Module | Source |
 |--------|--------|
@@ -84,7 +84,7 @@ Branch coverage is not yet configured (`vitest --coverage` with v8 provider is o
 - **React 19** + **Vite 8** — Code-split with React.lazy (main bundle 220KB, 67KB gzipped)
 - **TypeScript 5.9** — Strict mode, noUnusedLocals, verbatimModuleSyntax
 - **Tailwind CSS v4** + **shadcn/ui** — Dark/light theme, responsive 320px–1280px+
-- **Vitest** — 95 tests with NIST/RFC vector attribution
+- **Vitest** - 99 tests with NIST/RFC vector attribution
 - **BigInt** — Arbitrary precision, no external math libraries
 - **Web Crypto API** — CSPRNG via `crypto.getRandomValues()`, `crypto.subtle` for ECDSA/AES/HMAC comparison
 - **hash-wasm** — Argon2id WASM in dedicated Web Worker
@@ -94,8 +94,8 @@ Branch coverage is not yet configured (`vitest --coverage` with v8 provider is o
 npm install
 npm run dev      # dev server at localhost:5173
 npm run build    # production build
-npm test         # 95 tests
-npm run ci       # full check: tsc + lint + test
+npm test         # 99 tests
+npm run ci       # full check: tsc + lint + test + build + prod audit
 ```
 
 ## Architecture

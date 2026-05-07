@@ -1,6 +1,8 @@
 // AES-128 Math Engine for educational single-round visualization
 // Implements FIPS 197 (AES) operations on 4x4 byte state matrices
 
+import { bytesToHex, parseHexBytes } from './encoding';
+
 // AES S-Box (SubBytes lookup table)
 export const SBOX: number[] = [
   0x63,0x7c,0x77,0x7b,0xf2,0x6b,0x6f,0xc5,0x30,0x01,0x67,0x2b,0xfe,0xd7,0xab,0x76,
@@ -553,15 +555,10 @@ export function aesGCM(
 
 // Helper: bytes to hex
 export function bytesToHexAES(bytes: number[]): string {
-  return bytes.map(b => b.toString(16).padStart(2, '0')).join('');
+  return bytesToHex(bytes);
 }
 
 // Helper: hex to bytes
 export function hexToBytesAES(hex: string): number[] {
-  const clean = hex.replace(/\s+/g, '');
-  const bytes: number[] = [];
-  for (let i = 0; i < clean.length; i += 2) {
-    bytes.push(parseInt(clean.substring(i, i + 2), 16));
-  }
-  return bytes;
+  return Array.from(parseHexBytes(hex));
 }
