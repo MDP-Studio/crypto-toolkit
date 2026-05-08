@@ -5,8 +5,10 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
+import { ByteInput } from '@/components/ByteInput';
 import { bytesToHex, encodeBytes, type ByteInputEncoding } from '@/lib/encoding';
 import { computeHmacSha256Steps } from '@/lib/hmac';
+import { HMAC_EXAMPLES, type HmacExample } from '@/lib/hmac-examples';
 import { hmacSHA256 } from '@/lib/web-crypto';
 
 export function HMACWalkthrough() {
@@ -15,6 +17,7 @@ export function HMACWalkthrough() {
   const [message, setMessage] = useState('Hello World');
   const [computed, setComputed] = useState(false);
   const [inputError, setInputError] = useState('');
+  const [selectedExample, setSelectedExample] = useState<HmacExample | null>(null);
 
   const [keyBytesHex, setKeyBytesHex] = useState('');
   const [normalizedKeyHex, setNormalizedKeyHex] = useState('');
@@ -55,6 +58,15 @@ export function HMACWalkthrough() {
     }
   }
 
+  function loadExample(example: HmacExample) {
+    setSelectedExample(example);
+    setKey(example.key);
+    setKeyEncoding(example.keyEncoding);
+    setMessage(example.message);
+    setInputError('');
+    setComputed(false);
+  }
+
   return (
     <div className="space-y-4">
       <Card className="bg-primary/5 border-primary/20">
@@ -76,42 +88,46 @@ export function HMACWalkthrough() {
 
       <StepCard step={1} title="Input" status={computed ? 'complete' : 'active'}>
         <p className="text-xs text-muted-foreground">Enter any key and message. The walkthrough will show each intermediate value in the HMAC-SHA256 computation, then verify the result against the browser's native Web Crypto implementation.</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div className="space-y-1">
-            <div className="flex items-center justify-between gap-2">
-              <Label className="text-xs">Key</Label>
-              <div className="flex gap-1" aria-label="Key encoding">
-                <Button
-                  type="button"
-                  size="xs"
-                  variant={keyEncoding === 'text' ? 'default' : 'outline'}
-                  aria-pressed={keyEncoding === 'text'}
-                  onClick={() => setKeyEncoding('text')}
-                >
-                  Text
-                </Button>
-                <Button
-                  type="button"
-                  size="xs"
-                  variant={keyEncoding === 'hex' ? 'default' : 'outline'}
-                  aria-pressed={keyEncoding === 'hex'}
-                  onClick={() => setKeyEncoding('hex')}
-                >
-                  Hex bytes
-                </Button>
-              </div>
-            </div>
-            <Input
-              value={key}
-              onChange={e => setKey(e.target.value)}
-              className="font-mono"
-              placeholder={keyEncoding === 'hex' ? '0b0b0b0b...' : 'mysecretkey'}
-            />
-            <p className="text-[11px] text-muted-foreground">
-              Hex bytes mode treats pasted HMAC outputs as raw key bytes.
-            </p>
+        <div className="rounded-lg border bg-muted/30 p-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-medium text-muted-foreground">Known vectors</span>
+            {HMAC_EXAMPLES.map(example => (
+              <Button
+                key={example.id}
+                type="button"
+                size="xs"
+                variant={selectedExample?.id === example.id ? 'default' : 'outline'}
+                onClick={() => loadExample(example)}
+              >
+                {example.label}
+              </Button>
+            ))}
           </div>
-          <div><Label className="text-xs">Message</Label><Input value={message} onChange={e => setMessage(e.target.value)} className="font-mono" /></div>
+          {selectedExample && (
+            <p className="mt-2 text-[11px] text-muted-foreground">
+              Source: {selectedExample.source}. Expected HMAC: <code className="break-all">{selectedExample.expectedHmac}</code>
+            </p>
+          )}
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <ByteInput
+            label="Key"
+            value={key}
+            encoding={keyEncoding}
+            onValueChange={value => { setKey(value); setSelectedExample(null); }}
+            onEncodingChange={encoding => { setKeyEncoding(encoding); setSelectedExample(null); }}
+            textPlaceholder="mysecretkey"
+            hexPlaceholder="0b0b0b0b..."
+            helper="Hex bytes mode treats pasted HMAC outputs as raw key bytes."
+          />
+          <div>
+            <Label className="text-xs">Message</Label>
+            <Input
+              value={message}
+              onChange={e => { setMessage(e.target.value); setSelectedExample(null); }}
+              className="font-mono"
+            />
+          </div>
         </div>
         <Button onClick={doCompute} className="w-full">Compute HMAC-SHA256</Button>
         {inputError && <p className="text-sm text-destructive">{inputError}</p>}
@@ -168,9 +184,12 @@ export function HMACWalkthrough() {
             <FormulaBox>
               <ComputationRow label="Our HMAC" value={outerHash} />
               <ComputationRow label="Web Crypto HMAC" value={webCryptoHash} />
+              {selectedExample && (
+                <ComputationRow label="Expected vector" value={selectedExample.expectedHmac} />
+              )}
               <div className="mt-2 pt-2 border-t flex items-center gap-2">
-                <Badge variant={outerHash === webCryptoHash ? 'default' : 'destructive'}>
-                  {outerHash === webCryptoHash ? 'MATCH' : 'MISMATCH'}
+                <Badge variant={outerHash === webCryptoHash && (!selectedExample || outerHash === selectedExample.expectedHmac) ? 'default' : 'destructive'}>
+                  {outerHash === webCryptoHash && (!selectedExample || outerHash === selectedExample.expectedHmac) ? 'MATCH' : 'MISMATCH'}
                 </Badge>
               </div>
             </FormulaBox>

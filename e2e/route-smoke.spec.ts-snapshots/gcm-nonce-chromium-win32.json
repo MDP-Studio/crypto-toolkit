@@ -1,0 +1,19 @@
+{
+  "header": [
+    "CT",
+    "GCM Nonce Reuse Attack"
+  ],
+  "headings": [
+    "GCM Nonce Reuse Attack",
+    "Found a bug, confusing step, or improvement idea?"
+  ],
+  "buttons": [
+    "CTGCM Nonce Reuse Attack",
+    "More"
+  ],
+  "links": [
+    "Open full assurance matrix",
+    "Send feedback"
+  ],
+  "textLength": 717
+}

@@ -1,6 +1,6 @@
 # CryptoToolkit
 
-An interactive educational platform for learning cryptography by doing — 36 modules covering how crypto works, why it works, and how it breaks. Every attack is real: algorithms run to completion and recover secrets through the actual mathematical exploit, not pre-computed simulations.
+An interactive educational platform for learning cryptography by doing: 36 learning modules plus an assurance matrix covering how crypto works, why it works, and how it breaks. Every attack is real: algorithms run to completion and recover secrets through the actual mathematical exploit, not pre-computed simulations.
 
 All computation runs client-side using BigInt arithmetic with `crypto.getRandomValues()` — no server, no tracking, no data leaves your browser.
 
@@ -8,7 +8,7 @@ All computation runs client-side using BigInt arithmetic with `crypto.getRandomV
 
 **Live:** [ctool.mdpstudio.com.au](https://ctool.mdpstudio.com.au)
 
-## Modules (36 pages)
+## Modules (36 learning pages)
 
 ### Attacks (12 pages)
 - **Bleichenbacher** — PKCS#1 v1.5 padding oracle with genuine interval narrowing (Steps 2a/2b/2c/3/4). Typically converges in ~10K oracle queries.
@@ -60,31 +60,37 @@ All computation runs client-side using BigInt arithmetic with `crypto.getRandomV
 - **Substitution Analysis** — Interactive cipher breaker with frequency/digraph/trigraph analysis.
 - **EC Curve Plot** — Scatter plot of all F_p points for small primes with interactive selection.
 
+## Assurance Matrix
+
+The live app includes an **Assurance Matrix** page at `#/assurance`. It lists every module with its spec anchors, vector sources, test IDs, and known limitations. The same data generates [docs/assurance-matrix.md](docs/assurance-matrix.md) via `npm run assurance`, and `npm run ci` fails if a module is missing from the matrix.
+
 ## Test Vectors & Coverage
 
-105 tests across 6 test suites. Key vector sources:
+111 tests across 6 Vitest suites, plus Playwright route smoke snapshots for every learning module and the assurance page. Key vector sources:
 
 | Module | Source |
 |--------|--------|
 | AES-128 ECB | FIPS 197 Appendix B (encrypt + independent decrypt) |
 | AES-GCM | NIST SP 800-38D Test Cases 2 & 3 |
 | SHA-256 | FIPS 180-4 (`"abc"`, empty string) |
-| HMAC-SHA256 | RFC 4231 Test Cases 1 & 2 |
+| HMAC-SHA256 | RFC 4231 Test Cases 1 & 2, AWS SigV4 kDate |
 | Miller-Rabin | Known primes + Carmichael numbers (561, 1105, 1729, 15841, 41041) |
 | MixColumns | FIPS 197 intermediate state roundtrip |
 | LWE | Encrypt/decrypt roundtrip, keygen consistency |
 | Shamir SSS | Known polynomial reconstruction, t-1 insufficiency |
 | Pollard's rho | 15-digit and 14-digit semiprime factorization |
 | Bleichenbacher | End-to-end interval narrowing on 24-bit modulus |
+| Hastad broadcast | e=3 CRT recovery and precondition rejection |
 
-Branch coverage is not yet configured (`vitest --coverage` with v8 provider is on the backlog).
+Coverage reporting is available with `npm run coverage` using the v8 provider and is included in `npm run ci`.
 
 ## Tech Stack
 
 - **React 19** + **Vite 8** — Code-split with React.lazy (main bundle 220KB, 67KB gzipped)
 - **TypeScript 5.9** — Strict mode, noUnusedLocals, verbatimModuleSyntax
 - **Tailwind CSS v4** + **shadcn/ui** — Dark/light theme, responsive 320px–1280px+
-- **Vitest** - 105 tests with NIST/RFC vector attribution
+- **Vitest** - 111 tests with NIST/RFC/AWS vector attribution
+- **Playwright** - route smoke snapshots across the app
 - **BigInt** — Arbitrary precision, no external math libraries
 - **Web Crypto API** — CSPRNG via `crypto.getRandomValues()`, `crypto.subtle` for ECDSA/AES/HMAC comparison
 - **hash-wasm** — Argon2id WASM in dedicated Web Worker
@@ -94,8 +100,11 @@ Branch coverage is not yet configured (`vitest --coverage` with v8 provider is o
 npm install
 npm run dev      # dev server at localhost:5173
 npm run build    # production build
-npm test         # 105 tests
-npm run ci       # full check: tsc + lint + test + build + prod audit
+npm test         # 111 Vitest tests
+npm run coverage # Vitest v8 coverage report
+npm run assurance # regenerate docs/assurance-matrix.md
+npm run e2e:routes # Playwright route smoke snapshots
+npm run ci       # full check: tsc + lint + assurance + coverage + build + routes + prod audit
 ```
 
 ## Architecture
@@ -109,6 +118,10 @@ src/
     sha256.ts          # Custom SHA-256 with exposed internal state (for hash extension)
     hash-birthday.ts   # Birthday-bound truncation helpers
     lwe-math.ts        # LWE key generation, encrypt, decrypt
+    hmac.ts            # HMAC-SHA256 step computation
+    hmac-examples.ts   # RFC 4231 and AWS SigV4 HMAC examples
+    hastad.ts          # Hastad broadcast attack CRT and cube-root helpers
+    assurance.ts       # Typed assurance matrix accessors
     web-crypto.ts      # HMAC, HKDF, AES-GCM, ECDH, ECDSA via crypto.subtle
     parse.ts           # Shared BigInt parsing with 2000-char length guard
     utils.ts           # UI utility (cn)
@@ -123,10 +136,18 @@ src/
     ErrorBoundary.tsx     # Catches computation errors without crashing app
     SecurityBanner.tsx    # Collapsible timing attack warning
     StepCard.tsx          # Step-by-step workflow card
+    AssuranceSummary.tsx  # Per-module evidence summary card
     ShiftRowsAnimation.tsx # CSS transform animation for AES ShiftRows
     pages/                # 37 lazy-loaded page components
+  data/
+    module-assurance.json # Spec anchors, vector sources, tests, known limitations
   __tests__/
     crypto.test.ts        # AES, SHA-256, EC math, number theory, LWE test vectors
+    attacks.test.ts       # Attack primitive tests
+e2e/
+  route-smoke.spec.ts     # Playwright route smoke and regression snapshots
+docs/
+  assurance-matrix.md     # Generated module assurance report
 ```
 
 ## Design Decisions

@@ -11,10 +11,11 @@ Do not skip. Do not abbreviate. These are not suggestions.
 ### Step 1 — Environment Check
 ```bash
 npm install
+npm run assurance
 npm run build 2>&1 | tail -20
 npm test 2>&1
 ```
-Report: how many tests pass, how many fail, any build errors. Stop and tell the user if build fails before touching anything.
+Report: assurance status, how many tests pass, how many fail, any build errors. Stop and tell the user if build fails before touching anything.
 
 ### Step 2 — Dependency Audit
 ```bash
@@ -96,6 +97,13 @@ if (missing.length) {
 }
 "
 ```
+
+### Step 7 - Assurance Matrix Check
+```bash
+npm run assurance
+git diff -- docs/assurance-matrix.md src/data/module-assurance.json
+```
+Every learning module must have an assurance entry with spec anchors, vector sources, test IDs, and known limitations. If a module changes, update the data before reporting done.
 
 ---
 

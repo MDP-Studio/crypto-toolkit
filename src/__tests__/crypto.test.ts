@@ -4,6 +4,7 @@ import { SHA256 } from '../lib/sha256';
 import { hmacSHA256 } from '../lib/web-crypto';
 import { bytesToHex, encodeBytes, parseHexBytes } from '../lib/encoding';
 import { computeHmacSha256Steps } from '../lib/hmac';
+import { HMAC_EXAMPLES } from '../lib/hmac-examples';
 import { mod, modPow, modInverse, scalarMultiply, pointAdd, isInfinity, tonelliShanks, isOnCurve, pointStr, type ECPoint } from '../lib/ec-math';
 import {
   isPrime, gcd, eulerTotient, factorize, pollardRho, factorizeFast,
@@ -385,6 +386,13 @@ describe('HMAC-SHA256', () => {
 
   it('hex byte parser tolerates common byte separators', () => {
     expect(bytesToHex(parseHexBytes('0x0b 0b:0b_0b-0b'))).toBe('0b0b0b0b0b');
+  });
+
+  it.each(HMAC_EXAMPLES)('walkthrough example $id matches its expected vector', example => {
+    const key = encodeBytes(example.key, example.keyEncoding);
+    const data = encodeBytes(example.message, 'text');
+    const steps = computeHmacSha256Steps(key, data);
+    expect(steps.outerHash).toBe(example.expectedHmac);
   });
 });
 

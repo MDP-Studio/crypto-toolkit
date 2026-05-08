@@ -13,6 +13,12 @@ import {
 } from '../lib/crypto-math';
 import { aesECB, aesECBDecrypt, hexToBytesAES, bytesToHexAES } from '../lib/aes-math';
 import { runBleichenbacher } from '../lib/bleichenbacher';
+import {
+  encryptHastadBroadcast,
+  recoverHastadBroadcast,
+  validateHastadPreconditions,
+  type HastadModuli,
+} from '../lib/hastad';
 
 // ============= RSA (used by RSAAttackWorkflow, Wiener, Bleichenbacher, CRTFault, Coppersmith) =============
 
@@ -59,6 +65,30 @@ describe('RSA encrypt/decrypt', () => {
     const diff = sig_correct - sig_faulty;
     const factor = gcd(diff < 0n ? -diff : diff, n);
     expect([p, q]).toContain(factor);
+  });
+});
+
+describe('Hastad broadcast attack', () => {
+  const moduli: HastadModuli = [3233n, 4559n, 5767n];
+
+  it('recovers the default message from three e=3 broadcasts', () => {
+    const message = 42n;
+    expect(validateHastadPreconditions(message, moduli)).toBeNull();
+    const ciphertexts = encryptHastadBroadcast(message, moduli);
+    const result = recoverHastadBroadcast(ciphertexts, moduli);
+    expect(result.crtValue).toBe(message ** 3n);
+    expect(result.recovered).toBe(message);
+  });
+
+  it('rejects non-coprime moduli before CRT recovery', () => {
+    expect(validateHastadPreconditions(42n, [3233n, 3127n, 4559n]))
+      .toBe('n1, n2, and n3 must be pairwise coprime for CRT');
+  });
+
+  it('rejects messages outside the RSA message range', () => {
+    expect(validateHastadPreconditions(10_000n, moduli))
+      .toBe('m must be smaller than each modulus');
+    expect(validateHastadPreconditions(-1n, moduli)).toBe('m must be non-negative');
   });
 });
 

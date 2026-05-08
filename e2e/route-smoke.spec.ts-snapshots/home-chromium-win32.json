@@ -1,0 +1,39 @@
+{
+  "header": [
+    "CT",
+    "CryptoToolkit"
+  ],
+  "headings": [
+    "CryptoToolkit",
+    "Cryptography by doing, not just reading static notes.",
+    "Real computation",
+    "Browser-only lab",
+    "Clear boundary",
+    "Cryptography",
+    "Number Theory",
+    "Workflows",
+    "Composition",
+    "Attacks",
+    "Advanced",
+    "Utilities",
+    "Found a bug, confusing step, or improvement idea?"
+  ],
+  "buttons": [
+    "CTCryptoToolkit",
+    "More",
+    "Elliptic CurvesPoint addition, scalar multiply",
+    "RSA GeneratorKey generation, encrypt/decrypt",
+    "Cipher ToolsCaesar, Vigenere, ROT13",
+    "Modular ArithmeticInverse, GCD, totient, primality",
+    "FactorizationPrime factorization",
+    "ECDSA SigningHash → sign → verify",
+    "PaillierHomomorphic encryption",
+    "ElGamalHomomorphic multiply",
+    "Diffie-HellmanKey exchange",
+    "AES RoundState matrix transforms"
+  ],
+  "links": [
+    "Send feedback"
+  ],
+  "textLength": 2666
+}

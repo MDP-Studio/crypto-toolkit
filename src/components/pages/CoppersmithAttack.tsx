@@ -12,10 +12,14 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
 import { InlineWarning } from '@/components/SecurityBanner';
-import { modPow, modInverse } from '@/lib/ec-math';
-import { gcd } from '@/lib/crypto-math';
 import { parseBigInt } from '@/lib/parse';
-import { icbrt } from '@/lib/num-util';
+import {
+  encryptHastadBroadcast,
+  recoverHastadBroadcast,
+  validateHastadPreconditions,
+  type HastadCiphertexts,
+  type HastadModuli,
+} from '@/lib/hastad';
 
 type Phase = 'setup' | 'encrypt' | 'attack';
 
@@ -27,7 +31,7 @@ export function CoppersmithAttack() {
   const [n3Str, setN3Str] = useState('5767');  // 53 × 109 (different from n1's factors)
   const [error, setError] = useState('');
 
-  const [ciphertexts, setCiphertexts] = useState<bigint[]>([]);
+  const [ciphertexts, setCiphertexts] = useState<HastadCiphertexts | null>(null);
   const [recovered, setRecovered] = useState<bigint | null>(null);
   const [crtValue, setCrtValue] = useState<bigint | null>(null);
 
@@ -37,21 +41,10 @@ export function CoppersmithAttack() {
     setCrtValue(null);
     const m = parseBigInt(mStr), n1 = parseBigInt(n1Str), n2 = parseBigInt(n2Str), n3 = parseBigInt(n3Str);
     if (m === null || !n1 || !n2 || !n3) { setError('Enter all parameters'); return; }
-    if (m < 0n) { setError('m must be non-negative'); return; }
-    if (m >= n1 || m >= n2 || m >= n3) { setError('m must be smaller than each modulus'); return; }
-    if (gcd(n1, n2) !== 1n || gcd(n1, n3) !== 1n || gcd(n2, n3) !== 1n) {
-      setError('n1, n2, and n3 must be pairwise coprime for CRT');
-      return;
-    }
-    if (m ** 3n >= n1 * n2 * n3) {
-      setError('Attack precondition failed: m^3 must be smaller than n1*n2*n3');
-      return;
-    }
-    // e = 3 (small public exponent)
-    const c1 = modPow(m, 3n, n1);
-    const c2 = modPow(m, 3n, n2);
-    const c3 = modPow(m, 3n, n3);
-    setCiphertexts([c1, c2, c3]);
+    const moduli: HastadModuli = [n1, n2, n3];
+    const validationError = validateHastadPreconditions(m, moduli);
+    if (validationError) { setError(validationError); return; }
+    setCiphertexts(encryptHastadBroadcast(m, moduli));
     setPhase('encrypt');
   }
 
@@ -59,27 +52,10 @@ export function CoppersmithAttack() {
     setError('');
     try {
       const n1 = parseBigInt(n1Str)!, n2 = parseBigInt(n2Str)!, n3 = parseBigInt(n3Str)!;
-      const [c1, c2, c3] = ciphertexts;
-      if (ciphertexts.length !== 3) { setError('Encrypt first to create three ciphertexts'); return; }
-      if (gcd(n1, n2) !== 1n || gcd(n1, n3) !== 1n || gcd(n2, n3) !== 1n) {
-        setError('n1, n2, and n3 must be pairwise coprime for CRT');
-        return;
-      }
-
-      // CRT: find x matching all three ciphertext congruences.
-      const N = n1 * n2 * n3;
-      const N1 = N / n1, N2 = N / n2, N3 = N / n3;
-
-      const y1 = modInverse(N1, n1);
-      const y2 = modInverse(N2, n2);
-      const y3 = modInverse(N3, n3);
-
-      const x = (c1 * N1 * y1 + c2 * N2 * y2 + c3 * N3 * y3) % N;
-      setCrtValue(x);
-
-      // x = m^3 (exact integer, not modular). Take integer cube root.
-      const m = icbrt(x);
-      setRecovered(m * m * m === x ? m : null);
+      if (!ciphertexts) { setError('Encrypt first to create three ciphertexts'); return; }
+      const result = recoverHastadBroadcast(ciphertexts, [n1, n2, n3]);
+      setCrtValue(result.crtValue);
+      setRecovered(result.recovered);
       setPhase('attack');
     } catch (e) { setError(String(e)); }
   }
@@ -122,7 +98,7 @@ export function CoppersmithAttack() {
       </StepCard>
 
       <StepCard step={2} title="Attacker Collects 3 Ciphertexts" status={getStatus('encrypt')}>
-        {ciphertexts.length === 3 && (
+        {ciphertexts && (
           <FormulaBox>
             <ComputationRow label="c₁ = m³ mod n₁" value={ciphertexts[0].toString()} />
             <ComputationRow label="c₂ = m³ mod n₂" value={ciphertexts[1].toString()} />

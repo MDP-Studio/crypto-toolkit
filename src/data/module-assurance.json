@@ -1,0 +1,362 @@
+[
+  {
+    "id": "ec-calculator",
+    "title": "Elliptic Curve Calculator",
+    "category": "Cryptography",
+    "evidenceLevel": "moderate",
+    "specSections": ["SEC 1 v2.0 elliptic curve group law"],
+    "vectorSources": ["Toy curve points over F_p checked against independent arithmetic"],
+    "testIds": ["crypto.test.ts: EC Math"],
+    "limitations": ["Educational short-Weierstrass curves only", "Not constant-time", "No named-curve parameter validation"]
+  },
+  {
+    "id": "rsa",
+    "title": "RSA Key Generator",
+    "category": "Cryptography",
+    "evidenceLevel": "moderate",
+    "specSections": ["PKCS #1 RSA primitive model", "Euler theorem"],
+    "vectorSources": ["Classic p=61 q=53 textbook RSA example", "Generated small-key round trips"],
+    "testIds": ["attacks.test.ts: RSA encrypt/decrypt"],
+    "limitations": ["Toy key sizes", "No OAEP or PSS production padding", "Not suitable for key generation outside the lab"]
+  },
+  {
+    "id": "modular",
+    "title": "Modular Arithmetic",
+    "category": "Number Theory",
+    "evidenceLevel": "moderate",
+    "specSections": ["Extended Euclidean algorithm", "Euler totient", "Miller-Rabin primality checks"],
+    "vectorSources": ["Known GCD, inverse, totient, Carmichael, and Mersenne-prime cases"],
+    "testIds": ["crypto.test.ts: Number Theory", "attacks.test.ts: Miller-Rabin edge cases"],
+    "limitations": ["Deterministic enough for demo-scale integers", "Not a replacement for cryptographic prime generation"]
+  },
+  {
+    "id": "converter",
+    "title": "Base & Text Converter",
+    "category": "Utilities",
+    "evidenceLevel": "moderate",
+    "specSections": ["RFC 4648 Base64", "UTF-8 byte encoding", "FIPS 180-4 SHA-256"],
+    "vectorSources": ["UTF-8 round trips", "Malformed byte parser rejection", "FIPS SHA-256 digest vectors"],
+    "testIds": ["crypto.test.ts: Base conversions", "crypto.test.ts: SHA-256"],
+    "limitations": ["Text decoding is browser UTF-8 focused", "Visual converter is not a forensic encoding suite"]
+  },
+  {
+    "id": "factorization",
+    "title": "Integer Factorization",
+    "category": "Number Theory",
+    "evidenceLevel": "moderate",
+    "specSections": ["Trial division", "Pollard Rho factorization"],
+    "vectorSources": ["Composite factorizations", "Semiprime Pollard Rho cases"],
+    "testIds": ["crypto.test.ts: Number Theory", "attacks.test.ts: factorize"],
+    "limitations": ["Demo-scale integers only", "Pollard Rho is probabilistic and not tuned for hard RSA moduli"]
+  },
+  {
+    "id": "ciphers",
+    "title": "Cipher Tools",
+    "category": "Cryptography",
+    "evidenceLevel": "limited",
+    "specSections": ["Classical Caesar, Vigenere, and ROT transforms"],
+    "vectorSources": ["UI-level deterministic transform checks through route smoke"],
+    "testIds": ["route-smoke.spec.ts: ciphers"],
+    "limitations": ["Classical ciphers only", "Not cryptographically secure", "Limited direct unit-vector coverage"]
+  },
+  {
+    "id": "ecdsa",
+    "title": "ECDSA Signing Workflow",
+    "category": "Workflows",
+    "evidenceLevel": "moderate",
+    "specSections": ["FIPS 186 ECDSA equations"],
+    "vectorSources": ["Toy curve generator-order checks", "Point multiplication and signing-flow invariants"],
+    "testIds": ["crypto.test.ts: EC Math"],
+    "limitations": ["Toy curve and small-order examples", "No RFC 6979 deterministic nonce implementation", "Not constant-time"]
+  },
+  {
+    "id": "paillier",
+    "title": "Paillier Cryptosystem",
+    "category": "Workflows",
+    "evidenceLevel": "moderate",
+    "specSections": ["Paillier additive homomorphism", "L function decryption relation"],
+    "vectorSources": ["Small-key homomorphic addition round trip"],
+    "testIds": ["attacks.test.ts: Paillier homomorphic addition"],
+    "limitations": ["Toy primes and randomness", "No semantic-security parameter hardening", "Educational arithmetic only"]
+  },
+  {
+    "id": "elgamal",
+    "title": "ElGamal Cryptosystem",
+    "category": "Workflows",
+    "evidenceLevel": "limited",
+    "specSections": ["ElGamal multiplicative homomorphism over finite groups"],
+    "vectorSources": ["Route smoke and visual workflow invariants"],
+    "testIds": ["route-smoke.spec.ts: elgamal"],
+    "limitations": ["Small demo groups", "No safe-prime or subgroup validation beyond UI explanation", "Limited direct unit-vector coverage"]
+  },
+  {
+    "id": "rsa-attack",
+    "title": "RSA Attack Workflow",
+    "category": "Attacks",
+    "evidenceLevel": "moderate",
+    "specSections": ["RSA private exponent recovery from phi(n)"],
+    "vectorSources": ["p=61 q=53 RSA worked example", "Factorization and inverse tests"],
+    "testIds": ["attacks.test.ts: RSA encrypt/decrypt", "crypto.test.ts: Number Theory"],
+    "limitations": ["Small moduli only", "Does not attack hardened RSA deployments", "Explains the failure mode rather than scaling it"]
+  },
+  {
+    "id": "substitution",
+    "title": "Substitution Analysis",
+    "category": "Utilities",
+    "evidenceLevel": "limited",
+    "specSections": ["Monoalphabetic substitution frequency analysis"],
+    "vectorSources": ["Route smoke and deterministic UI examples"],
+    "testIds": ["route-smoke.spec.ts: substitution"],
+    "limitations": ["Heuristic language model only", "English-frequency focused", "Limited direct test vectors"]
+  },
+  {
+    "id": "diffie-hellman",
+    "title": "Diffie-Hellman Key Exchange",
+    "category": "Workflows",
+    "evidenceLevel": "limited",
+    "specSections": ["Finite-field Diffie-Hellman key agreement"],
+    "vectorSources": ["Route smoke and shared-secret workflow checks"],
+    "testIds": ["route-smoke.spec.ts: diffie-hellman"],
+    "limitations": ["Toy finite fields", "No safe-prime generation", "No authenticated key exchange"]
+  },
+  {
+    "id": "aes",
+    "title": "AES-128 Round Visualization",
+    "category": "Workflows",
+    "evidenceLevel": "strong",
+    "specSections": ["FIPS 197 Appendix B", "FIPS 197 section 5.1.3 MixColumns"],
+    "vectorSources": ["FIPS 197 AES-128 ciphertext vectors", "FIPS intermediate-state inverse checks"],
+    "testIds": ["crypto.test.ts: AES-128"],
+    "limitations": ["ECB block primitive for education", "No side-channel hardening", "Not a production AES implementation"]
+  },
+  {
+    "id": "nonce-reuse",
+    "title": "ECDSA Nonce Reuse Attack",
+    "category": "Attacks",
+    "evidenceLevel": "limited",
+    "specSections": ["ECDSA nonce-reuse private key equation"],
+    "vectorSources": ["Route smoke and toy signing-flow examples"],
+    "testIds": ["route-smoke.spec.ts: nonce-reuse"],
+    "limitations": ["Toy curve arithmetic", "No full production-chain signature ingestion", "Limited direct test vectors"]
+  },
+  {
+    "id": "lwe",
+    "title": "Lattice (LWE) Encryption",
+    "category": "Advanced",
+    "evidenceLevel": "moderate",
+    "specSections": ["Learning With Errors toy encryption model"],
+    "vectorSources": ["Generated key equation checks", "bit=0 and bit=1 round trips"],
+    "testIds": ["crypto.test.ts: LWE"],
+    "limitations": ["Toy dimensions and modulus", "Not parameterized to NIST PQC security levels", "No production KEM interface"]
+  },
+  {
+    "id": "schnorr",
+    "title": "Schnorr ZKP Protocol",
+    "category": "Advanced",
+    "evidenceLevel": "limited",
+    "specSections": ["Schnorr identification protocol"],
+    "vectorSources": ["Route smoke and visual protocol invariants"],
+    "testIds": ["route-smoke.spec.ts: schnorr"],
+    "limitations": ["Toy groups", "No Fiat-Shamir transcript hashing", "Limited direct unit-vector coverage"]
+  },
+  {
+    "id": "aes-gcm",
+    "title": "AES-GCM Authenticated Encryption",
+    "category": "Composition",
+    "evidenceLevel": "strong",
+    "specSections": ["NIST SP 800-38D GCM test cases 2 and 3"],
+    "vectorSources": ["NIST SP 800-38D empty-plaintext tag vector", "NIST SP 800-38D plaintext/ciphertext/tag vector"],
+    "testIds": ["crypto.test.ts: AES-GCM"],
+    "limitations": ["Educational implementation", "No constant-time guarantee", "No production key management"]
+  },
+  {
+    "id": "argon2",
+    "title": "Argon2id Key Derivation",
+    "category": "Composition",
+    "evidenceLevel": "limited",
+    "specSections": ["Argon2id memory-hard password hashing model"],
+    "vectorSources": ["WASM runtime route smoke"],
+    "testIds": ["route-smoke.spec.ts: argon2"],
+    "limitations": ["Browser resource limits", "No calibrated production policy", "No direct Argon2 RFC vector test yet"]
+  },
+  {
+    "id": "tls13",
+    "title": "TLS 1.3 Handshake",
+    "category": "Composition",
+    "evidenceLevel": "limited",
+    "specSections": ["RFC 8446 TLS 1.3 handshake flow"],
+    "vectorSources": ["Route smoke and staged handshake simulation"],
+    "testIds": ["route-smoke.spec.ts: tls13"],
+    "limitations": ["Protocol visualization only", "No packet-level transcript validation", "No browser TLS stack integration"]
+  },
+  {
+    "id": "padding-oracle",
+    "title": "Padding Oracle Attack",
+    "category": "Attacks",
+    "evidenceLevel": "moderate",
+    "specSections": ["CBC mode chaining", "PKCS#7 padding"],
+    "vectorSources": ["AES-CBC plus PKCS#7 round trips", "Known AES ECB inverse vector"],
+    "testIds": ["attacks.test.ts: AES-CBC + PKCS#7"],
+    "limitations": ["Toy oracle", "No network timing model", "CBC demo uses educational AES helper"]
+  },
+  {
+    "id": "textbook-rsa",
+    "title": "Textbook RSA Attack",
+    "category": "Attacks",
+    "evidenceLevel": "moderate",
+    "specSections": ["RSA multiplicative homomorphism"],
+    "vectorSources": ["Small RSA encrypt/decrypt round trips", "Route smoke for attack UI"],
+    "testIds": ["attacks.test.ts: RSA encrypt/decrypt", "route-smoke.spec.ts: textbook-rsa"],
+    "limitations": ["Textbook RSA only", "Does not model OAEP", "Small demo modulus"]
+  },
+  {
+    "id": "hash-extension",
+    "title": "Hash Length Extension Attack",
+    "category": "Attacks",
+    "evidenceLevel": "moderate",
+    "specSections": ["Merkle-Damgard padding and SHA-256 state continuation"],
+    "vectorSources": ["SHA-256 FIPS digests", "Captured-state length-extension reconstruction"],
+    "testIds": ["crypto.test.ts: SHA-256"],
+    "limitations": ["SHA-256 only", "Requires guessed secret length", "Educational state manipulation"]
+  },
+  {
+    "id": "shamir",
+    "title": "Shamir Secret Sharing",
+    "category": "Workflows",
+    "evidenceLevel": "moderate",
+    "specSections": ["Lagrange interpolation over finite fields"],
+    "vectorSources": ["Known polynomial f(x)=42+3x+7x^2 mod 257"],
+    "testIds": ["crypto.test.ts: Shamir Secret Sharing"],
+    "limitations": ["Small field demo", "No authenticated shares", "No production randomness policy"]
+  },
+  {
+    "id": "gcm-nonce",
+    "title": "GCM Nonce Reuse Attack",
+    "category": "Attacks",
+    "evidenceLevel": "moderate",
+    "specSections": ["NIST SP 800-38D nonce uniqueness requirement", "CTR keystream reuse"],
+    "vectorSources": ["NIST GCM vectors for cipher substrate", "Route smoke for nonce-reuse workflow"],
+    "testIds": ["crypto.test.ts: AES-GCM", "route-smoke.spec.ts: gcm-nonce"],
+    "limitations": ["Toy plaintext examples", "Does not recover GHASH key in full generality", "No live traffic ingestion"]
+  },
+  {
+    "id": "hmac",
+    "title": "HMAC-SHA256 Walkthrough",
+    "category": "Composition",
+    "evidenceLevel": "strong",
+    "specSections": ["RFC 4231 sections 4.2 and 4.3", "AWS Signature Version 4 signing-key derivation"],
+    "vectorSources": ["RFC 4231 HMAC-SHA256 vectors", "AWS SigV4 kDate example", "Web Crypto HMAC comparison"],
+    "testIds": ["crypto.test.ts: HMAC-SHA256"],
+    "limitations": ["SHA-256 only", "Browser demo is not a production MAC library", "Key input supports text and raw hex bytes only"]
+  },
+  {
+    "id": "ecb-penguin",
+    "title": "ECB Pattern Leakage",
+    "category": "Attacks",
+    "evidenceLevel": "moderate",
+    "specSections": ["ECB deterministic block encryption behavior"],
+    "vectorSources": ["FIPS AES vectors for block primitive", "Route smoke for pattern-leak UI"],
+    "testIds": ["crypto.test.ts: AES-128", "route-smoke.spec.ts: ecb-penguin"],
+    "limitations": ["Synthetic image/pattern demo", "No file upload assurance", "ECB shown only as a misuse case"]
+  },
+  {
+    "id": "dh-subgroup",
+    "title": "DH Small Subgroup Attack",
+    "category": "Attacks",
+    "evidenceLevel": "limited",
+    "specSections": ["Finite-field subgroup confinement attack"],
+    "vectorSources": ["Route smoke and toy subgroup examples"],
+    "testIds": ["route-smoke.spec.ts: dh-subgroup"],
+    "limitations": ["Toy parameters", "No safe-prime validation library", "Limited direct test vectors"]
+  },
+  {
+    "id": "wiener",
+    "title": "Wiener's RSA Attack",
+    "category": "Attacks",
+    "evidenceLevel": "limited",
+    "specSections": ["Wiener continued-fraction attack on small RSA d"],
+    "vectorSources": ["Route smoke and worked small-d example"],
+    "testIds": ["route-smoke.spec.ts: wiener"],
+    "limitations": ["Small RSA examples", "No broad generated vulnerable-key corpus", "Limited direct test vectors"]
+  },
+  {
+    "id": "curve-plot",
+    "title": "EC Curve Visualization",
+    "category": "Utilities",
+    "evidenceLevel": "moderate",
+    "specSections": ["Short-Weierstrass curve equation over F_p"],
+    "vectorSources": ["sqrtModP and Legendre-symbol residue tests", "Route smoke for plotted UI"],
+    "testIds": ["attacks.test.ts: sqrtModP", "route-smoke.spec.ts: curve-plot"],
+    "limitations": ["Small prime fields", "Visualization only", "No named-curve security claims"]
+  },
+  {
+    "id": "bleichenbacher",
+    "title": "Bleichenbacher RSA Attack",
+    "category": "Attacks",
+    "evidenceLevel": "moderate",
+    "specSections": ["PKCS #1 v1.5 interval narrowing attack"],
+    "vectorSources": ["Toy k=3 conforming-message recovery"],
+    "testIds": ["attacks.test.ts: Bleichenbacher"],
+    "limitations": ["Toy oracle and modulus", "No real TLS oracle integration", "Query and iteration budgets cap the demo"]
+  },
+  {
+    "id": "coppersmith",
+    "title": "Hastad Broadcast Attack (e=3)",
+    "category": "Attacks",
+    "evidenceLevel": "moderate",
+    "specSections": ["Chinese Remainder Theorem", "RSA e=3 broadcast failure"],
+    "vectorSources": ["Default three-recipient e=3 recovery", "Precondition rejection tests"],
+    "testIds": ["attacks.test.ts: Hastad broadcast attack"],
+    "limitations": ["Implements Hastad's simplest broadcast case", "Does not implement full Coppersmith lattice root finding", "Small moduli only"]
+  },
+  {
+    "id": "crt-fault",
+    "title": "CRT-RSA Fault Injection",
+    "category": "Attacks",
+    "evidenceLevel": "moderate",
+    "specSections": ["Boneh-DeMillo-Lipton CRT-RSA fault model"],
+    "vectorSources": ["gcd(sig_correct - sig_faulty, n) factor recovery"],
+    "testIds": ["attacks.test.ts: RSA encrypt/decrypt"],
+    "limitations": ["Toy fault model", "No physical side-channel modeling", "Small RSA example"]
+  },
+  {
+    "id": "birthday",
+    "title": "Birthday Collision Finder",
+    "category": "Advanced",
+    "evidenceLevel": "moderate",
+    "specSections": ["Birthday bound approximation", "Hash-output truncation"],
+    "vectorSources": ["32-bit expected attempts", "Non-nibble-aligned truncation"],
+    "testIds": ["crypto.test.ts: Birthday collision helpers"],
+    "limitations": ["Truncated demo hashes only", "Browser runtime limits collision search size", "No distributed search"]
+  },
+  {
+    "id": "constant-time",
+    "title": "Constant-Time Comparison",
+    "category": "Advanced",
+    "evidenceLevel": "limited",
+    "specSections": ["Timing side-channel comparison model"],
+    "vectorSources": ["Route smoke and timing-demo UI"],
+    "testIds": ["route-smoke.spec.ts: constant-time"],
+    "limitations": ["Browser timing is noisy", "Not a formal side-channel measurement rig", "Limited direct unit-vector coverage"]
+  },
+  {
+    "id": "lll",
+    "title": "LLL Lattice Reduction",
+    "category": "Advanced",
+    "evidenceLevel": "moderate",
+    "specSections": ["Lenstra-Lenstra-Lovasz basis reduction"],
+    "vectorSources": ["2D lattice helper tests", "Route smoke for visualization"],
+    "testIds": ["lll.test.ts", "route-smoke.spec.ts: lll"],
+    "limitations": ["Low-dimensional visualization", "Not tuned for cryptanalytic-scale lattices", "No BKZ or floating-point robustness claims"]
+  },
+  {
+    "id": "mitm",
+    "title": "Meet-in-the-Middle Attack",
+    "category": "Attacks",
+    "evidenceLevel": "moderate",
+    "specSections": ["Double-encryption meet-in-the-middle search"],
+    "vectorSources": ["S-DES helper tests", "Route smoke for 2DES workflow"],
+    "testIds": ["sdes.test.ts", "route-smoke.spec.ts: mitm"],
+    "limitations": ["S-DES toy cipher", "Small key space by design", "Does not attack modern block ciphers"]
+  }
+]

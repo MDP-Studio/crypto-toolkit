@@ -144,3 +144,14 @@ Using `(0,0)` as the point at infinity works only until a real curve contains `(
 
 ### JavaScript bitwise operators are 32-bit
 `1 << 32` wraps to `1`, and bitwise masks truncate to signed 32-bit integers. For hash truncation above 31 bits, use `2 ** bits` for counts and `BigInt` masks for truncated hash values.
+
+## 2026-05-08 - Assurance Matrix and Route Regression
+
+### Assurance needs a generated source of truth
+Crypto education projects can look trustworthy while still relying on self-asserted claims. Keep module evidence in structured data with spec anchors, vector sources, test IDs, and limitations, then generate both docs and UI from it. That makes drift visible in CI.
+
+### Keep browser smoke tests separate from Vitest
+Playwright specs use a different runner. If they live under the repo without Vitest include rules, `vitest run` can import them and fail before Playwright starts. Scope Vitest to `src/**/*.test.{ts,tsx}` and run route snapshots through `npm run e2e:routes`.
+
+### HMAC example data should drive tests and UI
+Known vectors should live in a shared data file so the page buttons and unit tests use the same expected values. That prevents the UI from teaching one vector while tests validate another.

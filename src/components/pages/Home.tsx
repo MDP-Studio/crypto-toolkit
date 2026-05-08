@@ -96,12 +96,16 @@ const CATEGORIES: { name: string; icon: string; accent: string; bg: string; page
       { id: 'converter', label: 'Base & Encoding', desc: 'SHA hash, hex, base64' },
       { id: 'substitution', label: 'Substitution Analysis', desc: 'Cipher breaker' },
       { id: 'curve-plot', label: 'EC Curve Plot', desc: 'F_p scatter plot' },
+      { id: 'assurance', label: 'Assurance Matrix', desc: 'Specs, vectors, tests' },
     ],
   },
 ];
 
 export function Home({ onNavigate }: HomeProps) {
-  const totalPages = CATEGORIES.reduce((sum, cat) => sum + cat.pages.length, 0);
+  const totalLearningModules = CATEGORIES.reduce(
+    (sum, cat) => sum + cat.pages.filter(page => page.id !== 'assurance').length,
+    0
+  );
 
   return (
     <div className="space-y-8 pb-8">
@@ -111,7 +115,7 @@ export function Home({ onNavigate }: HomeProps) {
         <div className="relative space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/20 px-4 py-1.5 text-xs font-medium text-primary">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            {totalPages} Interactive Modules
+            {totalLearningModules} Learning Modules
           </div>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
             CryptoToolkit

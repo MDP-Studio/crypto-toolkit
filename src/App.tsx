@@ -5,6 +5,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { SecurityBanner } from '@/components/SecurityBanner';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { AssuranceSummary } from '@/components/AssuranceSummary';
 import { Home } from '@/components/pages/Home';
 
 // Lazy-load all page components for code splitting
@@ -44,6 +45,7 @@ const BirthdayCollision = lazy(() => import('@/components/pages/BirthdayCollisio
 const ConstantTimeDemo = lazy(() => import('@/components/pages/ConstantTimeDemo').then(m => ({ default: m.ConstantTimeDemo })));
 const LLLVisualization = lazy(() => import('@/components/pages/LLLVisualization').then(m => ({ default: m.LLLVisualization })));
 const MeetInTheMiddle = lazy(() => import('@/components/pages/MeetInTheMiddle').then(m => ({ default: m.MeetInTheMiddle })));
+const AssuranceMatrix = lazy(() => import('@/components/pages/AssuranceMatrix').then(m => ({ default: m.AssuranceMatrix })));
 
 export type Page =
   | 'home'
@@ -82,7 +84,8 @@ export type Page =
   | 'birthday'
   | 'constant-time'
   | 'lll'
-  | 'mitm';
+  | 'mitm'
+  | 'assurance';
 
 const PAGE_COMPONENTS: Record<Page, React.FC> = {
   home: () => null, // handled separately in render
@@ -122,6 +125,7 @@ const PAGE_COMPONENTS: Record<Page, React.FC> = {
   'constant-time': ConstantTimeDemo,
   lll: LLLVisualization,
   mitm: MeetInTheMiddle,
+  assurance: AssuranceMatrix,
 };
 
 const PAGE_TITLES: Record<Page, string> = {
@@ -162,6 +166,7 @@ const PAGE_TITLES: Record<Page, string> = {
   'constant-time': 'Constant-Time Comparison',
   lll: 'LLL Lattice Reduction',
   mitm: 'Meet-in-the-Middle Attack',
+  assurance: 'Assurance Matrix',
 };
 
 // Tracks viewport width and invokes onMobile whenever the viewport transitions
@@ -191,7 +196,7 @@ const VALID_PAGES = new Set(Object.keys({
   argon2: 0, tls13: 0, 'padding-oracle': 0, 'textbook-rsa': 0, 'hash-extension': 0,
   shamir: 0, 'gcm-nonce': 0, hmac: 0, 'ecb-penguin': 0, 'dh-subgroup': 0, wiener: 0,
   'curve-plot': 0, bleichenbacher: 0, coppersmith: 0, 'crt-fault': 0, birthday: 0,
-  'constant-time': 0, lll: 0, mitm: 0,
+  'constant-time': 0, lll: 0, mitm: 0, assurance: 0,
 } satisfies Record<Page, number>));
 
 function pageFromHash(): Page {
@@ -309,6 +314,7 @@ export default function App() {
                 </Suspense>
               )}
             </ErrorBoundary>
+            <AssuranceSummary page={page} />
             <ProjectFeedback page={page} />
           </div>
         </main>

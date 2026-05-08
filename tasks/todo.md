@@ -1,6 +1,6 @@
 # CryptoToolkit - Task Tracker
 
-## Current State: 36 pages, 105 tests, code-split, deployed
+## Current State: 36 learning modules, assurance matrix, 111 Vitest tests, route snapshots, code-split, deployed
 
 ## Completed Phases
 
@@ -307,11 +307,39 @@
 
 ---
 
+## Phase 18: Assurance and Regression Evidence
+
+### Assurance / Trust Gap
+- [x] **Machine-readable assurance source** - added `src/data/module-assurance.json` with every module mapped to spec anchors, vector sources, test IDs, evidence level, and known limitations.
+- [x] **Generated assurance report** - added `npm run assurance`, which validates all 36 module entries and regenerates `docs/assurance-matrix.md`.
+- [x] **In-app assurance matrix** - added `#/assurance` plus per-module `AssuranceSummary` cards linking module pages to their evidence.
+- [x] **CI hardening** - `npm run ci` now runs typecheck, lint, assurance generation, v8 coverage, build, route smoke tests, and production dependency audit.
+
+### Correctness / UX
+- [x] **HMAC known vectors** - HMAC page now exposes RFC 4231 vectors and AWS SigV4 kDate with text vs raw-hex key encoding.
+- [x] **Shared byte input** - added `ByteInput` for explicit Text vs Hex bytes input UX.
+- [x] **Hastad math extraction** - moved CRT and integer cube-root recovery into `src/lib/hastad.ts` with unit tests.
+
+### Regression
+- [x] **Route smoke snapshots** - added Playwright coverage for Home, all 36 learning modules, Assurance Matrix, and mobile checks for HMAC plus Assurance.
+- [x] **Coverage reporting** - added `npm run coverage` using `@vitest/coverage-v8`.
+- [x] **Vitest scope** - Vite/Vitest config now includes only `src/**/*.test.{ts,tsx}`, so Playwright tests do not get loaded by Vitest.
+
+### Verification targets
+- [x] `npm test` - 111 passed
+- [x] `npm run coverage` - 111 passed, v8 report generated
+- [x] `npm run build` - clean production build
+- [x] `npm run e2e:routes` - 40 passed
+- [x] `npm run ci` - full local CI passed
+- [x] `npm audit --audit-level=moderate` - 0 vulnerabilities
+- [x] Secret-pattern scan - only demo UI strings found
+
+---
+
 ## Open backlog (low priority - DX/docs, not correctness)
 
 - [ ] **Vercel/_headers sync check** — no automated diff; manual process. Could add a CI script or pre-commit hook.
-- [ ] **Sidebar search/filter** — 37 modules approaching scan limit. `/` hotkey filter over NAV_ITEMS.
-- [ ] **vitest coverage config** — `coverage: { provider: 'v8', include: ['src/lib/**'] }` for `npm test -- --coverage`
+- [ ] **Sidebar search/filter** — 36 learning modules plus Assurance Matrix are approaching scan limit. `/` hotkey filter over NAV_ITEMS.
 - [ ] **ConstantTimeDemo `crypto.subtle.verify`** — add a third timed comparison using Web Crypto to complete the pedagogical arc
 - [ ] **Common Modulus RSA Attack** — deferred from Phase 13
 - [ ] **PBKDF2 comparison in Argon2id page** — deferred from Phase 13

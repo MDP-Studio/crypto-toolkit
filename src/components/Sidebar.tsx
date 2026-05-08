@@ -386,6 +386,18 @@ const NAV_ITEMS: NavItem[] = [
       </svg>
     ),
   },
+  {
+    id: 'assurance',
+    label: 'Assurance Matrix',
+    category: 'Utilities',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0">
+        <path d="M9 11l2 2 4-4" />
+        <path d="M21 12a9 9 0 1 1-3-6.7" />
+        <path d="M21 3v6h-6" />
+      </svg>
+    ),
+  },
 ];
 
 interface SidebarProps {
