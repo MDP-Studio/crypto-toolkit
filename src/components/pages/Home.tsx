@@ -137,7 +137,7 @@ export function Home({ onNavigate }: HomeProps) {
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
             CryptoToolkit
           </h1>
-          <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+          <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto leading-7 md:leading-8 pb-0.5">
             An educational platform for applied cryptography. From elliptic curves to TLS 1.3 handshakes,
             from AES internals to post-quantum lattice encryption.
           </p>
