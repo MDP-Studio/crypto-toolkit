@@ -345,6 +345,7 @@
 - [x] **Warning icon** - replaced the small custom warning glyph with `TriangleAlert` and standardized inline warnings with `CircleAlert`.
 - [x] **Logo refinement** - replaced the gradient mark with a flat C/key SVG mark that works at header and favicon sizes.
 - [x] **Home category icons** - replaced emoji-style category icons with lucide line icons that match the sidebar visual language.
+- [x] **Home card item layout** - stacked module descriptions under labels so narrow cards no longer squeeze text into awkward columns.
 
 ### Verification targets
 - [x] `npm run lint` - clean
@@ -353,7 +354,7 @@
 - [x] `npm run ci` - full local CI passed
 - [x] `npm audit --audit-level=moderate` - 0 vulnerabilities
 - [x] Secret-pattern scan - only demo UI strings found
-- [x] Browser visual QA - flat logo, warning glyph, sidebar icons, and home category icons checked locally
+- [x] Browser visual QA - flat logo, warning glyph, sidebar icons, home category icons, and narrow home card layout checked locally
 
 ---
 

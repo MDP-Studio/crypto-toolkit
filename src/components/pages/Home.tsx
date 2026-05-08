@@ -208,10 +208,10 @@ export function Home({ onNavigate }: HomeProps) {
                     <button
                       key={pg.id}
                       onClick={() => onNavigate(pg.id)}
-                      className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-background/80 transition-all group/item flex items-baseline gap-2"
+                      className="w-full text-left px-2.5 py-2 rounded-md hover:bg-background/80 transition-all group/item flex flex-col items-start gap-0.5"
                     >
                       <span className="text-sm font-medium group-hover/item:text-primary transition-colors leading-tight">{pg.label}</span>
-                      <span className="text-[11px] text-muted-foreground/50 leading-tight hidden sm:inline">{pg.desc}</span>
+                      <span className="text-[11px] text-muted-foreground/55 leading-snug">{pg.desc}</span>
                     </button>
                   ))}
                 </div>
