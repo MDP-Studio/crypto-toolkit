@@ -1,4 +1,4 @@
-# Logs
+﻿# Logs
 logs
 *.log
 npm-debug.log*
@@ -29,3 +29,12 @@ AGENTS.md.before-*
 *.njsproj
 *.sln
 *.sw?
+
+# Local agent/Codex artifacts
+/AGENTS.md
+/AGENTS.md.before-codex-memory-import-*
+/CLAUDE.md
+/CONTEXT.md
+/MEMORY.md
+/.codex/
+
