@@ -18,6 +18,7 @@ import {
   FileKey2,
   FileSearch,
   Fingerprint,
+  Flag,
   GitCompareArrows,
   Grid3X3,
   Hash,
@@ -93,6 +94,8 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'birthday', label: 'Birthday Collision', category: 'Advanced', icon: Cake },
   { id: 'constant-time', label: 'Constant-Time', category: 'Advanced', icon: Timer },
   { id: 'lll', label: 'LLL Reduction', category: 'Advanced', icon: ChartNoAxesCombined },
+
+  { id: 'challenges', label: 'Challenge Hub', category: 'Practice', icon: Flag },
 
   { id: 'converter', label: 'Base & Encoding', category: 'Utilities', icon: Braces },
   { id: 'substitution', label: 'Substitution Analysis', category: 'Utilities', icon: FileSearch },

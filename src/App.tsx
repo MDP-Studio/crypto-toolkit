@@ -48,6 +48,7 @@ const ConstantTimeDemo = lazy(() => import('@/components/pages/ConstantTimeDemo'
 const LLLVisualization = lazy(() => import('@/components/pages/LLLVisualization').then(m => ({ default: m.LLLVisualization })));
 const MeetInTheMiddle = lazy(() => import('@/components/pages/MeetInTheMiddle').then(m => ({ default: m.MeetInTheMiddle })));
 const AssuranceMatrix = lazy(() => import('@/components/pages/AssuranceMatrix').then(m => ({ default: m.AssuranceMatrix })));
+const ChallengeHub = lazy(() => import('@/components/pages/ChallengeHub').then(m => ({ default: m.ChallengeHub })));
 
 export type Page =
   | 'home'
@@ -87,6 +88,7 @@ export type Page =
   | 'constant-time'
   | 'lll'
   | 'mitm'
+  | 'challenges'
   | 'assurance';
 
 const PAGE_COMPONENTS: Record<Page, React.FC> = {
@@ -127,6 +129,7 @@ const PAGE_COMPONENTS: Record<Page, React.FC> = {
   'constant-time': ConstantTimeDemo,
   lll: LLLVisualization,
   mitm: MeetInTheMiddle,
+  challenges: ChallengeHub,
   assurance: AssuranceMatrix,
 };
 
@@ -168,6 +171,7 @@ const PAGE_TITLES: Record<Page, string> = {
   'constant-time': 'Constant-Time Comparison',
   lll: 'LLL Lattice Reduction',
   mitm: 'Meet-in-the-Middle Attack',
+  challenges: 'Challenge Hub',
   assurance: 'Assurance Matrix',
 };
 
@@ -198,7 +202,7 @@ const VALID_PAGES = new Set(Object.keys({
   argon2: 0, tls13: 0, 'padding-oracle': 0, 'textbook-rsa': 0, 'hash-extension': 0,
   shamir: 0, 'gcm-nonce': 0, hmac: 0, 'ecb-penguin': 0, 'dh-subgroup': 0, wiener: 0,
   'curve-plot': 0, bleichenbacher: 0, coppersmith: 0, 'crt-fault': 0, birthday: 0,
-  'constant-time': 0, lll: 0, mitm: 0, assurance: 0,
+  'constant-time': 0, lll: 0, mitm: 0, challenges: 0, assurance: 0,
 } satisfies Record<Page, number>));
 
 function pageFromHash(): Page {

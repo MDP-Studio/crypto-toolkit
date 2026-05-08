@@ -4,7 +4,7 @@ import type { Page } from '@/App';
 export type EvidenceLevel = 'strong' | 'moderate' | 'limited';
 
 export interface ModuleAssurance {
-  id: Exclude<Page, 'home' | 'assurance'>;
+  id: Exclude<Page, 'home' | 'assurance' | 'challenges'>;
   title: string;
   category: string;
   evidenceLevel: EvidenceLevel;
@@ -23,7 +23,7 @@ export const ASSURANCE_LEVEL_LABELS: Record<EvidenceLevel, string> = {
 };
 
 export function getAssuranceForPage(page: Page): ModuleAssurance | null {
-  if (page === 'home' || page === 'assurance') return null;
+  if (page === 'home' || page === 'assurance' || page === 'challenges') return null;
   return ASSURANCE_MODULES.find(module => module.id === page) ?? null;
 }
 

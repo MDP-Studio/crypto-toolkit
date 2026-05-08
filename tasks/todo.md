@@ -1,6 +1,6 @@
 # CryptoToolkit - Task Tracker
 
-## Current State: 36 learning modules, assurance matrix, 111 Vitest tests, route snapshots, code-split, deployed
+## Current State: 36 learning modules, Challenge Hub, assurance matrix, 111 Vitest tests, route snapshots, code-split, deployed
 
 ## Completed Phases
 
@@ -358,6 +358,17 @@
 - [x] `npm audit --audit-level=moderate` - 0 vulnerabilities
 - [x] Secret-pattern scan - only demo UI strings found
 - [x] Browser visual QA - flat logo, warning glyph, sidebar icons, home category icons, narrow home card layout, hero title/copy spacing, and GPT-image-inspired logo checked locally
+
+---
+
+## Phase 20: CryptoHack-Inspired Practice Track
+
+- [x] **Separate Challenge Hub** - added `#/challenges` as a standalone practice route, keeping calculators and simulators focused on explanation and computation.
+- [x] **Reusable ChallengeCard** - local browser progress, answer checking, hints, points, and module links.
+- [x] **Starter challenges** - HMAC RFC 4231 vector, ECB mode identification, and ECDSA nonce-reuse private-key recovery.
+- [x] **Navigation split** - added Practice as its own home/sidebar category instead of mixing challenges into module pages.
+- [x] `npm run e2e:routes:update` - 41 route snapshots updated
+- [x] `npm run ci` - full local CI passed with 41 route smoke checks
 
 ---
 

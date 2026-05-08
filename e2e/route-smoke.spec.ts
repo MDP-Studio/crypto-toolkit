@@ -17,6 +17,7 @@ const routes = [
     title: module.title,
     path: `/#/${module.id}`,
   })),
+  { id: 'challenges', title: 'Challenge Hub', path: '/#/challenges' },
   { id: 'assurance', title: 'Assurance Matrix', path: '/#/assurance' },
 ];
 

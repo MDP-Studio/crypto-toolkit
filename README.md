@@ -1,6 +1,6 @@
 # CryptoToolkit
 
-An interactive educational platform for learning cryptography by doing: 36 learning modules plus an assurance matrix covering how crypto works, why it works, and how it breaks. Every attack is real: algorithms run to completion and recover secrets through the actual mathematical exploit, not pre-computed simulations.
+An interactive educational platform for learning cryptography by doing: 36 learning modules, a separate Challenge Hub, and an assurance matrix covering how crypto works, why it works, and how it breaks. Every attack is real: algorithms run to completion and recover secrets through the actual mathematical exploit, not pre-computed simulations.
 
 All computation runs client-side using BigInt arithmetic with `crypto.getRandomValues()` — no server, no tracking, no data leaves your browser.
 
@@ -60,13 +60,17 @@ All computation runs client-side using BigInt arithmetic with `crypto.getRandomV
 - **Substitution Analysis** — Interactive cipher breaker with frequency/digraph/trigraph analysis.
 - **EC Curve Plot** — Scatter plot of all F_p points for small primes with interactive selection.
 
+## Challenge Hub
+
+The live app includes a separate **Challenge Hub** at `#/challenges`. It keeps CryptoHack-style practice prompts separate from calculators and simulators, with local browser progress and links back to the relevant learning module.
+
 ## Assurance Matrix
 
 The live app includes an **Assurance Matrix** page at `#/assurance`. It lists every module with its spec anchors, vector sources, test IDs, and known limitations. The same data generates [docs/assurance-matrix.md](docs/assurance-matrix.md) via `npm run assurance`, and `npm run ci` fails if a module is missing from the matrix.
 
 ## Test Vectors & Coverage
 
-111 tests across 6 Vitest suites, plus Playwright route smoke snapshots for every learning module and the assurance page. Key vector sources:
+111 tests across 6 Vitest suites, plus Playwright route smoke snapshots for every learning module, the Challenge Hub, and the assurance page. Key vector sources:
 
 | Module | Source |
 |--------|--------|

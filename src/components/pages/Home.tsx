@@ -4,6 +4,7 @@ import {
   Atom,
   Binary,
   CircuitBoard,
+  Flag,
   Link2,
   LockKeyhole,
   ShieldAlert,
@@ -106,6 +107,15 @@ const CATEGORIES: Category[] = [
     ],
   },
   {
+    name: 'Practice',
+    icon: Flag,
+    accent: 'text-amber-400',
+    bg: 'hover:bg-amber-500/5 border-amber-500/10 hover:border-amber-500/30',
+    pages: [
+      { id: 'challenges', label: 'Challenge Hub', desc: 'Standalone crypto exercises' },
+    ],
+  },
+  {
     name: 'Utilities',
     icon: Wrench,
     accent: 'text-gray-400',
@@ -121,7 +131,7 @@ const CATEGORIES: Category[] = [
 
 export function Home({ onNavigate }: HomeProps) {
   const totalLearningModules = CATEGORIES.reduce(
-    (sum, cat) => sum + cat.pages.filter(page => page.id !== 'assurance').length,
+    (sum, cat) => sum + cat.pages.filter(page => page.id !== 'assurance' && page.id !== 'challenges').length,
     0
   );
 
