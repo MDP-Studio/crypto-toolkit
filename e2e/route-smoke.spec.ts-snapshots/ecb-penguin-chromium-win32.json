@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "ECB Pattern Leakage"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTECB Pattern Leakage",
+    "ECB Pattern Leakage",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 672
+  "textLength": 670
 }

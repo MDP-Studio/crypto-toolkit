@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "ECDSA Nonce Reuse Attack"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTECDSA Nonce Reuse Attack",
+    "ECDSA Nonce Reuse Attack",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 639
+  "textLength": 637
 }

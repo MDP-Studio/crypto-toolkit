@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "Lattice (LWE) Encryption"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTLattice (LWE) Encryption",
+    "Lattice (LWE) Encryption",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 652
+  "textLength": 650
 }

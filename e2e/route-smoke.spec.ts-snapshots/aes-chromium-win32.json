@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "AES-128 Round Visualization"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTAES-128 Round Visualization",
+    "AES-128 Round Visualization",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 675
+  "textLength": 673
 }

@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "Modular Arithmetic"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTModular Arithmetic",
+    "Modular Arithmetic",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 724
+  "textLength": 722
 }

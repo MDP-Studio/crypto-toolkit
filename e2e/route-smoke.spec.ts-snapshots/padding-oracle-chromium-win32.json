@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "Padding Oracle Attack"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTPadding Oracle Attack",
+    "Padding Oracle Attack",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 615
+  "textLength": 613
 }

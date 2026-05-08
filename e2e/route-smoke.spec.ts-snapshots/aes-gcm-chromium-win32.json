@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "AES-GCM Authenticated Encryption"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTAES-GCM Authenticated Encryption",
+    "AES-GCM Authenticated Encryption",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 681
+  "textLength": 679
 }

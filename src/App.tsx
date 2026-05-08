@@ -1,11 +1,13 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Card, CardContent } from '@/components/ui/card';
+import { Menu } from 'lucide-react';
 import { Sidebar } from '@/components/Sidebar';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { SecurityBanner } from '@/components/SecurityBanner';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { AssuranceSummary } from '@/components/AssuranceSummary';
+import { CryptoLogo } from '@/components/CryptoLogo';
 import { Home } from '@/components/pages/Home';
 
 // Lazy-load all page components for code splitting
@@ -283,9 +285,7 @@ export default function App() {
               onClick={() => setPage('home')}
               className="flex items-center gap-2 hover:opacity-80 transition-opacity min-w-0"
             >
-              <div className="w-6 h-6 rounded-md bg-primary flex items-center justify-center shrink-0">
-                <span className="text-primary-foreground font-bold text-[10px]">CT</span>
-              </div>
+              <CryptoLogo className="h-6 w-6" />
               <span className="text-sm md:text-base font-semibold tracking-tight truncate">
                 {page === 'home' ? 'CryptoToolkit' : PAGE_TITLES[page]}
               </span>
@@ -297,9 +297,7 @@ export default function App() {
                 className="p-1.5 rounded-md hover:bg-muted text-muted-foreground shrink-0"
                 aria-label="Toggle sidebar"
               >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M3 12h18M3 6h18M3 18h18" />
-                </svg>
+                <Menu className="h-5 w-5" strokeWidth={2} />
               </button>
             </div>
           </header>

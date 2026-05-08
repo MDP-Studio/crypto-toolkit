@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "Hastad Broadcast Attack (e=3)"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTHastad Broadcast Attack (e=3)",
+    "Hastad Broadcast Attack (e=3)",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 728
+  "textLength": 726
 }

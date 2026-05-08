@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "DH Small Subgroup Attack"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTDH Small Subgroup Attack",
+    "DH Small Subgroup Attack",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 619
+  "textLength": 617
 }

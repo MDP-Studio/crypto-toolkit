@@ -17,6 +17,7 @@ test-results
 
 # Claude Code
 .claude/
+AGENTS.md.before-*
 
 # Editor directories and files
 .vscode/*

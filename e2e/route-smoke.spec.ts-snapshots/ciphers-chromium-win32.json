@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "Cipher Tools"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTCipher Tools",
+    "Cipher Tools",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 623
+  "textLength": 621
 }

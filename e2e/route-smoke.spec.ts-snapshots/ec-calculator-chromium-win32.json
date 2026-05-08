@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "Elliptic Curve Calculator"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTElliptic Curve Calculator",
+    "Elliptic Curve Calculator",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 647
+  "textLength": 645
 }

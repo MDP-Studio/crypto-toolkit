@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "CRT-RSA Fault Injection"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTCRT-RSA Fault Injection",
+    "CRT-RSA Fault Injection",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 635
+  "textLength": 633
 }

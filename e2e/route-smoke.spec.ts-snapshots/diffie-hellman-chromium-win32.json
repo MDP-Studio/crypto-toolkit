@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "Diffie-Hellman Key Exchange"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTDiffie-Hellman Key Exchange",
+    "Diffie-Hellman Key Exchange",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 632
+  "textLength": 630
 }

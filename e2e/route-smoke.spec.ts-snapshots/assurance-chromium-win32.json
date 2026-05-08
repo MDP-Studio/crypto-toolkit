@@ -1,17 +1,16 @@
 {
   "header": [
-    "CT",
     "Assurance Matrix"
   ],
   "headings": [
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTAssurance Matrix",
+    "Assurance Matrix",
     "More"
   ],
   "links": [
     "Send feedback"
   ],
-  "textLength": 338
+  "textLength": 336
 }

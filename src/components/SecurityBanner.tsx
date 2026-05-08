@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { CircleAlert, TriangleAlert, X } from 'lucide-react';
 
 const STORAGE_KEY = 'crypto-toolkit-banner-dismissed';
 
@@ -22,12 +23,9 @@ export function SecurityBanner() {
   return (
     <div className="bg-amber-500/8 border border-amber-500/20 rounded-lg mb-4 overflow-hidden transition-all">
       <div className="flex items-center gap-2 px-3 py-2">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-500 shrink-0">
-          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-          <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
-        </svg>
+        <TriangleAlert className="h-[18px] w-[18px] text-amber-500 shrink-0" strokeWidth={2.4} />
         <span className="text-xs font-medium text-amber-600 dark:text-amber-400 flex-1">
-          Educational Tool — BigInt arithmetic is not constant-time
+          Educational Tool - BigInt arithmetic is not constant-time
         </span>
         <button
           onClick={() => setExpanded(!expanded)}
@@ -40,9 +38,7 @@ export function SecurityBanner() {
           className="text-amber-500/50 hover:text-amber-400 shrink-0 ml-1"
           aria-label="Dismiss"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M18 6L6 18M6 6l12 12" />
-          </svg>
+          <X className="h-[15px] w-[15px]" strokeWidth={2} />
         </button>
       </div>
       {expanded && (
@@ -63,9 +59,7 @@ export function SecurityBanner() {
 export function InlineWarning({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-red-500/10 border border-red-500/20 rounded-md px-3 py-2 text-xs text-red-600 dark:text-red-400 flex items-start gap-2">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0 mt-0.5">
-        <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
-      </svg>
+      <CircleAlert className="h-[15px] w-[15px] shrink-0 mt-0.5" strokeWidth={2.2} />
       <span>{children}</span>
     </div>
   );

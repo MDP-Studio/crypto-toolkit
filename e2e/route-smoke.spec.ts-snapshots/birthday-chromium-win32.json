@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "Birthday Collision Finder"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTBirthday Collision Finder",
+    "Birthday Collision Finder",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 682
+  "textLength": 680
 }

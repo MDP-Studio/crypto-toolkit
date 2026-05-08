@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "HMAC-SHA256 Walkthrough"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTHMAC-SHA256 Walkthrough",
+    "HMAC-SHA256 Walkthrough",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 670
+  "textLength": 668
 }

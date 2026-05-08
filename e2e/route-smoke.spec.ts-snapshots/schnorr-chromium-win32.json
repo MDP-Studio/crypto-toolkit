@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "Schnorr ZKP Protocol"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTSchnorr ZKP Protocol",
+    "Schnorr ZKP Protocol",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 600
+  "textLength": 598
 }

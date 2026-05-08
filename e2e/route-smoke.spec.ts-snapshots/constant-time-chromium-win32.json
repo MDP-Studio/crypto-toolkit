@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "Constant-Time Comparison"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTConstant-Time Comparison",
+    "Constant-Time Comparison",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 628
+  "textLength": 626
 }

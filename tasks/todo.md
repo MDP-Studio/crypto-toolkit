@@ -336,6 +336,25 @@
 
 ---
 
+## Phase 19: Visual Identity and Navigation Icons
+
+### UI / Branding
+- [x] **Gitignore local AGENTS backup** - added `AGENTS.md.before-*` so memory-import backup files do not stay in `git status`.
+- [x] **CryptoToolkit logo mark** - added `CryptoLogo` and replaced the old CT text badge plus favicon with a crypto/math mark.
+- [x] **Sidebar icon audit** - replaced repeated hand-coded SVGs with route-specific lucide icons across all 36 learning modules plus Assurance Matrix.
+- [x] **Warning icon** - replaced the small custom warning glyph with `TriangleAlert` and standardized inline warnings with `CircleAlert`.
+
+### Verification targets
+- [x] `npm run lint` - clean
+- [x] `npm run build` - clean production build
+- [x] `npm run e2e:routes` - 40 passed
+- [x] `npm run ci` - full local CI passed
+- [x] `npm audit --audit-level=moderate` - 0 vulnerabilities
+- [x] Secret-pattern scan - only demo UI strings found
+- [x] Browser visual QA - logo, warning glyph, and sidebar icons checked locally
+
+---
+
 ## Open backlog (low priority - DX/docs, not correctness)
 
 - [ ] **Vercel/_headers sync check** — no automated diff; manual process. Could add a CI script or pre-commit hook.

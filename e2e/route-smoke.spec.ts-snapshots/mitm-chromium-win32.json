@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "Meet-in-the-Middle Attack"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTMeet-in-the-Middle Attack",
+    "Meet-in-the-Middle Attack",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 635
+  "textLength": 633
 }

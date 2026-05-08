@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "Hash Length Extension Attack"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTHash Length Extension Attack",
+    "Hash Length Extension Attack",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 657
+  "textLength": 655
 }

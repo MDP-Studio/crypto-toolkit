@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "ElGamal Cryptosystem"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTElGamal Cryptosystem",
+    "ElGamal Cryptosystem",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 655
+  "textLength": 653
 }

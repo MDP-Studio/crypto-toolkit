@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "RSA Key Generator"
   ],
   "headings": [
@@ -8,12 +7,12 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTRSA Key Generator",
+    "RSA Key Generator",
     "More"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 642
+  "textLength": 640
 }

@@ -1,6 +1,5 @@
 {
   "header": [
-    "CT",
     "CryptoToolkit"
   ],
   "headings": [
@@ -19,7 +18,7 @@
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
-    "CTCryptoToolkit",
+    "CryptoToolkit",
     "More",
     "Elliptic CurvesPoint addition, scalar multiply",
     "RSA GeneratorKey generation, encrypt/decrypt",
@@ -35,5 +34,5 @@
   "links": [
     "Send feedback"
   ],
-  "textLength": 2666
+  "textLength": 2664
 }
