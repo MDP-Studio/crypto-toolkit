@@ -141,6 +141,9 @@ export function Home({ onNavigate }: HomeProps) {
             and how it breaks. The attack modules are designed to run the actual exploit path instead of revealing
             pre-computed answers.
           </p>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Built by Meidie Fei as part of a cybersecurity portfolio focused on reproducible, browser-based security tooling.
+          </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {[
