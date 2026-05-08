@@ -347,6 +347,7 @@
 - [x] **Home category icons** - replaced emoji-style category icons with lucide line icons that match the sidebar visual language.
 - [x] **Home card item layout** - stacked module descriptions under labels so narrow cards no longer squeeze text into awkward columns.
 - [x] **Hero copy spacing** - increased hero paragraph line-height so descenders like `y` are not clipped.
+- [x] **Hero title clipping** - removed the gradient-clipped heading treatment and gave the CryptoToolkit title a taller line box so its `y` descender renders cleanly.
 - [x] **GPT Image logo direction** - generated a cleaner lock/circuit learning mark direction and translated it into a crisp flat SVG logo and favicon.
 
 ### Verification targets
@@ -356,7 +357,7 @@
 - [x] `npm run ci` - full local CI passed
 - [x] `npm audit --audit-level=moderate` - 0 vulnerabilities
 - [x] Secret-pattern scan - only demo UI strings found
-- [x] Browser visual QA - flat logo, warning glyph, sidebar icons, home category icons, narrow home card layout, hero copy spacing, and GPT-image-inspired logo checked locally
+- [x] Browser visual QA - flat logo, warning glyph, sidebar icons, home category icons, narrow home card layout, hero title/copy spacing, and GPT-image-inspired logo checked locally
 
 ---
 

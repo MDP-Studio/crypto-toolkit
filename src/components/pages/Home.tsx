@@ -127,14 +127,14 @@ export function Home({ onNavigate }: HomeProps) {
 
   return (
     <div className="space-y-8 pb-8">
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-background to-primary/5 border border-primary/10 px-6 py-10 md:py-14 text-center">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
+      <div className="relative isolate rounded-2xl bg-gradient-to-br from-primary/10 via-background to-primary/5 border border-primary/10 px-6 py-10 md:py-14 text-center">
+        <div className="absolute inset-0 rounded-2xl bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
         <div className="relative space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/20 px-4 py-1.5 text-xs font-medium text-primary">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             {totalLearningModules} Learning Modules
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
+          <h1 className="pb-1 text-3xl md:text-4xl font-bold leading-[1.2] text-foreground">
             CryptoToolkit
           </h1>
           <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto leading-7 md:leading-8 pb-0.5">
