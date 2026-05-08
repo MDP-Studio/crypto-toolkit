@@ -25,7 +25,7 @@
     "Cipher ToolsCaesar, Vigenere, ROT13",
     "Modular ArithmeticInverse, GCD, totient, primality",
     "FactorizationPrime factorization",
-    "ECDSA SigningHash → sign → verify",
+    "ECDSA SigningHash -> sign -> verify",
     "PaillierHomomorphic encryption",
     "ElGamalHomomorphic multiply",
     "Diffie-HellmanKey exchange",
@@ -34,5 +34,5 @@
   "links": [
     "Send feedback"
   ],
-  "textLength": 2664
+  "textLength": 2654
 }

@@ -1,14 +1,32 @@
-import { Card, CardContent } from '@/components/ui/card';
 import type { Page } from '@/App';
+import { Card, CardContent } from '@/components/ui/card';
+import {
+  Atom,
+  Binary,
+  CircuitBoard,
+  Link2,
+  LockKeyhole,
+  ShieldAlert,
+  Wrench,
+  type LucideIcon,
+} from 'lucide-react';
 
 interface HomeProps {
   onNavigate: (page: Page) => void;
 }
 
-const CATEGORIES: { name: string; icon: string; accent: string; bg: string; pages: { id: Page; label: string; desc: string }[] }[] = [
+interface Category {
+  name: string;
+  icon: LucideIcon;
+  accent: string;
+  bg: string;
+  pages: { id: Page; label: string; desc: string }[];
+}
+
+const CATEGORIES: Category[] = [
   {
     name: 'Cryptography',
-    icon: '🔐',
+    icon: LockKeyhole,
     accent: 'text-blue-400',
     bg: 'hover:bg-blue-500/5 border-blue-500/10 hover:border-blue-500/30',
     pages: [
@@ -19,7 +37,7 @@ const CATEGORIES: { name: string; icon: string; accent: string; bg: string; page
   },
   {
     name: 'Number Theory',
-    icon: '🔢',
+    icon: Binary,
     accent: 'text-purple-400',
     bg: 'hover:bg-purple-500/5 border-purple-500/10 hover:border-purple-500/30',
     pages: [
@@ -29,11 +47,11 @@ const CATEGORIES: { name: string; icon: string; accent: string; bg: string; page
   },
   {
     name: 'Workflows',
-    icon: '⚡',
+    icon: CircuitBoard,
     accent: 'text-green-400',
     bg: 'hover:bg-green-500/5 border-green-500/10 hover:border-green-500/30',
     pages: [
-      { id: 'ecdsa', label: 'ECDSA Signing', desc: 'Hash → sign → verify' },
+      { id: 'ecdsa', label: 'ECDSA Signing', desc: 'Hash -> sign -> verify' },
       { id: 'paillier', label: 'Paillier', desc: 'Homomorphic encryption' },
       { id: 'elgamal', label: 'ElGamal', desc: 'Homomorphic multiply' },
       { id: 'diffie-hellman', label: 'Diffie-Hellman', desc: 'Key exchange' },
@@ -43,7 +61,7 @@ const CATEGORIES: { name: string; icon: string; accent: string; bg: string; page
   },
   {
     name: 'Composition',
-    icon: '🔗',
+    icon: Link2,
     accent: 'text-orange-400',
     bg: 'hover:bg-orange-500/5 border-orange-500/10 hover:border-orange-500/30',
     pages: [
@@ -55,7 +73,7 @@ const CATEGORIES: { name: string; icon: string; accent: string; bg: string; page
   },
   {
     name: 'Attacks',
-    icon: '💀',
+    icon: ShieldAlert,
     accent: 'text-red-400',
     bg: 'hover:bg-red-500/5 border-red-500/10 hover:border-red-500/30',
     pages: [
@@ -64,7 +82,7 @@ const CATEGORIES: { name: string; icon: string; accent: string; bg: string; page
       { id: 'padding-oracle', label: 'Padding Oracle', desc: 'CBC byte-by-byte' },
       { id: 'textbook-rsa', label: 'Textbook RSA', desc: 'Ciphertext malleability' },
       { id: 'hash-extension', label: 'Hash Extension', desc: 'Merkle-Damgard exploit' },
-      { id: 'rsa-attack', label: 'RSA Factoring', desc: 'Factor n → recover d' },
+      { id: 'rsa-attack', label: 'RSA Factoring', desc: 'Factor n -> recover d' },
       { id: 'wiener', label: "Wiener's Attack", desc: 'Continued fractions' },
       { id: 'bleichenbacher', label: 'Bleichenbacher', desc: 'PKCS#1 v1.5 oracle' },
       { id: 'coppersmith', label: 'Hastad Broadcast', desc: 'CRT + cube root' },
@@ -76,7 +94,7 @@ const CATEGORIES: { name: string; icon: string; accent: string; bg: string; page
   },
   {
     name: 'Advanced',
-    icon: '🧬',
+    icon: Atom,
     accent: 'text-cyan-400',
     bg: 'hover:bg-cyan-500/5 border-cyan-500/10 hover:border-cyan-500/30',
     pages: [
@@ -89,7 +107,7 @@ const CATEGORIES: { name: string; icon: string; accent: string; bg: string; page
   },
   {
     name: 'Utilities',
-    icon: '🛠',
+    icon: Wrench,
     accent: 'text-gray-400',
     bg: 'hover:bg-gray-500/5 border-gray-500/10 hover:border-gray-500/30',
     pages: [
@@ -109,7 +127,6 @@ export function Home({ onNavigate }: HomeProps) {
 
   return (
     <div className="space-y-8 pb-8">
-      {/* Hero */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-background to-primary/5 border border-primary/10 px-6 py-10 md:py-14 text-center">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
         <div className="relative space-y-4">
@@ -172,31 +189,36 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      {/* Category Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {CATEGORIES.map(cat => (
-          <Card key={cat.name} className={`${cat.bg} transition-all duration-200 group`}>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-lg">{cat.icon}</span>
-                <h3 className={`text-sm font-semibold ${cat.accent}`}>{cat.name}</h3>
-                <span className="text-[10px] text-muted-foreground/50 ml-auto">{cat.pages.length}</span>
-              </div>
-              <div className="space-y-0.5">
-                {cat.pages.map(pg => (
-                  <button
-                    key={pg.id}
-                    onClick={() => onNavigate(pg.id)}
-                    className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-background/80 transition-all group/item flex items-baseline gap-2"
-                  >
-                    <span className="text-sm font-medium group-hover/item:text-primary transition-colors leading-tight">{pg.label}</span>
-                    <span className="text-[11px] text-muted-foreground/50 leading-tight hidden sm:inline">{pg.desc}</span>
-                  </button>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+        {CATEGORIES.map(cat => {
+          const Icon = cat.icon;
+
+          return (
+            <Card key={cat.name} className={`${cat.bg} transition-all duration-200 group`}>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2.5 mb-3">
+                  <span className={`flex h-8 w-8 items-center justify-center rounded-md border border-border/70 bg-background/70 ${cat.accent}`}>
+                    <Icon className="h-4 w-4" strokeWidth={2.2} />
+                  </span>
+                  <h3 className={`text-sm font-semibold ${cat.accent}`}>{cat.name}</h3>
+                  <span className="text-[10px] text-muted-foreground/50 ml-auto">{cat.pages.length}</span>
+                </div>
+                <div className="space-y-0.5">
+                  {cat.pages.map(pg => (
+                    <button
+                      key={pg.id}
+                      onClick={() => onNavigate(pg.id)}
+                      className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-background/80 transition-all group/item flex items-baseline gap-2"
+                    >
+                      <span className="text-sm font-medium group-hover/item:text-primary transition-colors leading-tight">{pg.label}</span>
+                      <span className="text-[11px] text-muted-foreground/50 leading-tight hidden sm:inline">{pg.desc}</span>
+                    </button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
     </div>
   );

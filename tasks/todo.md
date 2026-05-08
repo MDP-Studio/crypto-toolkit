@@ -343,6 +343,8 @@
 - [x] **CryptoToolkit logo mark** - added `CryptoLogo` and replaced the old CT text badge plus favicon with a crypto/math mark.
 - [x] **Sidebar icon audit** - replaced repeated hand-coded SVGs with route-specific lucide icons across all 36 learning modules plus Assurance Matrix.
 - [x] **Warning icon** - replaced the small custom warning glyph with `TriangleAlert` and standardized inline warnings with `CircleAlert`.
+- [x] **Logo refinement** - replaced the gradient mark with a flat C/key SVG mark that works at header and favicon sizes.
+- [x] **Home category icons** - replaced emoji-style category icons with lucide line icons that match the sidebar visual language.
 
 ### Verification targets
 - [x] `npm run lint` - clean
@@ -351,7 +353,7 @@
 - [x] `npm run ci` - full local CI passed
 - [x] `npm audit --audit-level=moderate` - 0 vulnerabilities
 - [x] Secret-pattern scan - only demo UI strings found
-- [x] Browser visual QA - logo, warning glyph, and sidebar icons checked locally
+- [x] Browser visual QA - flat logo, warning glyph, sidebar icons, and home category icons checked locally
 
 ---
 
