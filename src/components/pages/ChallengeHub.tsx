@@ -1,4 +1,7 @@
+import { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { ChallengeCard } from '@/components/ChallengeCard';
 
 const CHALLENGES = [
@@ -43,6 +46,17 @@ const CHALLENGES = [
 const totalPoints = CHALLENGES.reduce((sum, challenge) => sum + challenge.points, 0);
 
 export function ChallengeHub() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeChallenge = CHALLENGES[activeIndex];
+
+  function showPreviousChallenge() {
+    setActiveIndex(index => (index - 1 + CHALLENGES.length) % CHALLENGES.length);
+  }
+
+  function showNextChallenge() {
+    setActiveIndex(index => (index + 1) % CHALLENGES.length);
+  }
+
   return (
     <div className="space-y-5">
       <Card className="bg-primary/5 border-primary/20">
@@ -71,17 +85,52 @@ export function ChallengeHub() {
       </section>
 
       <section className="space-y-3" aria-labelledby="starter-challenges">
-        <div>
-          <h2 id="starter-challenges" className="text-base font-semibold">Starter Challenges</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Use the linked learning module as your lab, then return here to submit the result.
-          </p>
+        <div className="rounded-lg border border-border/70 bg-card/50 p-4 space-y-3">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+                Question {activeIndex + 1} of {CHALLENGES.length}
+              </p>
+              <h2 id="starter-challenges" className="mt-1 text-base font-semibold">Starter Challenges</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Use the linked learning module as your lab, then return here to submit the result.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-2 sm:flex">
+              <Button type="button" variant="outline" size="sm" onClick={showPreviousChallenge}>
+                <ChevronLeft className="h-4 w-4" />
+                Previous
+              </Button>
+              <Button type="button" variant="outline" size="sm" onClick={showNextChallenge}>
+                Next
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+
+          <div className="space-y-2" aria-label="Change question">
+            <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Change question</p>
+            <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+              {CHALLENGES.map((challenge, index) => (
+                <Button
+                  key={challenge.id}
+                  type="button"
+                  variant={index === activeIndex ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setActiveIndex(index)}
+                  className="justify-start"
+                >
+                  <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-background/20 text-[11px]">
+                    {index + 1}
+                  </span>
+                  <span className="truncate">{challenge.title}</span>
+                </Button>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
-          {CHALLENGES.map(challenge => (
-            <ChallengeCard key={challenge.id} {...challenge} />
-          ))}
-        </div>
+
+        <ChallengeCard key={activeChallenge.id} {...activeChallenge} />
       </section>
 
       <div className="rounded-lg border bg-muted/30 p-4 text-xs text-muted-foreground space-y-2">

@@ -10,7 +10,14 @@
     "More"
   ],
   "links": [
-    "Send feedback"
+    "Elliptic Curve Calculator",
+    "RSA Key Generator",
+    "Modular Arithmetic",
+    "Base & Text Converter",
+    "Integer Factorization",
+    "Cipher Tools",
+    "ECDSA Signing Workflow",
+    "Paillier Cryptosystem"
   ],
-  "textLength": 336
+  "textLength": 9938
 }

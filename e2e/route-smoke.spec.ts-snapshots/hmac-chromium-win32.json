@@ -8,11 +8,17 @@
   ],
   "buttons": [
     "HMAC-SHA256 Walkthrough",
-    "More"
+    "More",
+    "RFC 4231 Test Case 1",
+    "RFC 4231 Test Case 2",
+    "AWS SigV4 kDate",
+    "Text",
+    "Hex bytes",
+    "Compute HMAC-SHA256"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 668
+  "textLength": 2778
 }

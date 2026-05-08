@@ -8,11 +8,13 @@
   ],
   "buttons": [
     "Integer Factorization",
-    "More"
+    "More",
+    "Factorize",
+    "List Primes"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 688
+  "textLength": 1589
 }

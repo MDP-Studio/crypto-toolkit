@@ -8,11 +8,12 @@
   ],
   "buttons": [
     "CRT-RSA Fault Injection",
-    "More"
+    "More",
+    "Generate CRT Key + Correct Signature"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 633
+  "textLength": 1627
 }

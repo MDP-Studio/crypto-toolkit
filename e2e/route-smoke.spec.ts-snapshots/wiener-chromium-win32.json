@@ -8,11 +8,12 @@
   ],
   "buttons": [
     "Wiener's RSA Attack",
-    "More"
+    "More",
+    "Run Wiener's Attack (Continued Fractions)"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 622
+  "textLength": 1985
 }

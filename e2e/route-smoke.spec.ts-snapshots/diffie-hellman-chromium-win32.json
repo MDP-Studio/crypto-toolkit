@@ -8,11 +8,12 @@
   ],
   "buttons": [
     "Diffie-Hellman Key Exchange",
-    "More"
+    "More",
+    "Set Public Parameters"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 630
+  "textLength": 2359
 }

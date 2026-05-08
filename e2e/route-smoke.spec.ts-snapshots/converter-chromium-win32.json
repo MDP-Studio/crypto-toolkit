@@ -8,11 +8,15 @@
   ],
   "buttons": [
     "Base & Text Converter",
-    "More"
+    "More",
+    "Hashing",
+    "Text Encoding",
+    "Number Base",
+    "Compute Hash"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 681
+  "textLength": 891
 }

@@ -8,11 +8,16 @@
   ],
   "buttons": [
     "Shamir Secret Sharing",
-    "More"
+    "More",
+    "Dealer Setup",
+    "Distribution",
+    "Reconstruct",
+    "Security",
+    "Generate Shares"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 614
+  "textLength": 2303
 }

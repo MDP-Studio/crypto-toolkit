@@ -8,11 +8,12 @@
   ],
   "buttons": [
     "GCM Nonce Reuse Attack",
-    "More"
+    "More",
+    "Encrypt Message 1"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 715
+  "textLength": 1627
 }

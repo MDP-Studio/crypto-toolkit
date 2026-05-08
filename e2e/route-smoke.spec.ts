@@ -33,6 +33,7 @@ for (const route of routes) {
 
     await page.goto(route.path);
     await page.getByText(route.title).first().waitFor({ state: 'visible' });
+    await expect(page.locator('#main-content')).not.toContainText('Loading...');
     await expect(page.getByText('Something went wrong')).toHaveCount(0);
     await expect(page.locator('#main-content')).toContainText(route.title);
 
@@ -66,6 +67,7 @@ test.describe('mobile route smoke', () => {
     test(`mobile route smoke: ${route.id}`, async ({ page }) => {
       await page.goto(route.path);
       await page.getByText(route.title).first().waitFor({ state: 'visible' });
+      await expect(page.locator('#main-content')).not.toContainText('Loading...');
       await expect(page.getByText('Something went wrong')).toHaveCount(0);
 
       const viewport = page.viewportSize();

@@ -8,11 +8,12 @@
   ],
   "buttons": [
     "Argon2id Key Derivation",
-    "More"
+    "More",
+    "Hash with Argon2id + SHA-256"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 608
+  "textLength": 2725
 }

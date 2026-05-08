@@ -8,11 +8,15 @@
   ],
   "buttons": [
     "RSA Key Generator",
-    "More"
+    "More",
+    "Generate Keys",
+    "Encrypt / Decrypt",
+    "Manual Keys",
+    "Generate RSA Key Pair"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 640
+  "textLength": 2370
 }

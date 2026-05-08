@@ -8,11 +8,12 @@
   ],
   "buttons": [
     "Padding Oracle Attack",
-    "More"
+    "More",
+    "Encrypt (AES-CBC + PKCS#7 Padding)"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 613
+  "textLength": 3011
 }

@@ -8,11 +8,18 @@
   ],
   "buttons": [
     "Modular Arithmetic",
-    "More"
+    "More",
+    "Calculate",
+    "Calculate",
+    "Calculate",
+    "Calculate",
+    "Calculate",
+    "Calculate",
+    "Test"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 722
+  "textLength": 2511
 }

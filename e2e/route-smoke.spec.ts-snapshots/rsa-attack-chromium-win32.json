@@ -8,11 +8,12 @@
   ],
   "buttons": [
     "RSA Attack Workflow",
-    "More"
+    "More",
+    "Attack: Factor n & Decrypt"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 675
+  "textLength": 1521
 }

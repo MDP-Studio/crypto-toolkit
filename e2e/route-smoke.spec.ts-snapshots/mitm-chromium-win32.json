@@ -8,11 +8,15 @@
   ],
   "buttons": [
     "Meet-in-the-Middle Attack",
-    "More"
+    "More",
+    "S-DES Explorer",
+    "2DES Demo",
+    "MITM Attack",
+    "Encrypt"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 633
+  "textLength": 2724
 }

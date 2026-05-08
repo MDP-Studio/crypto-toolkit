@@ -8,11 +8,12 @@
   ],
   "buttons": [
     "Bleichenbacher RSA Attack",
-    "More"
+    "More",
+    "Generate Keys & Encrypt"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 621
+  "textLength": 2632
 }

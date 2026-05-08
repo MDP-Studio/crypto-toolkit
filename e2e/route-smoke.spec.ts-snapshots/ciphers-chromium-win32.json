@@ -8,11 +8,17 @@
   ],
   "buttons": [
     "Cipher Tools",
-    "More"
+    "More",
+    "Caesar",
+    "Vigenere",
+    "ROT13/Atbash",
+    "Analysis",
+    "Encrypt",
+    "Brute Force All Shifts"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 621
+  "textLength": 1480
 }

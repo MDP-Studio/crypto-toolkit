@@ -8,11 +8,12 @@
   ],
   "buttons": [
     "Hastad Broadcast Attack (e=3)",
-    "More"
+    "More",
+    "Encrypt (e=3 to all 3)"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 726
+  "textLength": 2621
 }

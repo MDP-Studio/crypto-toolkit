@@ -367,6 +367,8 @@
 - [x] **Reusable ChallengeCard** - local browser progress, answer checking, hints, points, and module links.
 - [x] **Starter challenges** - HMAC RFC 4231 vector, ECB mode identification, and ECDSA nonce-reuse private-key recovery.
 - [x] **Navigation split** - added Practice as its own home/sidebar category instead of mixing challenges into module pages.
+- [x] **One-at-a-time challenge flow** - Challenge Hub now shows a single active question with previous/next and direct question-switch controls.
+- [x] **Route snapshot hardening** - route smoke waits for lazy-loaded pages before snapshotting so snapshots capture real module content instead of the loading shell.
 - [x] `npm run e2e:routes:update` - 41 route snapshots updated
 - [x] `npm run ci` - full local CI passed with 41 route smoke checks
 

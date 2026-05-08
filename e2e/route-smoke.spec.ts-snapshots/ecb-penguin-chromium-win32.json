@@ -8,11 +8,12 @@
   ],
   "buttons": [
     "ECB Pattern Leakage",
-    "More"
+    "More",
+    "Encrypt (ECB Mode)"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 670
+  "textLength": 1640
 }

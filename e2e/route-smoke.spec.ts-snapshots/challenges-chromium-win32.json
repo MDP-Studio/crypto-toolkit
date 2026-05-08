@@ -3,14 +3,23 @@
     "Challenge Hub"
   ],
   "headings": [
+    "Starter Challenges",
+    "RFC 4231 HMAC Vector",
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
     "Challenge Hub",
-    "More"
+    "More",
+    "Previous",
+    "Next",
+    "1RFC 4231 HMAC Vector",
+    "2Name the Broken Mode",
+    "3Recover the Private Key",
+    "Check"
   ],
   "links": [
+    "Open HMAC walkthrough",
     "Send feedback"
   ],
-  "textLength": 333
+  "textLength": 1453
 }

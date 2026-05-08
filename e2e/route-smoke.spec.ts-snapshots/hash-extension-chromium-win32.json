@@ -8,11 +8,12 @@
   ],
   "buttons": [
     "Hash Length Extension Attack",
-    "More"
+    "More",
+    "Compute MAC = SHA-256(secret || message)"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 655
+  "textLength": 2058
 }

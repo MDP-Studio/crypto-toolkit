@@ -8,11 +8,12 @@
   ],
   "buttons": [
     "DH Small Subgroup Attack",
-    "More"
+    "More",
+    "Setup"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 617
+  "textLength": 1783
 }

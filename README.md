@@ -62,7 +62,7 @@ All computation runs client-side using BigInt arithmetic with `crypto.getRandomV
 
 ## Challenge Hub
 
-The live app includes a separate **Challenge Hub** at `#/challenges`. It keeps CryptoHack-style practice prompts separate from calculators and simulators, with local browser progress and links back to the relevant learning module.
+The live app includes a separate **Challenge Hub** at `#/challenges`. It keeps CryptoHack-style practice prompts separate from calculators and simulators, shows one challenge at a time, stores progress locally, and links back to the relevant learning module.
 
 ## Assurance Matrix
 

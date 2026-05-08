@@ -8,11 +8,17 @@
   ],
   "buttons": [
     "Elliptic Curve Calculator",
-    "More"
+    "More",
+    "Addition",
+    "Multiply",
+    "Montgomery",
+    "BSGS",
+    "Points",
+    "Calculate P + Q"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 645
+  "textLength": 2727
 }

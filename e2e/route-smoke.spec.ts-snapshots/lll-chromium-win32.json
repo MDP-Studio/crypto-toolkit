@@ -8,11 +8,12 @@
   ],
   "buttons": [
     "LLL Lattice Reduction",
-    "More"
+    "More",
+    "Run LLL Reduction"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 653
+  "textLength": 2631
 }

@@ -8,11 +8,12 @@
   ],
   "buttons": [
     "ElGamal Cryptosystem",
-    "More"
+    "More",
+    "Compute y = g^x mod p"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 653
+  "textLength": 2774
 }
