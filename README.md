@@ -62,7 +62,7 @@ All computation runs client-side using BigInt arithmetic with `crypto.getRandomV
 
 ## Challenge Hub
 
-The live app includes a separate **Challenge Hub** at `#/challenges`. It keeps CryptoHack-style practice prompts separate from calculators and simulators, shows one challenge at a time, stores progress locally, and links back to the relevant learning module.
+The live app includes a separate **Challenge Hub** at `#/challenges`. It keeps CryptoHack-style practice prompts separate from calculators and simulators, shows one challenge at a time, stores progress locally, and links back to the relevant learning module. The current bank has 30 challenges across 6 stages: First Contact, Building Blocks, Misuse Radar, Attack Workflows, Cryptanalysis Lab, and Human-Hard Gauntlet.
 
 ## Assurance Matrix
 
@@ -70,7 +70,7 @@ The live app includes an **Assurance Matrix** page at `#/assurance`. It lists ev
 
 ## Test Vectors & Coverage
 
-111 tests across 6 Vitest suites, plus Playwright route smoke snapshots for every learning module, the Challenge Hub, and the assurance page. Key vector sources:
+114 tests across 7 Vitest suites, plus Playwright route smoke snapshots for every learning module, the Challenge Hub, and the assurance page. Key vector sources:
 
 | Module | Source |
 |--------|--------|
@@ -93,7 +93,7 @@ Coverage reporting is available with `npm run coverage` using the v8 provider an
 - **React 19** + **Vite 8** — Code-split with React.lazy (main bundle 220KB, 67KB gzipped)
 - **TypeScript 5.9** — Strict mode, noUnusedLocals, verbatimModuleSyntax
 - **Tailwind CSS v4** + **shadcn/ui** — Dark/light theme, responsive 320px–1280px+
-- **Vitest** - 111 tests with NIST/RFC/AWS vector attribution
+- **Vitest** - 114 tests with NIST/RFC/AWS vector attribution
 - **Playwright** - route smoke snapshots across the app
 - **BigInt** — Arbitrary precision, no external math libraries
 - **Web Crypto API** — CSPRNG via `crypto.getRandomValues()`, `crypto.subtle` for ECDSA/AES/HMAC comparison
@@ -104,7 +104,7 @@ Coverage reporting is available with `npm run coverage` using the v8 provider an
 npm install
 npm run dev      # dev server at localhost:5173
 npm run build    # production build
-npm test         # 111 Vitest tests
+npm test         # 114 Vitest tests
 npm run coverage # Vitest v8 coverage report
 npm run assurance # regenerate docs/assurance-matrix.md
 npm run e2e:routes # Playwright route smoke snapshots

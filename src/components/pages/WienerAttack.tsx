@@ -44,10 +44,10 @@ function isqrt(n: bigint): bigint | null {
 
 export function WienerAttack() {
   const [phase, setPhase] = useState<'setup' | 'attack' | 'result'>('setup');
-  // Example: p=101, q=113, n=11413, e=7467, d=23 (d < n^(1/4)/3 ≈ 3.4, so 23 > 3.4 — need bigger n)
-  // Better: p=1009, q=3643, n=3675787, e=2173589, d=89 — d is small enough
-  const [nStr, setNStr] = useState('3675787');
-  const [eStr, setEStr] = useState('2173589');
+  // Toy key: p=379, q=239, n=90581, phi=89964, e=17993, d=5.
+  // d < n^(1/4)/3, so Wiener's continued-fraction attack recovers it.
+  const [nStr, setNStr] = useState('90581');
+  const [eStr, setEStr] = useState('17993');
   const [error, setError] = useState('');
 
   const [cfTerms, setCfTerms] = useState<bigint[]>([]);
@@ -134,7 +134,7 @@ export function WienerAttack() {
           <div><Label className="text-xs">n (modulus)</Label><Input value={nStr} onChange={e => setNStr(e.target.value)} className="font-mono" /></div>
           <div><Label className="text-xs">e (public exponent)</Label><Input value={eStr} onChange={e => setEStr(e.target.value)} className="font-mono" /></div>
         </div>
-        <p className="text-xs text-muted-foreground">Default: n=3675787=1009x3643, e=2173589, d=89 (small d vulnerable to Wiener)</p>
+        <p className="text-xs text-muted-foreground">Default: n=90581=379x239, e=17993, d=5 (small d vulnerable to Wiener)</p>
         <Button onClick={doAttack} className="w-full">Run Wiener's Attack (Continued Fractions)</Button>
         {error && <p className="text-sm text-destructive">{error}</p>}
       </StepCard>

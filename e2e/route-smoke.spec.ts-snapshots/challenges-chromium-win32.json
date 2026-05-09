@@ -3,23 +3,28 @@
     "Challenge Hub"
   ],
   "headings": [
-    "Starter Challenges",
-    "RFC 4231 HMAC Vector",
+    "Stages",
+    "First Contact",
+    "Decode the Payload",
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
     "Challenge Hub",
     "More",
+    "1First ContactBasic | 0/5 solved",
+    "2Building BlocksEasy | 0/5 solved",
+    "3Misuse RadarMedium | 0/5 solved",
+    "4Attack WorkflowsHard | 0/5 solved",
+    "5Cryptanalysis LabVery Hard | 0/5 solved",
+    "6Human-Hard GauntletExtreme | 0/5 solved",
     "Previous",
     "Next",
-    "1RFC 4231 HMAC Vector",
-    "2Name the Broken Mode",
-    "3Recover the Private Key",
-    "Check"
+    "1",
+    "2"
   ],
   "links": [
-    "Open HMAC walkthrough",
+    "Open Base & Encoding",
     "Send feedback"
   ],
-  "textLength": 1453
+  "textLength": 1621
 }

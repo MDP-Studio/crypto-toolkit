@@ -1,5 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const previewHost = '127.0.0.1';
+const previewPort = Number(process.env.PLAYWRIGHT_PORT ?? 4176);
+const previewUrl = `http://${previewHost}:${previewPort}`;
+
 export default defineConfig({
   testDir: './e2e',
   timeout: 30_000,
@@ -7,13 +11,13 @@ export default defineConfig({
     timeout: 5_000,
   },
   webServer: {
-    command: 'npm run preview -- --host 127.0.0.1 --port 4173',
-    url: 'http://127.0.0.1:4173',
-    reuseExistingServer: !process.env.CI,
+    command: `npm run preview -- --host ${previewHost} --port ${previewPort}`,
+    url: previewUrl,
+    reuseExistingServer: false,
     timeout: 120_000,
   },
   use: {
-    baseURL: 'http://127.0.0.1:4173',
+    baseURL: previewUrl,
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
   },
