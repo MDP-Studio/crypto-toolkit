@@ -1,6 +1,6 @@
 # CryptoToolkit - Task Tracker
 
-## Current State: 36 learning modules, Challenge Hub, assurance matrix, 114 Vitest tests, route snapshots, code-split, deployed
+## Current State: 36 learning modules, Challenge Hub, assurance matrix, 118 Vitest tests, route snapshots, code-split, deployed
 
 ## Completed Phases
 
@@ -365,19 +365,20 @@
 
 - [x] **Separate Challenge Hub** - added `#/challenges` as a standalone practice route, keeping calculators and simulators focused on explanation and computation.
 - [x] **Reusable ChallengeCard** - local browser progress, answer checking, hints, points, and module links.
-- [x] **Starter challenges** - HMAC RFC 4231 vector, ECB mode identification, and ECDSA nonce-reuse private-key recovery.
+- [x] **Starter challenges** - custom encoding, hashing, ECB pattern-count, modular inverse, and Diffie-Hellman computation prompts.
 - [x] **Navigation split** - added Practice as its own home/sidebar category instead of mixing challenges into module pages.
 - [x] **One-at-a-time challenge flow** - Challenge Hub now shows a single active question with previous/next and direct question-switch controls.
 - [x] **Staged challenge bank** - expanded to 30 challenges across 6 difficulty stages from Basic to Extreme.
 - [x] **Challenge visual hierarchy** - enlarged the active question, added answer-format labels, and moved the selector into a secondary stage/question picker.
 - [x] **Deterministic visual prompts** - added code-native flow, formula, XOR, and graph panels for questions where visuals help reasoning.
 - [x] **Challenge correctness pass** - fixed the RFC 4231 Test Case 1 answer and refreshed the Wiener default to a working small-d key.
-- [x] **Challenge bank tests** - added data tests for stage balance, unique IDs, and HMAC vector drift.
+- [x] **Challenge bank tests** - added data tests for stage balance, unique IDs, lookup-only format rejection, and derived challenge answers.
+- [x] **Challenge bank correction** - replaced googleable concept and public-vector checks across all stages with custom computation instances.
 - [x] **Route smoke isolation** - Playwright now starts its own preview port instead of reusing an unrelated local server.
 - [x] **Dependency audit cleanup** - updated dev transitive `fast-uri` and `hono` via `npm audit fix`.
 - [x] **Route snapshot hardening** - route smoke waits for lazy-loaded pages before snapshotting so snapshots capture real module content instead of the loading shell.
 - [x] `npm run e2e:routes:update` - 41 route snapshots updated
-- [x] `npm run ci` - full local CI passed with 114 Vitest tests and 41 route smoke checks
+- [x] `npm run ci` - full local CI passed with 118 Vitest tests and 41 route smoke checks
 
 ---
 

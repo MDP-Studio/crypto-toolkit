@@ -5,7 +5,7 @@
   "headings": [
     "Stages",
     "First Contact",
-    "Decode the Payload",
+    "Decode the Custom Payload",
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
@@ -26,5 +26,5 @@
     "Open Base & Encoding",
     "Send feedback"
   ],
-  "textLength": 1621
+  "textLength": 1643
 }
