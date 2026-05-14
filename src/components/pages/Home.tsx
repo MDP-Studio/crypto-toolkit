@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import type { Page } from '@/App';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Atom,
   Binary,
+  ChevronDown,
+  ChevronUp,
   CircuitBoard,
   Flag,
   Link2,
@@ -23,6 +26,8 @@ interface Category {
   bg: string;
   pages: { id: Page; label: string; desc: string }[];
 }
+
+const CATEGORY_PREVIEW_LIMIT = 5;
 
 const CATEGORIES: Category[] = [
   {
@@ -130,10 +135,20 @@ const CATEGORIES: Category[] = [
 ];
 
 export function Home({ onNavigate }: HomeProps) {
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(() => new Set());
   const totalLearningModules = CATEGORIES.reduce(
     (sum, cat) => sum + cat.pages.filter(page => page.id !== 'assurance' && page.id !== 'challenges').length,
     0
   );
+
+  function toggleCategory(name: string) {
+    setExpandedCategories(current => {
+      const next = new Set(current);
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
+      return next;
+    });
+  }
 
   return (
     <div className="space-y-8 pb-8">
@@ -202,10 +217,13 @@ export function Home({ onNavigate }: HomeProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {CATEGORIES.map(cat => {
           const Icon = cat.icon;
+          const isExpanded = expandedCategories.has(cat.name);
+          const hiddenCount = Math.max(0, cat.pages.length - CATEGORY_PREVIEW_LIMIT);
+          const visiblePages = isExpanded ? cat.pages : cat.pages.slice(0, CATEGORY_PREVIEW_LIMIT);
 
           return (
-            <Card key={cat.name} className={`${cat.bg} transition-all duration-200 group`}>
-              <CardContent className="p-4">
+            <Card key={cat.name} className={`${cat.bg} h-full transition-all duration-200 group`}>
+              <CardContent className="flex h-full flex-col p-4">
                 <div className="flex items-center gap-2.5 mb-3">
                   <span className={`flex h-8 w-8 items-center justify-center rounded-md border border-border/70 bg-background/70 ${cat.accent}`}>
                     <Icon className="h-4 w-4" strokeWidth={2.2} />
@@ -214,7 +232,7 @@ export function Home({ onNavigate }: HomeProps) {
                   <span className="text-[10px] text-muted-foreground/50 ml-auto">{cat.pages.length}</span>
                 </div>
                 <div className="space-y-0.5">
-                  {cat.pages.map(pg => (
+                  {visiblePages.map(pg => (
                     <button
                       key={pg.id}
                       onClick={() => onNavigate(pg.id)}
@@ -225,6 +243,29 @@ export function Home({ onNavigate }: HomeProps) {
                     </button>
                   ))}
                 </div>
+                {hiddenCount > 0 && (
+                  <div className="mt-auto flex justify-end pt-2">
+                    <button
+                      type="button"
+                      onClick={() => toggleCategory(cat.name)}
+                      className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border/70 bg-background/60 px-2.5 text-[11px] font-medium text-muted-foreground transition-colors hover:border-primary/35 hover:bg-primary/10 hover:text-primary"
+                      aria-expanded={isExpanded}
+                      aria-label={isExpanded ? `Show fewer ${cat.name} modules` : `Show ${hiddenCount} more ${cat.name} modules`}
+                    >
+                      {isExpanded ? (
+                        <>
+                          Show less
+                          <ChevronUp className="h-3.5 w-3.5" />
+                        </>
+                      ) : (
+                        <>
+                          Show {hiddenCount} more
+                          <ChevronDown className="h-3.5 w-3.5" />
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
               </CardContent>
             </Card>
           );
