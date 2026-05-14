@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
+import { MathText } from '@/components/MathText';
 import { mod, modPow } from '@/lib/ec-math';
 import { isPrime } from '@/lib/crypto-math';
 import { randModBig } from '@/lib/num-util';
@@ -162,7 +163,7 @@ export function SchnorrZKP() {
           <div><Label className="text-xs">g (generator)</Label><Input value={gStr} onChange={e => setGStr(e.target.value)} className="font-mono" /></div>
           <div><Label className="text-xs">x (Prover's secret)</Label><Input value={xStr} onChange={e => setXStr(e.target.value)} className="font-mono" /></div>
         </div>
-        <Button onClick={doSetup} className="w-full">Compute Public Key y = g^x mod p</Button>
+        <Button onClick={doSetup} className="w-full"><MathText text="Compute Public Key y = g^x mod p" /></Button>
         {setupError && <p className="text-sm text-destructive">{setupError}</p>}
         {yVal !== null && (
           <FormulaBox>
@@ -186,7 +187,7 @@ export function SchnorrZKP() {
           <StepCard step={2} title="Commitment: Pick random r" status={getStatus('commit')}>
             <p className="text-xs text-muted-foreground">The commitment t = g<sup>r</sup> hides the random value r. This must be sent before the challenge is revealed -- otherwise a cheater could work backwards to fake a valid response.</p>
             <div><Label className="text-xs">r (random secret)</Label><Input value={rStr} onChange={e => setRStr(e.target.value)} className="font-mono" /></div>
-            <Button onClick={doCommit} className="w-full" size="sm">Compute t = g^r mod p</Button>
+            <Button onClick={doCommit} className="w-full" size="sm"><MathText text="Compute t = g^r mod p" /></Button>
             {tVal !== null && (
               <FormulaBox>
                 <ComputationRow label="t" formula="g^r mod p" value={tVal.toString()} highlight />
@@ -270,8 +271,8 @@ export function SchnorrZKP() {
                     <div className="text-xs text-muted-foreground space-y-1">
                       <p><strong>Probability analysis:</strong></p>
                       <p>Cheater succeeds with probability 1/q per round = 1/{qVal?.toString() ?? '?'} ≈ {qVal ? (100 / Number(qVal)).toFixed(2) : '?'}% (q = ord(g))</p>
-                      <p>After k rounds: (1/{qVal?.toString() ?? '?'})^k</p>
-                      <p>For cryptographic security: use q ≈ 2^256, giving 1/2^256 per round — computationally impossible to cheat.</p>
+                      <p><MathText text={`After k rounds: (1/${qVal?.toString() ?? '?'})^k`} /></p>
+                      <p><MathText text="For cryptographic security: use q ≈ 2^256, giving 1/2^256 per round, computationally impossible to cheat." /></p>
                       <p>This is why the subgroup order q matters in ZKP — small q makes cheating feasible, large q makes it impossible.</p>
                     </div>
                   </div>

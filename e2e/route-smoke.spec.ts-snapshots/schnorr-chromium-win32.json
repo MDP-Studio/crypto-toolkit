@@ -9,11 +9,11 @@
   "buttons": [
     "Schnorr ZKP Protocol",
     "More",
-    "Compute Public Key y = g^x mod p"
+    "Compute Public Key y = gx mod p"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 3392
+  "textLength": 3389
 }

@@ -9,11 +9,11 @@
   "buttons": [
     "ElGamal Cryptosystem",
     "More",
-    "Compute y = g^x mod p"
+    "Compute y = gx mod p"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 2774
+  "textLength": 2773
 }

@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { MathText } from '@/components/MathText';
 import { factorizeFast, factorizeToString, isPrime, nextPrime, eulerTotient } from '@/lib/crypto-math';
 
 
@@ -35,7 +36,7 @@ export function Factorization() {
       return;
     }
     if (n > 10n ** 30n) {
-      setError('Number too large (max 10^30)');
+      setError('Number too large (max 10³⁰)');
       return;
     }
     setComputing(true);
@@ -90,7 +91,9 @@ export function Factorization() {
         <p className="font-semibold">The problem</p>
         <p className="text-muted-foreground">{"RSA's security depends on the difficulty of factoring large numbers. If an attacker can factor the modulus n = p \u00D7 q, they can compute the private key directly. How do factoring algorithms actually work, and why does key size matter?"}</p>
         <p className="font-semibold mt-3">The insight</p>
-        <p className="text-muted-foreground">{"Trial division is O(\u221An) \u2014 fine for small numbers, hopeless for 2048-bit RSA. Pollard's rho uses Floyd's cycle detection on a pseudorandom sequence mod n, finding factors in O(n^{1/4}) expected time. The Number Field Sieve (used for real RSA attacks) achieves sub-exponential time but is far too complex for a browser demo. This tool uses trial division + Pollard's rho, which can handle semiprimes up to about 10^30."}</p>
+        <p className="text-muted-foreground">
+          <MathText text={"Trial division is O(√n) — fine for small numbers, hopeless for 2048-bit RSA. Pollard's rho uses Floyd's cycle detection on a pseudorandom sequence mod n, finding factors in O(n^(1/4)) expected time. The Number Field Sieve (used for real RSA attacks) achieves sub-exponential time but is far too complex for a browser demo. This tool uses trial division + Pollard's rho, which can handle semiprimes up to about 10^30."} />
+        </p>
       </div>
 
       <Card>

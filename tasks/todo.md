@@ -1,6 +1,6 @@
 # CryptoToolkit - Task Tracker
 
-## Current State: 36 learning modules, Challenge Hub, assurance matrix, 118 Vitest tests, route snapshots, code-split, deployed
+## Current State: 36 learning modules, Challenge Hub, assurance matrix, 122 Vitest tests, route snapshots, code-split, deployed
 
 ## Completed Phases
 
@@ -377,8 +377,9 @@
 - [x] **Route smoke isolation** - Playwright now starts its own preview port instead of reusing an unrelated local server.
 - [x] **Dependency audit cleanup** - updated dev transitive `fast-uri` and `hono` via `npm audit fix`.
 - [x] **Route snapshot hardening** - route smoke waits for lazy-loaded pages before snapshotting so snapshots capture real module content instead of the loading shell.
+- [x] **Math notation pass** - added shared exponent/subscript rendering for challenges, computation rows, and formula-heavy module text.
 - [x] `npm run e2e:routes:update` - 41 route snapshots updated
-- [x] `npm run ci` - full local CI passed with 118 Vitest tests and 41 route smoke checks
+- [x] `npm run ci` - full local CI passed with 122 Vitest tests and 41 route smoke checks
 
 ---
 

@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { StepCard, FormulaBox, ComputationRow } from '@/components/StepCard';
+import { MathText } from '@/components/MathText';
 
 export function ConstantTimeDemo() {
   const [secret, setSecret] = useState('correctpassword');
@@ -150,7 +151,7 @@ export function ConstantTimeDemo() {
               <p className="text-xs text-red-600/80 dark:text-red-400/70">
                 An attacker guessing a password/MAC byte-by-byte measures how long each comparison takes.
                 Early-exit: "correct" prefix takes longer → reveals position of first wrong byte.
-                With n attempts per position, an n-byte secret is cracked in O(n × 256) instead of O(256^n).
+                {' '}<MathText text="With n attempts per position, an n-byte secret is cracked in O(n × 256) instead of O(256^n)." />
               </p>
               <p className="text-xs text-red-600/80 dark:text-red-400/70">
                 <strong>Fix:</strong> Use XOR-based comparison (constant-time): accumulate differences

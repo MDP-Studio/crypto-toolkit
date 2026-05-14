@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
+import { MathText } from '@/components/MathText';
 import { mod, modPow, modInverse, isPrime, discreteLogBounded } from '@/lib/crypto-math';
 
 
@@ -139,7 +140,7 @@ export function ElGamalWorkflow() {
           <div><Label className="text-xs">g (generator)</Label><Input value={gStr} onChange={e => setGStr(e.target.value)} className="font-mono" /></div>
           <div><Label className="text-xs">x (private key)</Label><Input value={xStr} onChange={e => setXStr(e.target.value)} className="font-mono" /></div>
         </div>
-        <Button onClick={doSetup} className="w-full">Compute y = g^x mod p</Button>
+        <Button onClick={doSetup} className="w-full"><MathText text="Compute y = g^x mod p" /></Button>
         {setupError && <p className="text-sm text-destructive">{setupError}</p>}
         {yVal !== null && (
           <FormulaBox>
@@ -157,7 +158,7 @@ export function ElGamalWorkflow() {
           <div><Label className="text-xs">m (message, must be &lt; 10000 for decryption)</Label><Input value={mStr} onChange={e => setMStr(e.target.value)} className="font-mono" /></div>
           <div><Label className="text-xs">r (random nonce)</Label><Input value={rStr} onChange={e => setRStr(e.target.value)} className="font-mono" /></div>
         </div>
-        <Button onClick={doEncrypt} className="w-full">Encrypt: (c₁, c₂) = (g^r, y^r · g^m)</Button>
+        <Button onClick={doEncrypt} className="w-full"><MathText text="Encrypt: (c₁, c₂) = (g^r, y^r · g^m)" /></Button>
         {encResult && (
           <FormulaBox>
             <ComputationRow label="c₁" formula="g^r mod p" value={encResult.c1.toString()} />

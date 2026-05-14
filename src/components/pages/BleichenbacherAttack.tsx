@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
 import { InlineWarning } from '@/components/SecurityBanner';
+import { MathText } from '@/components/MathText';
 import { modPow, modInverse } from '@/lib/ec-math';
 import { isPrime } from '@/lib/crypto-math';
 import { parseBigInt } from '@/lib/parse';
@@ -167,7 +168,7 @@ export function BleichenbacherAttack() {
         <p className="font-semibold">The problem</p>
         <p className="text-muted-foreground">RSA PKCS#1 v1.5 pads the message as 0x00||0x02||random_padding||0x00||message before encrypting. When a server decrypts an incoming ciphertext, it checks whether the result starts with 0x0002. If it doesn't, many implementations return a different error message or timing — this "padding oracle" leaks one bit of information per query.</p>
         <p className="font-semibold mt-3">The insight</p>
-        <p className="text-muted-foreground">RSA is multiplicatively homomorphic: E(m) × s<sup>e</sup> mod n = E(m × s mod n). The attacker picks values of s, computes c' = c × s<sup>e</sup> mod n, and sends c' to the server. A "valid padding" response means m×s mod n falls in the range [2B, 3B) where B = 2<sup>8(k-2)</sup>. Each valid response narrows the possible range of m through interval arithmetic. After ~O(log n) successful oracle hits, the interval collapses to a single value — the exact plaintext.</p>
+        <p className="text-muted-foreground"><MathText text="RSA is multiplicatively homomorphic: E(m) × s^e mod n = E(m × s mod n). The attacker picks values of s, computes c' = c × s^e mod n, and sends c' to the server. A valid padding response means m×s mod n falls in the range [2B, 3B) where B = 2^(8(k-2)). Each valid response narrows the possible range of m through interval arithmetic. After ~O(log n) successful oracle hits, the interval collapses to a single value, the exact plaintext." /></p>
         <details className="mt-3">
           <summary className="cursor-pointer text-xs font-medium text-muted-foreground hover:text-foreground">Attack phases</summary>
           <ol className="mt-2 text-xs text-muted-foreground list-decimal list-inside space-y-1">
@@ -204,8 +205,7 @@ export function BleichenbacherAttack() {
             <ComputationRow label="Padded m" value={paddedM?.toString() || ''} />
             <ComputationRow label="c = padded^e mod n" value={ciphertext.toString()} highlight />
             <p className="text-xs text-muted-foreground mt-2">
-              Attacker computes c' = c × s^e mod n for various s values,
-              sends c' to server, checks if "valid PKCS#1 v1.5 padding" response.
+              <MathText text="Attacker computes c' = c × s^e mod n for various s values, sends c' to server, checks if valid PKCS#1 v1.5 padding response." />
             </p>
           </FormulaBox>
         )}
@@ -249,13 +249,7 @@ export function BleichenbacherAttack() {
             <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 space-y-2">
               <p className="text-sm font-bold text-red-600 dark:text-red-400">How Bleichenbacher Works</p>
               <p className="text-xs text-red-600/80 dark:text-red-400/70">
-                The attacker multiplies the ciphertext by s^e mod n, effectively computing
-                E(s × m mod n). If the oracle says "valid padding," then for some integer r:
-                2B + r·n ≤ s·m ≤ 3B − 1 + r·n. Each valid response constrains m to a union
-                of intervals M; the algorithm iterates Steps 2 (find next s) and 3 (narrow M)
-                until |M| = {'{[a, a]}'}. Step 2c switches to a two-dimensional (r, s) search
-                once M collapses to a single interval — this is what the real attack above runs,
-                not a facade. For 1024-bit RSA the expected query count is ~10⁶.
+                <MathText text={`The attacker multiplies the ciphertext by s^e mod n, effectively computing E(s × m mod n). If the oracle says valid padding, then for some integer r: 2B + r·n ≤ s·m ≤ 3B − 1 + r·n. Each valid response constrains m to a union of intervals M; the algorithm iterates Steps 2 (find next s) and 3 (narrow M) until |M| = {[a, a]}. Step 2c switches to a two-dimensional (r, s) search once M collapses to a single interval, this is what the real attack above runs, not a facade. For 1024-bit RSA the expected query count is ~10^6.`} />
               </p>
               <p className="text-xs text-red-600/80 dark:text-red-400/70">
                 <strong>Fix:</strong> Use RSA-OAEP (PKCS#1 v2.1+). OAEP's all-or-nothing transform

@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
+import { MathText } from '@/components/MathText';
 import { mod, modPow, modInverse, lcm, gcd, isPrime, paillierL } from '@/lib/crypto-math';
 
 
@@ -91,8 +92,8 @@ export function PaillierWorkflow() {
     for (const token of tokens) {
       const c = parseBigInt(token);
       if (c === null) { setHomoError(`Invalid ciphertext: ${token}`); return; }
-      if (c <= 0n || c >= nSq) { setHomoError(`Ciphertext ${c} must be in the range 1..n^2-1`); return; }
-      if (gcd(c, nSq) !== 1n) { setHomoError(`Ciphertext ${c} is not a unit modulo n^2`); return; }
+      if (c <= 0n || c >= nSq) { setHomoError(`Ciphertext ${c} must be in the range 1..n²-1`); return; }
+      if (gcd(c, nSq) !== 1n) { setHomoError(`Ciphertext ${c} is not a unit modulo n²`); return; }
       parts.push(c);
     }
     if (parts.length < 2) { setHomoError('Enter at least two ciphertexts'); return; }
@@ -113,7 +114,7 @@ export function PaillierWorkflow() {
     if (c === null) { setDecError('Enter ciphertext c'); return; }
     const { lambda, mu, n, nSq } = keyResult;
     if (c <= 0n || c >= nSq) { setDecError(`c must be in the range 1..${nSq - 1n}`); return; }
-    if (gcd(c, nSq) !== 1n) { setDecError('c must be a unit modulo n^2'); return; }
+    if (gcd(c, nSq) !== 1n) { setDecError('c must be a unit modulo n²'); return; }
     const cLambda = modPow(c, lambda, nSq);
     const lVal = paillierL(cLambda, n);
     const m = mod(lVal * mu, n);
@@ -157,7 +158,9 @@ export function PaillierWorkflow() {
           <div><Label className="text-xs">q (prime)</Label><Input value={qStr} onChange={e => setQStr(e.target.value)} className="font-mono" /></div>
           <div><Label className="text-xs">g (generator)</Label><Input value={gStr} onChange={e => setGStr(e.target.value)} className="font-mono" /></div>
         </div>
-        <p className="text-xs text-muted-foreground">Tip: g = n+1 always works and simplifies L(g^λ mod n²) = λ. Custom g must satisfy gcd(L(g^λ mod n²), n) = 1.</p>
+        <p className="text-xs text-muted-foreground">
+          <MathText text="Tip: g = n+1 always works and simplifies L(g^λ mod n²) = λ. Custom g must satisfy gcd(L(g^λ mod n²), n) = 1." />
+        </p>
         <Button onClick={doKeygen} className="w-full">Generate Keys</Button>
         {keyError && <p className="text-sm text-destructive">{keyError}</p>}
         {keyResult && (
@@ -183,7 +186,7 @@ export function PaillierWorkflow() {
           <div><Label className="text-xs">m (message integer)</Label><Input value={mStr} onChange={e => setMStr(e.target.value)} className="font-mono" /></div>
           <div><Label className="text-xs">r (random, gcd(r,n)=1)</Label><Input value={rStr} onChange={e => setRStr(e.target.value)} className="font-mono" /></div>
         </div>
-        <Button onClick={doEncrypt} className="w-full">Encrypt: E(m) = g^m · r^n mod n²</Button>
+        <Button onClick={doEncrypt} className="w-full"><MathText text="Encrypt: E(m) = g^m · r^n mod n²" /></Button>
         {encError && <p className="text-sm text-destructive">{encError}</p>}
         {encResult && (
           <FormulaBox>
@@ -216,7 +219,7 @@ export function PaillierWorkflow() {
       <StepCard step={4} title="Decrypt a Ciphertext" status={getStatus('decrypt')}>
         <p className="text-xs text-muted-foreground">Decryption uses the private key (&#955;, &#956;) and the L function L(x) = (x-1)/n. The result is the exact plaintext integer mod n -- no discrete log needed, unlike exponential ElGamal.</p>
         <div><Label className="text-xs">Ciphertext c</Label><Input value={decCStr} onChange={e => setDecCStr(e.target.value)} className="font-mono" /></div>
-        <Button onClick={doDecrypt} className="w-full">Decrypt: m = L(c^λ mod n²) · μ mod n</Button>
+        <Button onClick={doDecrypt} className="w-full"><MathText text="Decrypt: m = L(c^λ mod n²) · μ mod n" /></Button>
         {decError && <p className="text-sm text-destructive">{decError}</p>}
         {decResult && (
           <FormulaBox>

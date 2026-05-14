@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
+import { MathText } from '@/components/MathText';
 import { parseBigInt } from '@/lib/parse';
 
 // Continued fraction expansion of a/b
@@ -107,7 +108,7 @@ export function WienerAttack() {
     }
     setConvList(results);
     setPhase(found ? 'result' : 'attack');
-    if (!found) setError('Attack failed — d may not be small enough. Wiener requires d < n^(1/4) / 3.');
+    if (!found) setError('Attack failed. d may not be small enough for the Wiener fourth-root bound.');
   }
 
   return (
@@ -116,8 +117,7 @@ export function WienerAttack() {
         <CardHeader className="pb-2">
           <CardTitle className="text-lg">Wiener's Attack on RSA (Small d)</CardTitle>
           <CardDescription>
-            When the RSA private exponent d &lt; n^(1/4) / 3, the continued fraction expansion
-            of e/n reveals d as a convergent. This recovers the private key from only (n, e).
+            <MathText text="When the RSA private exponent d < n^(1/4) / 3, the continued fraction expansion of e/n reveals d as a convergent. This recovers the private key from only (n, e)." />
           </CardDescription>
         </CardHeader>
       </Card>
@@ -193,8 +193,7 @@ export function WienerAttack() {
               From k and d, we compute φ(n) = (ed-1)/k, then factor n via the quadratic formula.
             </p>
             <p className="text-xs text-red-600/80 dark:text-red-400/70">
-              <strong>Fix:</strong> Choose d ≥ n^(1/2). Standard RSA key generation (e=65537)
-              naturally produces large d. Never manually choose a small d for "performance."
+              <strong>Fix:</strong> <MathText text={'Choose d ≥ n^(1/2). Standard RSA key generation (e=65537) naturally produces large d. Never manually choose a small d for "performance."'} />
             </p>
           </div>
         </StepCard>

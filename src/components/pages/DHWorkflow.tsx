@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
+import { MathText } from '@/components/MathText';
 import { modPow, isPrime } from '@/lib/crypto-math';
 
 
@@ -110,7 +111,7 @@ export function DHWorkflow() {
           <Label className="text-xs">a (Alice's secret — never transmitted)</Label>
           <Input value={aStr} onChange={e => setAStr(e.target.value)} className="font-mono" />
         </div>
-        <Button onClick={doAlice} className="w-full">Compute A = g^a mod p</Button>
+        <Button onClick={doAlice} className="w-full"><MathText text="Compute A = g^a mod p" /></Button>
         {alicePub !== null && (
           <FormulaBox>
             <ComputationRow label="A" formula={`${gStr}^${aStr} mod ${pStr}`} value={alicePub.toString()} highlight />
@@ -129,7 +130,7 @@ export function DHWorkflow() {
           <Label className="text-xs">b (Bob's secret — never transmitted)</Label>
           <Input value={bStr} onChange={e => setBStr(e.target.value)} className="font-mono" />
         </div>
-        <Button onClick={doBob} className="w-full">Compute B = g^b mod p</Button>
+        <Button onClick={doBob} className="w-full"><MathText text="Compute B = g^b mod p" /></Button>
         {bobPub !== null && (
           <FormulaBox>
             <ComputationRow label="B" formula={`${gStr}^${bStr} mod ${pStr}`} value={bobPub.toString()} highlight />

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FormulaBox, ComputationRow } from '@/components/StepCard';
+import { MathText } from '@/components/MathText';
 import { sdesEncrypt, sdesDecrypt, meetInTheMiddle, type SDESStep, type MITMResult } from '@/lib/sdes';
 
 function toBin(n: number, w: number): string { return n.toString(2).padStart(w, '0'); }
@@ -210,7 +211,7 @@ export function MeetInTheMiddle() {
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Meet-in-the-Middle Attack</CardTitle>
-              <CardDescription>Given known (P, C), recover K1 and K2 in O(2^k) instead of O(2^2k)</CardDescription>
+              <CardDescription><MathText text="Given known (P, C), recover K1 and K2 in O(2^k) instead of O(2^2k)" /></CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
@@ -263,11 +264,8 @@ export function MeetInTheMiddle() {
                   )}
 
                   <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3 text-xs space-y-2">
-                    <p><strong>Why this breaks 2DES:</strong> An attacker with one known plaintext-ciphertext pair needs
-                      only 2×2^k operations (where k = key length) instead of 2^2k. For full DES (k=56), that's
-                      2^57 instead of 2^112 — a factor of 2^55 speedup.</p>
-                    <p>This is why Triple-DES (3DES) was standardized instead: MITM on 3DES still requires 2^112
-                      operations. AES replaced 3DES entirely because 128-bit keys are immune to MITM.</p>
+                    <p><strong>Why this breaks 2DES:</strong> <MathText text="An attacker with one known plaintext-ciphertext pair needs only 2×2^k operations (where k = key length) instead of 2^2k. For full DES (k=56), that's 2^57 instead of 2^112, a factor of 2^55 speedup." /></p>
+                    <p><MathText text="This is why Triple-DES (3DES) was standardized instead: MITM on 3DES still requires 2^112 operations. AES replaced 3DES entirely because 128-bit keys are immune to MITM." /></p>
                   </div>
                 </div>
               )}

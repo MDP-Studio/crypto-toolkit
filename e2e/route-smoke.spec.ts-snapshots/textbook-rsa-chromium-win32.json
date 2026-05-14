@@ -9,11 +9,11 @@
   "buttons": [
     "Textbook RSA Attack",
     "More",
-    "Encrypt: c = m^e mod n"
+    "Encrypt: c = me mod n"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 2342
+  "textLength": 2340
 }

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
 import { InlineWarning } from '@/components/SecurityBanner';
+import { MathText } from '@/components/MathText';
 import { aesGCM, bytesToHexAES, hexToBytesAES } from '@/lib/aes-math';
 
 type Phase = 'setup' | 'encrypt1' | 'encrypt2' | 'attack';
@@ -149,12 +150,11 @@ export function GCMNonceReuse() {
                 If one plaintext is known (or partially known), the other is directly recovered.
               </p>
               <p className="text-xs text-red-600/80 dark:text-red-400/70">
-                Worse: the GHASH authentication key H = AES(key, 0^128) is also leaked,
-                enabling full tag forgery on arbitrary messages. This breaks both confidentiality AND integrity.
+                <MathText text="Worse: the GHASH authentication key H = AES(key, 0^128) is also leaked, enabling full tag forgery on arbitrary messages. This breaks both confidentiality AND integrity." />
               </p>
               <p className="text-xs text-red-600/80 dark:text-red-400/70">
                 <strong>Fix:</strong> Never reuse a nonce. Use a random 96-bit nonce per message
-                (collision probability negligible below 2^32 messages) or use a nonce-misuse-resistant
+                {' '}<MathText text="(collision probability negligible below 2^32 messages)" /> or use a nonce-misuse-resistant
                 scheme like AES-GCM-SIV.
               </p>
             </div>

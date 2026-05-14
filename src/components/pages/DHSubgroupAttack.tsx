@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
 import { InlineWarning } from '@/components/SecurityBanner';
+import { MathText } from '@/components/MathText';
 import { modPow } from '@/lib/ec-math';
 import { isPrime } from '@/lib/crypto-math';
 import { parseBigInt } from '@/lib/parse';
@@ -141,8 +142,7 @@ export function DHSubgroupAttack() {
 
       <StepCard step={2} title="Attack: Send Malicious Generators" status={getStatus('attack')}>
         <InlineWarning>
-          The attacker replaces g with elements of small order. The victim computes g_malicious^secret
-          without validating the generator — leaking bits of the secret.
+          <MathText text="The attacker replaces g with elements of small order. The victim computes g_malicious^secret without validating the generator, leaking bits of the secret." />
         </InlineWarning>
         <Button onClick={doAttack} className="w-full">Run Small Subgroup Attacks</Button>
       </StepCard>
@@ -168,9 +168,7 @@ export function DHSubgroupAttack() {
                 covers the full group order, the entire private key is recovered.
               </p>
               <p className="text-xs text-red-600/80 dark:text-red-400/70">
-                <strong>Fix:</strong> Always validate that received DH public keys are in the correct
-                prime-order subgroup: check 1 &lt; key &lt; p and key^q ≡ 1 mod p (where q is the
-                subgroup order). Use safe primes (p = 2q + 1) or elliptic curves where cofactor = 1.
+                <strong>Fix:</strong> <MathText text="Always validate that received DH public keys are in the correct prime-order subgroup: check 1 < key < p and key^q ≡ 1 mod p (where q is the subgroup order). Use safe primes (p = 2q + 1) or elliptic curves where cofactor = 1." />
               </p>
             </div>
           </div>

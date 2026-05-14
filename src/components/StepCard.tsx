@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { MathText } from '@/components/MathText';
 import { cn } from '@/lib/utils';
 
 interface StepCardProps {
@@ -30,7 +31,9 @@ export function StepCard({ step, title, status, children }: StepCardProps) {
               </svg>
             ) : step}
           </div>
-          <CardTitle className="text-sm md:text-base flex-1 min-w-0">{title}</CardTitle>
+          <CardTitle className="text-sm md:text-base flex-1 min-w-0">
+            <MathText text={title} />
+          </CardTitle>
           <Badge variant={status === 'complete' ? 'default' : status === 'active' ? 'outline' : 'secondary'} className="text-[10px] md:text-xs shrink-0">
             {status === 'complete' ? 'Done' : status === 'active' ? 'Active' : 'Pending'}
           </Badge>
@@ -58,10 +61,18 @@ export function ComputationRow({ label, formula, value, highlight }: Computation
       'flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-2 text-sm font-mono py-1 overflow-hidden',
       highlight && 'bg-primary/5 -mx-2 px-2 rounded'
     )}>
-      <span className="text-muted-foreground shrink-0 text-xs sm:text-sm sm:min-w-[100px]">{label}:</span>
+      <span className="text-muted-foreground shrink-0 text-xs sm:text-sm sm:min-w-[100px]">
+        <MathText text={label} />:
+      </span>
       <div className="flex items-start gap-1 min-w-0 flex-wrap">
-        {formula && <span className="text-muted-foreground text-xs sm:text-sm">{formula} = </span>}
-        <span className="break-all font-semibold text-xs sm:text-sm">{value}</span>
+        {formula && (
+          <span className="text-muted-foreground text-xs sm:text-sm">
+            <MathText text={formula} /> =
+          </span>
+        )}
+        <span className="break-all font-semibold text-xs sm:text-sm">
+          <MathText text={value} />
+        </span>
       </div>
     </div>
   );

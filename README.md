@@ -70,7 +70,7 @@ The live app includes an **Assurance Matrix** page at `#/assurance`. It lists ev
 
 ## Test Vectors & Coverage
 
-118 tests across 7 Vitest suites, plus Playwright route smoke snapshots for every learning module, the Challenge Hub, and the assurance page. Key vector sources:
+122 tests across 8 Vitest suites, plus Playwright route smoke snapshots for every learning module, the Challenge Hub, and the assurance page. Key vector sources:
 
 | Module | Source |
 |--------|--------|
@@ -93,7 +93,7 @@ Coverage reporting is available with `npm run coverage` using the v8 provider an
 - **React 19** + **Vite 8** — Code-split with React.lazy (main bundle 220KB, 67KB gzipped)
 - **TypeScript 5.9** — Strict mode, noUnusedLocals, verbatimModuleSyntax
 - **Tailwind CSS v4** + **shadcn/ui** — Dark/light theme, responsive 320px–1280px+
-- **Vitest** - 118 tests with NIST/RFC/AWS vector attribution and derived challenge-answer checks
+- **Vitest** - 122 tests with NIST/RFC/AWS vector attribution and derived challenge-answer checks
 - **Playwright** - route smoke snapshots across the app
 - **BigInt** — Arbitrary precision, no external math libraries
 - **Web Crypto API** — CSPRNG via `crypto.getRandomValues()`, `crypto.subtle` for ECDSA/AES/HMAC comparison
@@ -104,7 +104,7 @@ Coverage reporting is available with `npm run coverage` using the v8 provider an
 npm install
 npm run dev      # dev server at localhost:5173
 npm run build    # production build
-npm test         # 118 Vitest tests
+npm test         # 122 Vitest tests
 npm run coverage # Vitest v8 coverage report
 npm run assurance # regenerate docs/assurance-matrix.md
 npm run e2e:routes # Playwright route smoke snapshots

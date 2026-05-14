@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { MathText } from '@/components/MathText';
 import {
   mod,
   modPow,
@@ -29,8 +30,8 @@ function CalcCard({ title, description, children }: CalcCardProps) {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="text-base">{title}</CardTitle>
-        <CardDescription className="text-xs">{description}</CardDescription>
+        <CardTitle className="text-base"><MathText text={title} /></CardTitle>
+        <CardDescription className="text-xs"><MathText text={description} /></CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">{children}</CardContent>
     </Card>
@@ -101,9 +102,9 @@ export function ModularArithmetic() {
           <summary className="cursor-pointer text-xs font-medium text-muted-foreground hover:text-foreground">Where each operation appears in cryptography</summary>
           <ul className="mt-2 text-xs text-muted-foreground list-disc list-inside space-y-1">
             <li><strong>Modular inverse</strong> — RSA private key d = e⁻¹ mod φ(n); EC point addition uses slope = Δy × (Δx)⁻¹ mod p</li>
-            <li><strong>Modular exponentiation</strong> — RSA encrypt/decrypt (m^e mod n), Diffie-Hellman (g^a mod p), primality testing</li>
+            <li><strong>Modular exponentiation</strong> — <MathText text="RSA encrypt/decrypt (m^e mod n), Diffie-Hellman (g^a mod p), primality testing" /></li>
             <li><strong>GCD / Extended GCD</strong> — key generation validation (gcd(e, φ(n)) = 1), Bézout coefficients for modular inverse</li>
-            <li><strong>Euler's totient</strong> — RSA key generation: d = e⁻¹ mod φ(n); Euler's theorem: a^φ(n) ≡ 1 (mod n)</li>
+            <li><strong>Euler's totient</strong> — <MathText text="RSA key generation: d = e⁻¹ mod φ(n); Euler's theorem: a^φ(n) ≡ 1 (mod n)" /></li>
             <li><strong>Square root mod p</strong> — recovering EC y-coordinate from compressed point (x, parity bit)</li>
             <li><strong>Legendre symbol</strong> — checking if a point exists on an EC curve (is y² a quadratic residue?)</li>
           </ul>

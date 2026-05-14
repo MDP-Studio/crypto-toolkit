@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
 import { InlineWarning } from '@/components/SecurityBanner';
+import { MathText } from '@/components/MathText';
 import { mod, modPow, modInverse } from '@/lib/ec-math';
 import { gcd } from '@/lib/crypto-math';
 import { parseBigInt } from '@/lib/parse';
@@ -117,7 +118,7 @@ export function CRTFaultAttack() {
         <p className="font-semibold">The problem</p>
         <p className="text-muted-foreground">RSA implementations often use CRT optimization for faster signing (4x speedup). A single computational fault during CRT signing leaks the entire private key.</p>
         <p className="font-semibold mt-3">The insight</p>
-        <p className="text-muted-foreground">RSA-CRT computes s_p = m^d mod p and s_q = m^d mod q separately, then combines via CRT. If s_p has a fault but s_q is correct, the faulty signature is wrong mod p but correct mod q. Computing gcd(s^e - m, n) yields q, factoring n instantly with a single signature and a single GCD.</p>
+        <p className="text-muted-foreground"><MathText text="RSA-CRT computes s_p = m^d mod p and s_q = m^d mod q separately, then combines via CRT. If s_p has a fault but s_q is correct, the faulty signature is wrong mod p but correct mod q. Computing gcd(s^e - m, n) yields q, factoring n instantly with a single signature and a single GCD." /></p>
       </div>
 
       <StepCard step={1} title="Setup: RSA-CRT Key" status={getStatus('setup')}>
@@ -143,7 +144,7 @@ export function CRTFaultAttack() {
             <ComputationRow label="Correct sig" value={correctSig.toString()} highlight />
           </FormulaBox>
         )}
-        <InlineWarning>Now we inject a hardware fault: flip a bit during the computation of sp = m^dp mod p.</InlineWarning>
+        <InlineWarning><MathText text="Now we inject a hardware fault: flip a bit during the computation of sp = m^dp mod p." /></InlineWarning>
         <Button onClick={doFault} className="w-full">Inject Fault (Flip Bit in sp)</Button>
       </StepCard>
 
@@ -178,12 +179,10 @@ export function CRTFaultAttack() {
             <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 space-y-2">
               <p className="text-sm font-bold text-red-600 dark:text-red-400">Boneh-DeMillo-Lipton (1997)</p>
               <p className="text-xs text-red-600/80 dark:text-red-400/70">
-                CRT-RSA computes sp = m^dp mod p and sq = m^dq mod q separately, then combines.
-                A fault in sp means the result is wrong mod p but correct mod q.
-                gcd(sig_faulty^e - m, n) reveals q — one signature, one GCD, complete factorization.
+                <MathText text="CRT-RSA computes sp = m^dp mod p and sq = m^dq mod q separately, then combines. A fault in sp means the result is wrong mod p but correct mod q. gcd(sig_faulty^e - m, n) reveals q, one signature, one GCD, complete factorization." />
               </p>
               <p className="text-xs text-red-600/80 dark:text-red-400/70">
-                <strong>Fix:</strong> Verify CRT output before releasing: check sig^e ≡ m (mod n).
+                <strong>Fix:</strong> <MathText text="Verify CRT output before releasing: check sig^e ≡ m (mod n)." />
                 Hardware countermeasures include redundant computation and fault detection circuits.
               </p>
             </div>

@@ -225,7 +225,7 @@
     "category": "Workflows",
     "evidenceLevel": "moderate",
     "specSections": ["Lagrange interpolation over finite fields"],
-    "vectorSources": ["Known polynomial f(x)=42+3x+7x^2 mod 257"],
+    "vectorSources": ["Known polynomial f(x)=42+3x+7x² mod 257"],
     "testIds": ["crypto.test.ts: Shamir Secret Sharing"],
     "limitations": ["Small field demo", "No authenticated shares", "No production randomness policy"]
   },

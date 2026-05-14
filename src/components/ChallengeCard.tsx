@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2, Flag, Lightbulb } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { MathText } from '@/components/MathText';
 import { readSolvedChallengeIds, writeSolvedChallengeIds } from '@/lib/challenge-progress';
 
 function normalizeAnswer(value: string) {
@@ -42,7 +43,7 @@ function ChallengeVisualPanel({ visual }: { visual: ChallengeVisual }) {
 
       {visual.kind === 'formula' && visual.formula && (
         <div className="mt-2 rounded-md bg-muted/60 px-3 py-2 font-mono text-sm text-foreground">
-          {visual.formula}
+          <MathText text={visual.formula} />
         </div>
       )}
 
@@ -51,7 +52,7 @@ function ChallengeVisualPanel({ visual }: { visual: ChallengeVisual }) {
           {visual.items.map((item, index) => (
             <div key={item} className="flex items-center gap-2">
               <span className="rounded-md border border-primary/20 bg-primary/10 px-3 py-2 font-mono text-xs text-foreground">
-                {item}
+                <MathText text={item} />
               </span>
               {index < visual.items!.length - 1 && (
                 <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground max-sm:rotate-90" />
@@ -65,8 +66,8 @@ function ChallengeVisualPanel({ visual }: { visual: ChallengeVisual }) {
         <div className="mt-2 divide-y divide-border/60 overflow-hidden rounded-md border border-border/60 font-mono text-xs">
           {visual.rows.map(row => (
             <div key={row.label} className="grid grid-cols-[7rem_1fr] gap-2 bg-muted/40 px-3 py-2">
-              <span className="text-muted-foreground">{row.label}</span>
-              <span className="text-foreground">{row.value}</span>
+              <span className="text-muted-foreground"><MathText text={row.label} /></span>
+              <span className="text-foreground"><MathText text={row.value} /></span>
             </div>
           ))}
         </div>
@@ -155,7 +156,9 @@ export function ChallengeCard({
 
       <div className="rounded-lg border border-primary/20 bg-background/75 p-4">
         <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-primary">Question</p>
-        <p className="mt-2 text-base font-medium leading-relaxed text-foreground md:text-lg">{prompt}</p>
+        <p className="mt-2 text-base font-medium leading-relaxed text-foreground md:text-lg">
+          <MathText text={prompt} />
+        </p>
         {answerFormat && (
           <p className="mt-3 text-xs text-muted-foreground">
             Answer format: <span className="font-medium text-foreground">{answerFormat}</span>
@@ -171,7 +174,7 @@ export function ChallengeCard({
             <Lightbulb className="h-3.5 w-3.5 text-primary" />
             Hint
           </summary>
-          <p className="mt-2 leading-relaxed text-muted-foreground">{hint}</p>
+          <p className="mt-2 leading-relaxed text-muted-foreground"><MathText text={hint} /></p>
         </details>
       )}
 

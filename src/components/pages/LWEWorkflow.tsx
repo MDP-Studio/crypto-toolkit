@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
+import { MathText } from '@/components/MathText';
 import { MatrixDisplay, VectorDisplay } from '@/components/StateMatrix';
 import {
   generateLWEKeys,
@@ -207,7 +208,7 @@ export function LWEWorkflow() {
                 For n={nStr}, q={qStr}, error ∈ {'{-1,0,1}'}, max accumulated noise ≈ n = {nStr}.
                 Decryption succeeds when noise &lt; q/4 = {Math.floor(q / 4)}.
                 Failure probability increases with n/q ratio — ML-KEM uses q=3329, n=256 with
-                carefully tuned noise distribution to achieve 2^(-138) decryption failure rate.
+                carefully tuned noise distribution to achieve <MathText text="2^(-138)" /> decryption failure rate.
               </p>
             </div>
           </FormulaBox>
@@ -234,8 +235,8 @@ export function LWEWorkflow() {
                       <tr className="border-b">
                         <th className="text-left py-1 px-2">n</th>
                         <th className="text-left py-1 px-2">q</th>
-                        <th className="text-left py-1 px-2">Search space (q^n)</th>
-                        <th className="text-left py-1 px-2">Time @ 10^9/sec</th>
+                        <th className="text-left py-1 px-2">Search space (<MathText text="q^n" />)</th>
+                        <th className="text-left py-1 px-2">Time @ <MathText text="10^9/sec" /></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -257,8 +258,8 @@ export function LWEWorkflow() {
                           <tr key={`${nn}-${qq}`} className={`border-b ${nn === n && qq === q ? 'bg-primary/10' : ''}`}>
                             <td className="py-1 px-2">{nn}</td>
                             <td className="py-1 px-2">{qq}</td>
-                            <td className="py-1 px-2">10^{logSpace.toFixed(1)}</td>
-                            <td className="py-1 px-2">{time}</td>
+                            <td className="py-1 px-2"><MathText text={`10^${logSpace.toFixed(1)}`} /></td>
+                            <td className="py-1 px-2"><MathText text={time} /></td>
                           </tr>
                         );
                       })}
@@ -268,7 +269,7 @@ export function LWEWorkflow() {
 
                 <p className="text-xs text-muted-foreground">
                   ML-KEM (CRYSTALS-Kyber) uses n=256, q=3329. Brute-forcing the secret requires
-                  testing ~10^{(256 * Math.log10(3329)).toFixed(0)} vectors — far beyond any computer,
+                  testing ~<MathText text={`10^${(256 * Math.log10(3329)).toFixed(0)}`} /> vectors — far beyond any computer,
                   classical or quantum. This is why lattice problems are post-quantum secure.
                 </p>
               </div>

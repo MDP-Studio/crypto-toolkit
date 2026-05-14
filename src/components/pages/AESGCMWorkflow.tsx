@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
+import { MathText } from '@/components/MathText';
 import { WebCryptoVerify } from '@/components/WebCryptoVerify';
 import { aesGCM, bytesToHexAES, hexToBytesAES, type AESGCMResult } from '@/lib/aes-math';
 import { webCryptoAESGCM, bytesToHex } from '@/lib/web-crypto';
@@ -103,7 +104,7 @@ export function AESGCMWorkflow() {
         {result && (
           <div className="space-y-3">
             <p className="text-xs text-muted-foreground">
-              GHASH computes a MAC by multiplying ciphertext blocks in GF(2^128). H = AES_K(0^128) is the hash key.
+              <MathText text="GHASH computes a MAC by multiplying ciphertext blocks in GF(2^128). H = AES_K(0^128) is the hash key." />
             </p>
             <FormulaBox>
               <ComputationRow label="H = AES_K(0)" value={bytesToHexAES(result.H)} highlight />
@@ -168,8 +169,8 @@ export function AESGCMWorkflow() {
         <p className="font-semibold">Limitations & real-world context</p>
         <ul className="list-disc list-inside text-muted-foreground space-y-1">
           <li>This implementation uses BigInt arithmetic for educational clarity. Production systems use constant-time native implementations (like Web Crypto) to prevent timing side channels.</li>
-          <li>GCM nonces must never repeat with the same key. For random 96-bit nonces, the birthday bound limits safe usage to about 2^32 messages per key.</li>
-          <li>GCM's authentication strength degrades with long messages. NIST SP 800-38D recommends limiting plaintext to 2^39 - 256 bits per invocation.</li>
+          <li><MathText text="GCM nonces must never repeat with the same key. For random 96-bit nonces, the birthday bound limits safe usage to about 2^32 messages per key." /></li>
+          <li><MathText text="GCM's authentication strength degrades with long messages. NIST SP 800-38D recommends limiting plaintext to 2^39 - 256 bits per invocation." /></li>
           <li>AES-GCM-SIV (RFC 8452) is a nonce-misuse-resistant alternative -- it remains secure if a nonce is accidentally reused, at the cost of slightly more computation.</li>
         </ul>
       </div>

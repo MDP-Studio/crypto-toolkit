@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { StepCard, FormulaBox, ComputationRow } from '@/components/StepCard';
+import { MathText } from '@/components/MathText';
 import { lll2D, type LLLResult, type Vec2 } from '@/lib/lll-math';
 
 const PRESETS: { name: string; b1: Vec2; b2: Vec2 }[] = [
@@ -196,7 +197,7 @@ export function LLLVisualization() {
             </FormulaBox>
             <p className="text-xs text-muted-foreground mt-2">
               Orthogonality defect = ||b1||·||b2|| / |det(B)|. A defect of 1.0 means perfectly orthogonal.
-              LLL guarantees a defect ≤ 2^((n-1)/2) = √2 for n=2.
+              {' '}<MathText text="LLL guarantees a defect ≤ 2^((n-1)/2) = √2 for n=2." />
             </p>
           </StepCard>
 

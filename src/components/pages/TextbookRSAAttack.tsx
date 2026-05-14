@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
 import { InlineWarning } from '@/components/SecurityBanner';
+import { MathText } from '@/components/MathText';
 import { mod, modPow } from '@/lib/ec-math';
 import { rsaEncrypt, rsaDecrypt } from '@/lib/crypto-math';
 
@@ -89,8 +90,7 @@ export function TextbookRSAAttack() {
         <CardHeader className="pb-2">
           <CardTitle className="text-lg">Textbook RSA Malleability Attack</CardTitle>
           <CardDescription>
-            Raw RSA (c = m^e mod n) is malleable: an attacker can transform a ciphertext to encrypt
-            a related message without knowing the key. This is why RSA-OAEP padding is mandatory.
+            <MathText text="Raw RSA (c = m^e mod n) is malleable: an attacker can transform a ciphertext to encrypt a related message without knowing the key. This is why RSA-OAEP padding is mandatory." />
           </CardDescription>
         </CardHeader>
       </Card>
@@ -112,7 +112,7 @@ export function TextbookRSAAttack() {
           <div><Label className="text-xs">d (private exponent — server has this)</Label><Input value={dStr} onChange={e => setDStr(e.target.value)} className="font-mono" /></div>
           <div><Label className="text-xs">m (secret message)</Label><Input value={mStr} onChange={e => setMStr(e.target.value)} className="font-mono" /></div>
         </div>
-        <Button onClick={doEncrypt} className="w-full">Encrypt: c = m^e mod n</Button>
+        <Button onClick={doEncrypt} className="w-full"><MathText text="Encrypt: c = m^e mod n" /></Button>
         {error && <p className="text-sm text-destructive">{error}</p>}
       </StepCard>
 
@@ -156,9 +156,7 @@ export function TextbookRSAAttack() {
             <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 space-y-2">
               <p className="text-sm font-bold text-red-600 dark:text-red-400">Why This Works</p>
               <p className="text-xs text-red-600/80 dark:text-red-400/70">
-                Textbook RSA is multiplicatively homomorphic: E(a) * E(b) mod n = E(a*b).
-                The attacker multiplied the ciphertext by E(2) = 2^e mod n, causing the server
-                to decrypt 2m instead of m. Dividing by 2 reveals the original message.
+                <MathText text="Textbook RSA is multiplicatively homomorphic: E(a) * E(b) mod n = E(a*b). The attacker multiplied the ciphertext by E(2) = 2^e mod n, causing the server to decrypt 2m instead of m. Dividing by 2 reveals the original message." />
               </p>
               <p className="text-xs text-red-600/80 dark:text-red-400/70">
                 <strong>Fix:</strong> RSA-OAEP adds randomized padding before encryption.

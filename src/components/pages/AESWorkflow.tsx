@@ -96,7 +96,7 @@ export function AESWorkflow() {
           <CardTitle className="text-lg">AES-128 Single Round Visualization</CardTitle>
           <CardDescription>
             Step-by-step breakdown of one AES round: SubBytes, ShiftRows, MixColumns, AddRoundKey.
-            Shows the 4x4 byte state matrix transformations with GF(2^8) arithmetic.
+            Shows the 4x4 byte state matrix transformations with GF(2⁸) arithmetic.
           </CardDescription>
         </CardHeader>
       </Card>

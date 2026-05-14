@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { StepCard, ComputationRow, FormulaBox } from '@/components/StepCard';
+import { MathText } from '@/components/MathText';
 import { SHA256 } from '@/lib/sha256';
 import { randBytes } from '@/lib/num-util';
 import { birthdayExpectedAttempts, birthdayOutputSpace, truncateHashBits } from '@/lib/hash-birthday';
@@ -82,8 +83,7 @@ export function BirthdayCollision() {
         <CardHeader className="pb-2">
           <CardTitle className="text-lg">Birthday Collision Finder</CardTitle>
           <CardDescription>
-            Find two messages with the same truncated SHA-256 hash. By the birthday paradox,
-            a collision in n-bit output requires only ~√(2^n) ≈ 2^(n/2) attempts.
+            <MathText text="Find two messages with the same truncated SHA-256 hash. By the birthday paradox, a collision in n-bit output requires only ~√(2^n) ≈ 2^(n/2) attempts." />
           </CardDescription>
         </CardHeader>
       </Card>
@@ -102,8 +102,8 @@ export function BirthdayCollision() {
           <Input value={truncBits} onChange={e => setTruncBits(e.target.value)} className="font-mono w-24" />
         </div>
         <div className="text-xs text-muted-foreground space-y-1">
-          <p>Output space: 2^{truncBits} = {outputSpace.toLocaleString()} values</p>
-          <p>Expected collisions after: ~2^{Math.ceil(displayBits / 2)} = ~{expectedDisplay.toLocaleString()} hashes</p>
+          <p>Output space: <MathText text={`2^${truncBits}`} /> = {outputSpace.toLocaleString()} values</p>
+          <p>Expected collisions after: ~<MathText text={`2^${Math.ceil(displayBits / 2)}`} /> = ~{expectedDisplay.toLocaleString()} hashes</p>
         </div>
         <Button onClick={doFind} disabled={computing} className="w-full">
           {computing ? 'Searching for collision...' : 'Find Birthday Collision'}
@@ -134,7 +134,7 @@ export function BirthdayCollision() {
                   <th className="text-left py-1 px-2">Hash bits</th>
                   <th className="text-left py-1 px-2">Output space</th>
                   <th className="text-left py-1 px-2">Expected attempts</th>
-                  <th className="text-left py-1 px-2">Time @ 10^9/sec</th>
+                  <th className="text-left py-1 px-2">Time @ <MathText text="10^9/sec" /></th>
                 </tr>
               </thead>
               <tbody>
@@ -149,9 +149,9 @@ export function BirthdayCollision() {
                   return (
                     <tr key={b} className={`border-b ${b === parseInt(truncBits) ? 'bg-primary/10' : ''}`}>
                       <td className="py-1 px-2">{b}</td>
-                      <td className="py-1 px-2">{space}</td>
-                      <td className="py-1 px-2">{attempts}</td>
-                      <td className="py-1 px-2">{time}</td>
+                      <td className="py-1 px-2"><MathText text={space} /></td>
+                      <td className="py-1 px-2"><MathText text={attempts} /></td>
+                      <td className="py-1 px-2"><MathText text={time} /></td>
                     </tr>
                   );
                 })}
@@ -160,8 +160,7 @@ export function BirthdayCollision() {
           </div>
 
           <p className="text-xs text-muted-foreground">
-            SHA-256 (256-bit) requires ~2^128 attempts for a collision. At 10^9 hashes/sec,
-            that's ~10^8 years. This is why 256-bit hashes are considered collision-resistant.
+            <MathText text="SHA-256 (256-bit) requires ~2^128 attempts for a collision. At 10^9 hashes/sec, that's ~10^8 years. This is why 256-bit hashes are considered collision-resistant." />
           </p>
         </StepCard>
       )}

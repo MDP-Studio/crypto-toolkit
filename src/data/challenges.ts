@@ -364,11 +364,11 @@ export const CHALLENGES: Challenge[] = [
     points: 25,
     answerFormat: 'Power or decimal',
     prompt: 'For a 40-bit truncated hash, about how many hashes are needed before a birthday collision is expected?',
-    placeholder: '2^20',
+    placeholder: '2²⁰',
     hint: 'Collision search takes the square root of the output space, not the full output space.',
     moduleHref: '#/birthday',
     moduleLabel: 'Open Birthday Collision',
-    acceptedAnswers: ['2^20', '1048576', 'about 1048576', '~1048576'],
+    acceptedAnswers: ['2^20', '2²⁰', '1048576', 'about 1048576', '~1048576'],
   },
   {
     id: 'crt-fault-custom-factor',

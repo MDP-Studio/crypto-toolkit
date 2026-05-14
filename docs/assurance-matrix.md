@@ -50,7 +50,7 @@ Evidence level means the current assurance quality for the educational module, n
 | [ECDSA Signing Workflow](../#/ecdsa) | Workflows | moderate | FIPS 186 ECDSA equations | Toy curve generator-order checks<br>Point multiplication and signing-flow invariants | crypto.test.ts: EC Math | Toy curve and small-order examples<br>No RFC 6979 deterministic nonce implementation<br>Not constant-time |
 | [ElGamal Cryptosystem](../#/elgamal) | Workflows | limited | ElGamal multiplicative homomorphism over finite groups | Route smoke and visual workflow invariants | route-smoke.spec.ts: elgamal | Small demo groups<br>No safe-prime or subgroup validation beyond UI explanation<br>Limited direct unit-vector coverage |
 | [Paillier Cryptosystem](../#/paillier) | Workflows | moderate | Paillier additive homomorphism<br>L function decryption relation | Small-key homomorphic addition round trip | attacks.test.ts: Paillier homomorphic addition | Toy primes and randomness<br>No semantic-security parameter hardening<br>Educational arithmetic only |
-| [Shamir Secret Sharing](../#/shamir) | Workflows | moderate | Lagrange interpolation over finite fields | Known polynomial f(x)=42+3x+7x^2 mod 257 | crypto.test.ts: Shamir Secret Sharing | Small field demo<br>No authenticated shares<br>No production randomness policy |
+| [Shamir Secret Sharing](../#/shamir) | Workflows | moderate | Lagrange interpolation over finite fields | Known polynomial f(x)=42+3x+7x² mod 257 | crypto.test.ts: Shamir Secret Sharing | Small field demo<br>No authenticated shares<br>No production randomness policy |
 
 ## Maintenance Rules
 
