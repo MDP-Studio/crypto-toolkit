@@ -1,7 +1,8 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Card, CardContent } from '@/components/ui/card';
-import { Menu } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Menu, Search, X } from 'lucide-react';
 import { Sidebar } from '@/components/Sidebar';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { SecurityBanner } from '@/components/SecurityBanner';
@@ -9,6 +10,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { AssuranceSummary } from '@/components/AssuranceSummary';
 import { CryptoLogo } from '@/components/CryptoLogo';
 import { Home } from '@/components/pages/Home';
+import { NAV_ITEMS } from '@/data/nav-items';
 
 // Lazy-load all page components for code splitting
 const ECCalculator = lazy(() => import('@/components/pages/ECCalculator').then(m => ({ default: m.ECCalculator })));
@@ -246,6 +248,102 @@ function ProjectFeedback({ page }: { page: Page }) {
   );
 }
 
+function HeaderModuleSearch({ onNavigate }: { onNavigate: (page: Page) => void }) {
+  const [query, setQuery] = useState('');
+  const normalizedQuery = query.trim().toLowerCase();
+  const results = normalizedQuery
+    ? NAV_ITEMS.filter(item => {
+      const searchText = [
+        item.label,
+        item.category,
+        item.id,
+        PAGE_TITLES[item.id],
+      ].join(' ').toLowerCase();
+      return searchText.includes(normalizedQuery);
+    }).slice(0, 8)
+    : [];
+
+  const navigateTo = (next: Page) => {
+    onNavigate(next);
+    setQuery('');
+  };
+
+  return (
+    <div className="relative w-full md:max-w-xl md:flex-1">
+      <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/65" />
+      <Input
+        type="text"
+        value={query}
+        onChange={event => setQuery(event.target.value)}
+        onKeyDown={event => {
+          if (event.key === 'Enter' && results[0]) {
+            event.preventDefault();
+            navigateTo(results[0].id);
+          }
+          if (event.key === 'Escape') {
+            setQuery('');
+          }
+        }}
+        placeholder="Search modules..."
+        className="h-9 bg-background/70 pl-9 pr-9 text-sm"
+        aria-label="Search modules"
+        aria-expanded={normalizedQuery.length > 0}
+      />
+      {query && (
+        <button
+          type="button"
+          onClick={() => setQuery('')}
+          className="absolute right-2 top-1/2 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          aria-label="Clear module search"
+        >
+          <X className="h-3.5 w-3.5" />
+        </button>
+      )}
+      {normalizedQuery && (
+        <div className="absolute left-0 right-0 top-[calc(100%+0.45rem)] z-30 max-h-80 overflow-y-auto rounded-lg border border-border bg-card p-1 shadow-xl">
+          {results.length > 0 ? (
+            results.map(item => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => navigateTo(item.id)}
+                  className="flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-left transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
+                >
+                  <Icon className="h-4 w-4 shrink-0 text-primary" strokeWidth={2} />
+                  <span className="min-w-0">
+                    <span className="block truncate text-sm font-medium text-foreground">{item.label}</span>
+                    <span className="block truncate text-[11px] text-muted-foreground">{item.category}</span>
+                  </span>
+                </button>
+              );
+            })
+          ) : (
+            <div className="px-3 py-2 text-sm text-muted-foreground">No modules found.</div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function HeaderActions({ open, onToggle }: { open: boolean; onToggle: () => void }) {
+  return (
+    <div className="flex items-center gap-1">
+      <ThemeToggle />
+      <button
+        onClick={onToggle}
+        className="p-1.5 rounded-md hover:bg-muted text-muted-foreground shrink-0"
+        aria-label="Toggle sidebar"
+        aria-expanded={open}
+      >
+        <Menu className="h-5 w-5" strokeWidth={2} />
+      </button>
+    </div>
+  );
+}
+
 export default function App() {
   const [page, setPageState] = useState<Page>(() => pageFromHash());
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -284,25 +382,26 @@ export default function App() {
       </a>
       <div className="flex h-screen overflow-hidden bg-background">
         <main id="main-content" tabIndex={-1} className="flex-1 overflow-auto min-w-0">
-          <header className="sticky top-0 z-10 flex items-center justify-between border-b bg-background/80 backdrop-blur-sm px-4 md:px-6 py-3 gap-2">
-            <button
-              onClick={() => setPage('home')}
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity min-w-0"
-            >
-              <CryptoLogo className="h-6 w-6" />
-              <span className="text-sm md:text-base font-semibold tracking-tight truncate">
-                {page === 'home' ? 'CryptoToolkit' : PAGE_TITLES[page]}
-              </span>
-            </button>
-            <div className="flex items-center gap-1">
-              <ThemeToggle />
-              <button
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="p-1.5 rounded-md hover:bg-muted text-muted-foreground shrink-0"
-                aria-label="Toggle sidebar"
-              >
-                <Menu className="h-5 w-5" strokeWidth={2} />
-              </button>
+          <header className="sticky top-0 z-20 border-b bg-background/85 px-4 py-3 backdrop-blur-sm md:px-6">
+            <div className="grid gap-2 md:grid-cols-[minmax(0,16rem)_minmax(16rem,36rem)_auto] md:items-center md:gap-3">
+              <div className="flex min-w-0 items-center justify-between gap-2">
+                <button
+                  onClick={() => setPage('home')}
+                  className="flex min-w-0 items-center gap-2 transition-opacity hover:opacity-80"
+                >
+                  <CryptoLogo className="h-6 w-6 shrink-0" />
+                  <span className="truncate text-sm font-semibold tracking-tight md:text-base">
+                    {page === 'home' ? 'CryptoToolkit' : PAGE_TITLES[page]}
+                  </span>
+                </button>
+                <div className="md:hidden">
+                  <HeaderActions open={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
+                </div>
+              </div>
+              <HeaderModuleSearch onNavigate={setPage} />
+              <div className="hidden justify-self-end md:block">
+                <HeaderActions open={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
+              </div>
             </div>
           </header>
           <div className="p-4 md:p-6 max-w-6xl mx-auto">

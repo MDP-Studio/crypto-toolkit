@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import type { Page } from '@/App';
 import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import {
   Atom,
   Binary,
@@ -11,10 +10,8 @@ import {
   Flag,
   Link2,
   LockKeyhole,
-  Search,
   ShieldAlert,
   Wrench,
-  X,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -30,7 +27,7 @@ interface Category {
   pages: { id: Page; label: string; desc: string }[];
 }
 
-const CATEGORY_PREVIEW_LIMIT = 5;
+const CATEGORY_PREVIEW_LIMIT = 4;
 
 const CATEGORIES: Category[] = [
   {
@@ -139,26 +136,10 @@ const CATEGORIES: Category[] = [
 
 export function Home({ onNavigate }: HomeProps) {
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(() => new Set());
-  const [searchTerm, setSearchTerm] = useState('');
   const totalLearningModules = CATEGORIES.reduce(
     (sum, cat) => sum + cat.pages.filter(page => page.id !== 'assurance' && page.id !== 'challenges').length,
     0
   );
-  const searchQuery = searchTerm.trim().toLowerCase();
-  const isSearching = searchQuery.length > 0;
-  const categoriesToRender = CATEGORIES.map(category => {
-    const pages = isSearching
-      ? category.pages.filter(page => (
-        category.name.toLowerCase().includes(searchQuery) ||
-        page.label.toLowerCase().includes(searchQuery) ||
-        page.desc.toLowerCase().includes(searchQuery) ||
-        page.id.toLowerCase().includes(searchQuery)
-      ))
-      : category.pages;
-
-    return { category, pages };
-  }).filter(item => !isSearching || item.pages.length > 0);
-  const resultCount = categoriesToRender.reduce((sum, item) => sum + item.pages.length, 0);
 
   function toggleCategory(name: string) {
     setExpandedCategories(current => {
@@ -233,40 +214,12 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      <section aria-label="Module search" className="rounded-xl border border-border/70 bg-card/40 p-3">
-        <div className="flex flex-col gap-3 md:flex-row md:items-center">
-          <div className="relative flex-1">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/65" />
-            <Input
-              type="text"
-              value={searchTerm}
-              onChange={event => setSearchTerm(event.target.value)}
-              placeholder="Search modules, attacks, workflows..."
-              className="h-10 bg-background/70 pl-9 pr-10"
-            />
-            {searchTerm && (
-              <button
-                type="button"
-                onClick={() => setSearchTerm('')}
-                className="absolute right-2 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                aria-label="Clear module search"
-              >
-                <X className="h-3.5 w-3.5" />
-              </button>
-            )}
-          </div>
-          <p className="text-xs text-muted-foreground">
-            {isSearching ? `${resultCount} ${resultCount === 1 ? 'result' : 'results'}` : `${totalLearningModules} learning modules`}
-          </p>
-        </div>
-      </section>
-
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {categoriesToRender.map(({ category: cat, pages }) => {
+        {CATEGORIES.map(cat => {
           const Icon = cat.icon;
           const isExpanded = expandedCategories.has(cat.name);
-          const hiddenCount = isSearching ? 0 : Math.max(0, pages.length - CATEGORY_PREVIEW_LIMIT);
-          const visiblePages = isSearching || isExpanded ? pages : pages.slice(0, CATEGORY_PREVIEW_LIMIT);
+          const hiddenCount = Math.max(0, cat.pages.length - CATEGORY_PREVIEW_LIMIT);
+          const visiblePages = isExpanded ? cat.pages : cat.pages.slice(0, CATEGORY_PREVIEW_LIMIT);
 
           return (
             <Card key={cat.name} className={`${cat.bg} h-full transition-all duration-200 group`}>
@@ -277,7 +230,7 @@ export function Home({ onNavigate }: HomeProps) {
                   </span>
                   <h3 className={`text-sm font-semibold ${cat.accent}`}>{cat.name}</h3>
                   <span className="text-[10px] text-muted-foreground/50 ml-auto">
-                    {isSearching ? `${pages.length}/${cat.pages.length}` : cat.pages.length}
+                    {cat.pages.length}
                   </span>
                 </div>
                 <div className="space-y-0.5">
@@ -319,11 +272,6 @@ export function Home({ onNavigate }: HomeProps) {
             </Card>
           );
         })}
-        {isSearching && resultCount === 0 && (
-          <div className="rounded-xl border border-border/70 bg-card/40 p-6 text-sm text-muted-foreground md:col-span-2 xl:col-span-3">
-            No modules found for "{searchTerm.trim()}".
-          </div>
-        )}
       </div>
     </div>
   );
