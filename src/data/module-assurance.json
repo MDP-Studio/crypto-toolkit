@@ -125,9 +125,9 @@
     "category": "Workflows",
     "evidenceLevel": "strong",
     "specSections": ["FIPS 197 Appendix B", "FIPS 197 section 5.1.3 MixColumns"],
-    "vectorSources": ["FIPS 197 AES-128 ciphertext vectors", "FIPS intermediate-state inverse checks"],
-    "testIds": ["crypto.test.ts: AES-128"],
-    "limitations": ["ECB block primitive for education", "No side-channel hardening", "Not a production AES implementation"]
+    "vectorSources": ["FIPS 197 AES-128 ciphertext vectors", "FIPS intermediate-state inverse checks", "Cross-impl parity: WebCrypto / Python cryptography / OpenSSL CLI (docs/aes-interop-matrix.md)"],
+    "testIds": ["crypto.test.ts: AES-128", "aes-interop.test.ts: AES-ECB interop"],
+    "limitations": ["ECB block primitive for education", "No side-channel hardening", "Not a production AES implementation", "No key lifecycle controls (see docs/aes-lifecycle.md)"]
   },
   {
     "id": "nonce-reuse",
@@ -164,10 +164,10 @@
     "title": "AES-GCM Authenticated Encryption",
     "category": "Composition",
     "evidenceLevel": "strong",
-    "specSections": ["NIST SP 800-38D GCM test cases 2 and 3"],
-    "vectorSources": ["NIST SP 800-38D empty-plaintext tag vector", "NIST SP 800-38D plaintext/ciphertext/tag vector"],
-    "testIds": ["crypto.test.ts: AES-GCM"],
-    "limitations": ["Educational implementation", "No constant-time guarantee", "No production key management"]
+    "specSections": ["NIST SP 800-38D GCM test cases 2, 3, and 4", "NIST SP 800-38D §8 nonce uniqueness", "NIST SP 800-57 Part 1 Rev 5 key lifecycle"],
+    "vectorSources": ["NIST SP 800-38D Test Case 2 empty-plaintext tag vector", "NIST SP 800-38D Test Case 3 plaintext/ciphertext/tag vector", "NIST SP 800-38D Test Case 4 ciphertext/tag with AAD", "Cross-impl parity: WebCrypto / Python cryptography; OpenSSL CLI AEAD limitation documented (docs/aes-interop-matrix.md)"],
+    "testIds": ["crypto.test.ts: AES-GCM", "aes-interop.test.ts: AES-GCM interop"],
+    "limitations": ["Educational implementation", "No constant-time guarantee", "No production key management", "No nonce-uniqueness enforcement, AAD-metadata binding, or rotation cadence (see docs/aes-lifecycle.md)"]
   },
   {
     "id": "argon2",

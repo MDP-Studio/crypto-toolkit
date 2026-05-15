@@ -68,14 +68,24 @@ The live app includes a separate **Challenge Hub** at `#/challenges`. It keeps C
 
 The live app includes an **Assurance Matrix** page at `#/assurance`. It lists every module with its spec anchors, vector sources, test IDs, and known limitations. The same data generates [docs/assurance-matrix.md](docs/assurance-matrix.md) via `npm run assurance`, and `npm run ci` fails if a module is missing from the matrix.
 
+## AES Cross-Implementation Parity & Lifecycle Guidance
+
+AES-ECB and AES-GCM ship with a published parity matrix against production references:
+
+- [docs/aes-interop-matrix.md](docs/aes-interop-matrix.md) - WebCrypto / Python `cryptography` / OpenSSL CLI table over a shared NIST vector pack. Toolkit and WebCrypto are re-verified at every CI run via `npm run interop`; Python reproduces full AES-GCM AEAD parity with [scripts/aes-interop/verify_python.py](scripts/aes-interop/verify_python.py), while [scripts/aes-interop/verify_openssl.sh](scripts/aes-interop/verify_openssl.sh) verifies the AES-ECB vectors and documents the OpenSSL `enc` AEAD limitation.
+- [docs/aes-lifecycle.md](docs/aes-lifecycle.md) - Key-rotation triggers, nonce-uniqueness bounds (NIST SP 800-38D §8.3), AAD metadata binding, envelope structure, and KEK/DEK separation. Tracks NIST SP 800-57 Part 1 Rev 5 and the OWASP Cryptographic Storage Cheat Sheet.
+
+Both docs reinforce that the in-repo AES code is educational; production deployments should use Web Crypto, libsodium, or Tink.
+
 ## Test Vectors & Coverage
 
-122 tests across 8 Vitest suites, plus Playwright route smoke snapshots for every learning module, the Challenge Hub, and the assurance page. Key vector sources:
+137 tests across 9 Vitest suites, plus Playwright route smoke snapshots for every learning module, the Challenge Hub, and the assurance page. Key vector sources:
 
 | Module | Source |
 |--------|--------|
 | AES-128 ECB | FIPS 197 Appendix B (encrypt + independent decrypt) |
-| AES-GCM | NIST SP 800-38D Test Cases 2 & 3 |
+| AES-GCM | NIST SP 800-38D Test Cases 2, 3 & 4 |
+| AES interop | Toolkit vs WebCrypto vs Python `cryptography` over shared NIST vector pack; OpenSSL CLI cross-check for AES-ECB |
 | SHA-256 | FIPS 180-4 (`"abc"`, empty string) |
 | HMAC-SHA256 | RFC 4231 Test Cases 1 & 2, AWS SigV4 kDate |
 | Miller-Rabin | Known primes + Carmichael numbers (561, 1105, 1729, 15841, 41041) |
@@ -93,7 +103,7 @@ Coverage reporting is available with `npm run coverage` using the v8 provider an
 - **React 19** + **Vite 8** — Code-split with React.lazy (main bundle 220KB, 67KB gzipped)
 - **TypeScript 5.9** — Strict mode, noUnusedLocals, verbatimModuleSyntax
 - **Tailwind CSS v4** + **shadcn/ui** — Dark/light theme, responsive 320px–1280px+
-- **Vitest** - 122 tests with NIST/RFC/AWS vector attribution and derived challenge-answer checks
+- **Vitest** - 137 tests with NIST/RFC/AWS vector attribution and derived challenge-answer checks
 - **Playwright** - route smoke snapshots across the app
 - **BigInt** — Arbitrary precision, no external math libraries
 - **Web Crypto API** — CSPRNG via `crypto.getRandomValues()`, `crypto.subtle` for ECDSA/AES/HMAC comparison

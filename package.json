@@ -12,9 +12,10 @@
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "assurance": "node scripts/generate-assurance-report.mjs",
+    "interop": "node scripts/generate-aes-interop-matrix.mjs",
     "e2e:routes": "playwright test e2e/route-smoke.spec.ts",
     "e2e:routes:update": "playwright test e2e/route-smoke.spec.ts --update-snapshots",
-    "ci": "tsc -b && npm run lint && npm run assurance && npm run coverage && npm run build && npm run e2e:routes && npm audit --omit=dev --audit-level=high"
+    "ci": "tsc -b && npm run lint && npm run assurance && npm run interop && npm run coverage && npm run build && npm run e2e:routes && npm audit --omit=dev --audit-level=high"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
