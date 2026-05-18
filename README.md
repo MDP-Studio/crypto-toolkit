@@ -8,6 +8,8 @@ All computation runs client-side using BigInt arithmetic with `crypto.getRandomV
 
 **Live:** [ctool.mdpstudio.com.au](https://ctool.mdpstudio.com.au)
 
+Search discovery is handled with `public/robots.txt` and `public/sitemap.xml` for the canonical live root. The app remains hash-routed, so the sitemap avoids listing fake server routes for individual modules.
+
 ## Modules (36 learning pages)
 
 ### Attacks (12 pages)
