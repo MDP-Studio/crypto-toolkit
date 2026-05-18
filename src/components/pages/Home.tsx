@@ -152,17 +152,21 @@ export function Home({ onNavigate }: HomeProps) {
 
   return (
     <div className="space-y-8 pb-8">
-      <div className="relative isolate rounded-2xl bg-gradient-to-br from-primary/10 via-background to-primary/5 border border-primary/10 px-6 py-10 md:py-14 text-center">
+      <div
+        className="relative isolate rounded-2xl bg-gradient-to-br from-primary/10 via-background to-primary/5 border border-primary/10 px-6 py-10 md:py-14 text-center"
+        itemScope
+        itemType="https://schema.org/LearningResource"
+      >
         <div className="absolute inset-0 rounded-2xl bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
         <div className="relative space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/20 px-4 py-1.5 text-xs font-medium text-primary">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             {totalLearningModules} Learning Modules
           </div>
-          <h1 className="pb-1 text-3xl md:text-4xl font-bold leading-[1.2] text-foreground">
+          <h1 itemProp="name" className="pb-1 text-3xl md:text-4xl font-bold leading-[1.2] text-foreground">
             CryptoToolkit
           </h1>
-          <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto leading-7 md:leading-8 pb-0.5">
+          <p itemProp="description" className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto leading-7 md:leading-8 pb-0.5">
             An educational platform for applied cryptography. From elliptic curves to TLS 1.3 handshakes,
             from AES internals to post-quantum lattice encryption.
           </p>
@@ -211,6 +215,30 @@ export function Home({ onNavigate }: HomeProps) {
               <p className="mt-2 text-xs text-muted-foreground leading-relaxed">{item.body}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section aria-labelledby="popular-guides" className="border border-border/70 rounded-xl bg-card/50 p-5">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+          <div className="max-w-2xl">
+            <p className="text-xs font-mono uppercase text-primary tracking-normal">Popular guides</p>
+            <h2 id="popular-guides" className="mt-2 text-2xl font-semibold tracking-normal">
+              Searchable explainers for the most shareable crypto lessons.
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+              These static pages give search engines and readers a clean entry point, then link into the interactive modules.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 lg:w-[520px]">
+            <a href="/learn/aes-gcm-failures.html" className="rounded-lg border border-border/70 bg-background/70 p-4 transition-colors hover:border-primary/35 hover:bg-primary/5">
+              <span className="text-sm font-semibold text-foreground">How AES-GCM fails</span>
+              <span className="mt-2 block text-xs text-muted-foreground leading-relaxed">Nonce reuse, authentication limits, and why unique IVs matter.</span>
+            </a>
+            <a href="/learn/rsa-attacks.html" className="rounded-lg border border-border/70 bg-background/70 p-4 transition-colors hover:border-primary/35 hover:bg-primary/5">
+              <span className="text-sm font-semibold text-foreground">RSA attacks explained</span>
+              <span className="mt-2 block text-xs text-muted-foreground leading-relaxed">Factoring, textbook RSA, small d, padding oracles, broadcast, and CRT faults.</span>
+            </a>
+          </div>
         </div>
       </section>
 

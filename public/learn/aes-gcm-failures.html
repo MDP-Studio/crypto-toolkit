@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How AES-GCM Fails - CryptoToolkit</title>
+  <meta name="description" content="Learn how AES-GCM fails when nonces are reused, what plaintext leakage looks like, and how CryptoToolkit demonstrates the attack interactively." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ctool.mdpstudio.com.au/learn/aes-gcm-failures.html" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #09090b; color: rgba(255,255,255,0.86); font-family: "Geist Variable", system-ui, sans-serif; line-height: 1.72; }
+    .container { max-width: 880px; margin: 0 auto; padding: 56px 24px 84px; }
+    a { color: #a78bfa; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .back { display: inline-block; margin-bottom: 32px; font-size: 13px; }
+    .meta { color: rgba(255,255,255,0.46); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0; margin-bottom: 14px; }
+    h1 { max-width: 780px; color: #fff; font-size: clamp(34px, 5vw, 58px); line-height: 1.04; margin-bottom: 18px; }
+    .lead { max-width: 720px; color: rgba(255,255,255,0.68); font-size: 18px; margin-bottom: 34px; }
+    section { border-top: 1px solid rgba(255,255,255,0.12); padding-top: 26px; margin-top: 30px; }
+    h2 { color: #fff; font-size: 23px; margin-bottom: 12px; }
+    p, li { color: rgba(255,255,255,0.68); font-size: 15px; margin-bottom: 10px; }
+    ul { padding-left: 20px; }
+    code { background: rgba(167,139,250,0.14); border: 1px solid rgba(167,139,250,0.22); border-radius: 5px; padding: 2px 5px; color: #ddd6fe; }
+    .callout { margin-top: 30px; border: 1px solid rgba(167,139,250,0.28); background: rgba(167,139,250,0.08); border-radius: 8px; padding: 20px; }
+  </style>
+</head>
+<body>
+  <main class="container" itemscope itemtype="https://schema.org/LearningResource">
+    <a href="/" class="back">&larr; Back to CryptoToolkit</a>
+    <p class="meta">AES-GCM guide</p>
+    <h1 itemprop="name">How AES-GCM fails when nonces are reused.</h1>
+    <p class="lead" itemprop="description">AES-GCM is a strong authenticated-encryption mode, but it has one rule that cannot be treated casually: never reuse the same key and nonce pair. CryptoToolkit turns that rule into a visible, runnable lesson.</p>
+
+    <section>
+      <h2>The short version</h2>
+      <p>AES-GCM combines counter-mode encryption with a polynomial authenticator called GHASH. If two messages use the same key and nonce, the counter stream repeats. That lets an attacker compare ciphertexts and learn relationships between plaintexts.</p>
+      <p>In practice, the damage can be bigger than a simple confidentiality leak. With enough structure, nonce reuse can also help recover authentication material and forge messages.</p>
+    </section>
+
+    <section>
+      <h2>What to look for</h2>
+      <ul>
+        <li>Static IVs or counters that reset after restart.</li>
+        <li>Multiple systems sharing the same key without coordinated nonce allocation.</li>
+        <li>Encrypted backups, logs, or messages that generate IVs outside a cryptographic random source.</li>
+        <li>Protocol wrappers that hide nonce construction from reviewers.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Use the interactive module</h2>
+      <p>Open the <a href="/#/gcm-nonce">GCM Nonce Reuse</a> attack module to see plaintext relationships appear from two ciphertexts. Then open <a href="/#/aes-gcm">AES-GCM Authenticated Encryption</a> to inspect the normal workflow.</p>
+      <p>The browser demo is educational. It shows the failure mode clearly, but it is not production crypto code and should not be copied into real systems.</p>
+    </section>
+
+    <div class="callout">
+      <h2>Safe implementation rule</h2>
+      <p>Use a mature library or Web Crypto API, generate nonces according to the library guidance, and treat nonce uniqueness as part of the security boundary. If you cannot prove uniqueness, redesign before shipping.</p>
+    </div>
+  </main>
+</body>
+</html>

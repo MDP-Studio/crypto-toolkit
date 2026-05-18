@@ -9,6 +9,7 @@ All computation runs client-side using BigInt arithmetic with `crypto.getRandomV
 **Live:** [ctool.mdpstudio.com.au](https://ctool.mdpstudio.com.au)
 
 Search discovery is handled with `public/robots.txt` and `public/sitemap.xml` for the canonical live root. The app remains hash-routed, so the sitemap avoids listing fake server routes for individual modules.
+Static search-entry guides live under `/learn/` for high-intent topics such as AES-GCM nonce reuse and RSA attack demos; those pages link back into the interactive hash-routed modules.
 
 ## Modules (36 learning pages)
 

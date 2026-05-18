@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RSA Attacks Explained - CryptoToolkit</title>
+  <meta name="description" content="A practical guide to RSA attack demos in CryptoToolkit: factoring, textbook RSA, Wiener's attack, broadcast attacks, padding oracles, and CRT faults." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ctool.mdpstudio.com.au/learn/rsa-attacks.html" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #09090b; color: rgba(255,255,255,0.86); font-family: "Geist Variable", system-ui, sans-serif; line-height: 1.72; }
+    .container { max-width: 900px; margin: 0 auto; padding: 56px 24px 84px; }
+    a { color: #a78bfa; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .back { display: inline-block; margin-bottom: 32px; font-size: 13px; }
+    .meta { color: rgba(255,255,255,0.46); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0; margin-bottom: 14px; }
+    h1 { max-width: 780px; color: #fff; font-size: clamp(34px, 5vw, 58px); line-height: 1.04; margin-bottom: 18px; }
+    .lead { max-width: 720px; color: rgba(255,255,255,0.68); font-size: 18px; margin-bottom: 34px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; margin-top: 28px; }
+    article { border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; background: rgba(255,255,255,0.04); padding: 18px; }
+    h2 { color: #fff; font-size: 23px; margin: 34px 0 12px; }
+    h3 { color: #ddd6fe; font-size: 15px; margin-bottom: 8px; }
+    p, li { color: rgba(255,255,255,0.68); font-size: 15px; margin-bottom: 10px; }
+    ul { padding-left: 20px; }
+    .callout { margin-top: 30px; border: 1px solid rgba(167,139,250,0.28); background: rgba(167,139,250,0.08); border-radius: 8px; padding: 20px; }
+  </style>
+</head>
+<body>
+  <main class="container" itemscope itemtype="https://schema.org/LearningResource">
+    <a href="/" class="back">&larr; Back to CryptoToolkit</a>
+    <p class="meta">RSA attack guide</p>
+    <h1 itemprop="name">RSA attacks explained through runnable browser demos.</h1>
+    <p class="lead" itemprop="description">RSA is not broken by one trick. It fails when keys are weak, padding is missing, messages are reused badly, or implementation shortcuts leak structure. CryptoToolkit groups those failures into interactive modules.</p>
+
+    <section class="grid" aria-label="RSA attack demos">
+      <article>
+        <h3>Factoring weak moduli</h3>
+        <p><a href="/#/rsa-attack">RSA Attack Workflow</a> factors small semiprimes, rebuilds the private key, and decrypts the ciphertext.</p>
+      </article>
+      <article>
+        <h3>Textbook RSA</h3>
+        <p><a href="/#/textbook-rsa">Textbook RSA</a> demonstrates why raw RSA encryption is malleable without padding.</p>
+      </article>
+      <article>
+        <h3>Small private exponent</h3>
+        <p><a href="/#/wiener">Wiener's attack</a> uses continued fractions to recover a private key when d is too small.</p>
+      </article>
+      <article>
+        <h3>Broadcast attack</h3>
+        <p><a href="/#/coppersmith">Hastad broadcast</a> combines ciphertexts with CRT when the same message is sent with e=3.</p>
+      </article>
+      <article>
+        <h3>Padding oracle</h3>
+        <p><a href="/#/bleichenbacher">Bleichenbacher</a> shows why PKCS#1 v1.5 oracle behavior is dangerous.</p>
+      </article>
+      <article>
+        <h3>CRT fault injection</h3>
+        <p><a href="/#/crt-fault">CRT-RSA Fault Injection</a> recovers a factor from one faulty signature.</p>
+      </article>
+    </section>
+
+    <h2>What these demos teach</h2>
+    <ul>
+      <li>Use modern padding schemes and high-level library APIs.</li>
+      <li>Generate keys with enough entropy, strong primes, and safe parameters.</li>
+      <li>Do not use textbook RSA for encryption or signatures.</li>
+      <li>Treat side channels, fault behavior, and implementation details as part of the design.</li>
+    </ul>
+
+    <div class="callout">
+      <h2>Production boundary</h2>
+      <p>CryptoToolkit is for education. The demos intentionally make attacks visible at small sizes. Production RSA should use audited libraries, modern padding, strong key sizes, and protocol-level review.</p>
+    </div>
+  </main>
+</body>
+</html>
