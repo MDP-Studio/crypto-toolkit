@@ -194,6 +194,14 @@ export function Home({ onNavigate }: HomeProps) {
           <p className="text-sm text-muted-foreground leading-relaxed">
             Built by Meidie Fei as part of a cybersecurity portfolio focused on reproducible, browser-based security tooling.
           </p>
+          <a
+            href="https://mdpstudio.com.au/projects/cryptography-lab/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex text-sm font-medium text-primary transition-colors hover:text-primary/80"
+          >
+            View the MDP Studio project page
+          </a>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {[
