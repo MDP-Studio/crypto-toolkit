@@ -6,7 +6,8 @@ const STORAGE_KEY = 'crypto-toolkit-banner-dismissed';
 export function SecurityBanner() {
   const [dismissed, setDismissed] = useState(() => {
     try { return sessionStorage.getItem(STORAGE_KEY) === 'true'; }
-    catch { return false; }
+    catch (error) {
+      console.debug('Recovered from non-fatal error in src/components/SecurityBanner.tsx:9.', error); return false; }
   });
   const [expanded, setExpanded] = useState(false);
 
@@ -14,7 +15,8 @@ export function SecurityBanner() {
     // Only persist on actual dismissal — skip the initial false → false no-op.
     if (dismissed) {
       try { sessionStorage.setItem(STORAGE_KEY, 'true'); }
-      catch { /* ignore quota errors in private mode */ }
+      catch (error) {
+      console.debug('Recovered from non-fatal error in src/components/SecurityBanner.tsx:17.', error); /* ignore quota errors in private mode */ }
     }
   }, [dismissed]);
 

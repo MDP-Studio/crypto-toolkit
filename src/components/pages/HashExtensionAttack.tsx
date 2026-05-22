@@ -65,6 +65,7 @@ export function HashExtensionAttack() {
     try {
       state = SHA256.parseState(originalHash);
     } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/HashExtensionAttack.tsx:67.', e);
       setError(String(e));
       return;
     }

@@ -35,7 +35,8 @@ export function Sidebar({ currentPage, onPageChange, open, onToggle, isMobile }:
           return stored;
         }
       }
-    } catch { /* ignore corrupt storage */ }
+    } catch (error) {
+      console.debug('Recovered from non-fatal error in src/components/Sidebar.tsx:38.', error); /* ignore corrupt storage */ }
     return initial;
   });
 
@@ -45,10 +46,11 @@ export function Sidebar({ currentPage, onPageChange, open, onToggle, isMobile }:
       next.delete(activeCategory);
       try {
         localStorage.setItem(COLLAPSED_STORAGE_KEY, JSON.stringify(Array.from(next)));
-      } catch { /* ignore quota errors */ }
+      } catch (error) {
+      console.debug('Recovered from non-fatal error in src/components/Sidebar.tsx:48.', error); /* ignore quota errors */ }
       setCollapsed(next);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- agent-quality: allow: active category updates are intentionally keyed only by the derived active id
   }, [activeCategory]);
 
   function toggleCategory(cat: string) {
@@ -58,7 +60,8 @@ export function Sidebar({ currentPage, onPageChange, open, onToggle, isMobile }:
       else next.add(cat);
       try {
         localStorage.setItem(COLLAPSED_STORAGE_KEY, JSON.stringify(Array.from(next)));
-      } catch { /* ignore quota errors */ }
+      } catch (error) {
+      console.debug('Recovered from non-fatal error in src/components/Sidebar.tsx:61.', error); /* ignore quota errors */ }
       return next;
     });
   }

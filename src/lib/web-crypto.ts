@@ -61,7 +61,8 @@ export async function webCryptoRSAEncryptDecrypt(
       decrypted: new Uint8Array(decrypted),
       engine: 'Web Crypto RSA-OAEP (constant-time native implementation)',
     };
-  } catch {
+  } catch (error) {
+      console.debug('Recovered from non-fatal error in src/lib/web-crypto.ts:64.', error);
     return null;
   }
 }
@@ -107,7 +108,8 @@ export async function webCryptoECDSASignVerify(
       curve: 'P-256 (NIST)',
       engine: 'Web Crypto ECDSA (constant-time native implementation)',
     };
-  } catch {
+  } catch (error) {
+      console.debug('Recovered from non-fatal error in src/lib/web-crypto.ts:110.', error);
     return null;
   }
 }
@@ -143,7 +145,8 @@ export async function webCryptoAESGCM(
     const ciphertext = resultBytes.slice(0, resultBytes.length - 16);
     const tag = resultBytes.slice(resultBytes.length - 16);
     return { ciphertext, tag };
-  } catch {
+  } catch (error) {
+      console.debug('Recovered from non-fatal error in src/lib/web-crypto.ts:146.', error);
     return null;
   }
 }
@@ -203,7 +206,8 @@ export async function webCryptoECDH(): Promise<{
     );
 
     return { clientPublicJwk, serverPublicJwk, sharedSecret: new Uint8Array(sharedBits) };
-  } catch {
+  } catch (error) {
+      console.debug('Recovered from non-fatal error in src/lib/web-crypto.ts:206.', error);
     return null;
   }
 }

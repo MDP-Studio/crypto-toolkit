@@ -88,7 +88,8 @@ export function NonceReuseAttack() {
       if (s === 0n) { setSignError('s = 0, choose different k or message hash'); return; }
       setSig1({ r, s, R });
       setPhase('sign2');
-    } catch (e) { setSignError(String(e)); }
+    } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/NonceReuseAttack.tsx:91.', e); setSignError(String(e)); }
   }
 
   function doSign2() {
@@ -103,7 +104,8 @@ export function NonceReuseAttack() {
       if (s === 0n) { setSignError('s2 = 0, choose a different second hash'); return; }
       setSig2({ r: sig1.r, s });
       setPhase('extract');
-    } catch (e) { setSignError(String(e)); }
+    } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/NonceReuseAttack.tsx:106.', e); setSignError(String(e)); }
   }
 
   const [extractError, setExtractError] = useState('');
@@ -130,6 +132,7 @@ export function NonceReuseAttack() {
       setExtracted({ kRecovered, dRecovered, match: dRecovered === d });
       setPhase('verify');
     } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/NonceReuseAttack.tsx:132.', e);
       setExtractError(`Computation failed: ${e}. Ensure q is prime (curve subgroup order).`);
     }
   }

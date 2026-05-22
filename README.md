@@ -73,6 +73,16 @@ The live app includes a separate **Challenge Hub** at `#/challenges`. It keeps C
 
 The live app includes an **Assurance Matrix** page at `#/assurance`. It lists every module with its spec anchors, vector sources, test IDs, and known limitations. The same data generates [docs/assurance-matrix.md](docs/assurance-matrix.md) via `npm run assurance`, and `npm run ci` fails if a module is missing from the matrix.
 
+## Release Provenance and SBOM
+
+Release builds can publish three review artifacts: a CycloneDX SBOM, a SHA-256 checksum manifest, and an unsigned local provenance statement tied to the git commit and tag. Generate them with:
+
+```bash
+npm run release:artifacts
+```
+
+For tagged releases, follow [docs/release-provenance.md](docs/release-provenance.md). These artifacts improve supply-chain transparency only; they do not make the educational crypto code production-grade.
+
 ## AES Cross-Implementation Parity & Lifecycle Guidance
 
 AES-ECB and AES-GCM ship with a published parity matrix against production references:

@@ -18,6 +18,7 @@ export function WebCryptoVerify({ label, onVerify }: WebCryptoVerifyProps) {
       const r = await onVerify();
       setResult(r);
     } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/WebCryptoVerify.tsx:20.', e);
       setResult({ success: false, details: [`Error: ${e}`] });
     }
     setRunning(false);

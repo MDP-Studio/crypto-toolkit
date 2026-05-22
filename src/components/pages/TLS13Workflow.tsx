@@ -47,7 +47,8 @@ export function TLS13Workflow() {
       setServerPubX(result.serverPublicJwk.x || '');
       setSharedSecret(bytesToHex(result.sharedSecret));
       setPhase('keyexchange');
-    } catch (e) { setError(String(e)); }
+    } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/TLS13Workflow.tsx:50.', e); setError(String(e)); }
     setComputing(false);
   }
 
@@ -74,7 +75,8 @@ export function TLS13Workflow() {
       setServerKey(bytesToHex(sKey));
 
       setPhase('derive');
-    } catch (e) { setError(String(e)); }
+    } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/TLS13Workflow.tsx:77.', e); setError(String(e)); }
     setComputing(false);
   }
 
@@ -111,7 +113,8 @@ export function TLS13Workflow() {
       setServerSigValid(verified);
 
       setPhase('auth');
-    } catch (e) { setError(String(e)); }
+    } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/TLS13Workflow.tsx:114.', e); setError(String(e)); }
     setComputing(false);
   }
 
@@ -130,7 +133,8 @@ export function TLS13Workflow() {
         setAuthTag(bytesToHex(result.tag));
       }
       setPhase('done');
-    } catch (e) { setError(String(e)); }
+    } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/TLS13Workflow.tsx:133.', e); setError(String(e)); }
     setComputing(false);
   }
 

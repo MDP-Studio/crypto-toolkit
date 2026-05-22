@@ -36,7 +36,8 @@ export function ECBPenguin() {
         });
       }
       setBlocks(result);
-    } catch (e) { setError(String(e)); }
+    } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/ECBPenguin.tsx:39.', e); setError(String(e)); }
   }
 
   // Color map: same ciphertext = same color

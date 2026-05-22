@@ -57,7 +57,8 @@ export function CoppersmithAttack() {
       setCrtValue(result.crtValue);
       setRecovered(result.recovered);
       setPhase('attack');
-    } catch (e) { setError(String(e)); }
+    } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/CoppersmithAttack.tsx:60.', e); setError(String(e)); }
   }
 
   const getStatus = usePhaseStatus<Phase>(['setup', 'encrypt', 'attack'], phase);

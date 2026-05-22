@@ -18,7 +18,8 @@ export function parseBigInt(s: string): bigint | null {
       return -BigInt(rest);
     }
     return BigInt(cleaned);
-  } catch {
+  } catch (error) {
+      console.debug('Recovered from non-fatal error in src/lib/parse.ts:21.', error);
     return null;
   }
 }

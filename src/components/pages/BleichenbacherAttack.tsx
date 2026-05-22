@@ -77,14 +77,16 @@ export function BleichenbacherAttack() {
     const phi = (p - 1n) * (q - 1n);
     let dVal: bigint;
     try { dVal = modInverse(e, phi); }
-    catch { setError('e is not coprime to φ(n)'); return; }
+    catch (error) {
+      console.debug('Recovered from non-fatal error in src/components/pages/BleichenbacherAttack.tsx:80.', error); setError('e is not coprime to φ(n)'); return; }
     setN(nVal);
 
     const nByteLen = Math.ceil(nVal.toString(16).length / 2);
     if (nByteLen < 3) { setError(`Modulus too small (k=${nByteLen}) — need at least 3 bytes`); return; }
     let padded: bigint;
     try { padded = pkcs1v15Pad(m, nByteLen); }
-    catch (err) { setError(String(err)); return; }
+    catch (err) {
+      console.debug('Recovered from non-fatal error in src/components/pages/BleichenbacherAttack.tsx:87.', err); setError(String(err)); return; }
     // Precondition: the padded integer must live in [2B, 3B) — i.e. start 00 02.
     setPaddedM(padded);
     // Sanity-check: dVal is used below only transitively through the oracle,
@@ -141,6 +143,7 @@ export function BleichenbacherAttack() {
             `Try smaller primes.`);
         }
       } catch (err) {
+      console.debug('Recovered from non-fatal error in src/components/pages/BleichenbacherAttack.tsx:143.', err);
         setError(`Attack failed: ${String(err)}`);
       } finally {
         setRunning(false);

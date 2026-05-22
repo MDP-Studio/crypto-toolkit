@@ -103,7 +103,8 @@ export function ECCalculator() {
     if (p > 1009n) return null;
     try {
       return getAllPointsFast(A, B, p);
-    } catch {
+    } catch (error) {
+      console.debug('Recovered from non-fatal error in src/components/pages/ECCalculator.tsx:106.', error);
       return null;
     }
   }, [A, B, p, curveValid.valid]);
@@ -138,6 +139,7 @@ export function ECCalculator() {
     try {
       setAddResult(pointAddWithSteps(P, Q, A, p));
     } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/ECCalculator.tsx:140.', e);
       setAddError(String(e));
     }
   }
@@ -159,6 +161,7 @@ export function ECCalculator() {
     try {
       setMulResult(scalarMultiplyWithSteps(k, P, A, p));
     } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/ECCalculator.tsx:161.', e);
       setMulError(String(e));
     }
   }
@@ -180,6 +183,7 @@ export function ECCalculator() {
     try {
       setMontResult(montgomeryLadder(k, P, A, p));
     } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/ECCalculator.tsx:182.', e);
       setMontError(String(e));
     }
   }
@@ -206,6 +210,7 @@ export function ECCalculator() {
       const result = babyGiantStep(G, Q, A, p, order);
       setBsgsResult({ ...result, order });
     } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/ECCalculator.tsx:208.', e);
       setBsgsError(String(e));
     }
   }

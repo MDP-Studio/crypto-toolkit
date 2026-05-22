@@ -57,6 +57,7 @@ export function RSAAttackWorkflow() {
           sqrtN, p, q, phi, gcdCheck, d, m, cVerify, verified: cVerify === C,
         });
       } catch (err) {
+      console.debug('Recovered from non-fatal error in src/components/pages/RSAAttackWorkflow.tsx:59.', err);
         setError(String(err));
       }
       setComputing(false);

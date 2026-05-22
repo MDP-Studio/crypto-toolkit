@@ -6,7 +6,8 @@ export function readSolvedChallengeIds(): Set<string> {
   try {
     const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || '[]');
     return new Set(Array.isArray(parsed) ? parsed.filter(item => typeof item === 'string') : []);
-  } catch {
+  } catch (error) {
+      console.debug('Recovered from non-fatal error in src/lib/challenge-progress.ts:9.', error);
     return new Set();
   }
 }

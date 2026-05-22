@@ -105,6 +105,7 @@ export function SchnorrZKP() {
       const rhs = mod(tVal * modPow(yVal, cVal, p), p);
       setVerifyResult({ lhs, rhs, valid: lhs === rhs });
     } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/SchnorrZKP.tsx:107.', e);
       setVerifyError(String(e));
     }
   }

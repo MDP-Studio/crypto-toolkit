@@ -226,6 +226,18 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
+      <section aria-labelledby="safe-educational-use" className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-5">
+        <p className="text-xs font-mono uppercase text-amber-300 tracking-normal">Safe educational use</p>
+        <h2 id="safe-educational-use" className="mt-2 text-2xl font-semibold tracking-normal">
+          Use this lab to learn, not to protect production systems.
+        </h2>
+        <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+          CryptoToolkit makes cryptographic ideas and failure modes visible in the browser. It is not an audited
+          production crypto library, does not promise constant-time behavior, and should not be copied into real
+          payment, identity, messaging, or secrets-management systems.
+        </p>
+      </section>
+
       <section aria-labelledby="popular-guides" className="border border-border/70 rounded-xl bg-card/50 p-5">
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
           <div className="max-w-2xl">

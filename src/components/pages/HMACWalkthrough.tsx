@@ -48,12 +48,14 @@ export function HMACWalkthrough() {
       try {
         const sig = await hmacSHA256(keyBytes, msgBytes);
         setWebCryptoHash(bytesToHex(sig));
-      } catch {
+      } catch (error) {
+      console.debug('Recovered from non-fatal error in src/components/pages/HMACWalkthrough.tsx:51.', error);
         setWebCryptoHash('Web Crypto HMAC unavailable');
       }
 
       setComputed(true);
     } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/HMACWalkthrough.tsx:56.', e);
       setInputError(e instanceof Error ? e.message : String(e));
     }
   }

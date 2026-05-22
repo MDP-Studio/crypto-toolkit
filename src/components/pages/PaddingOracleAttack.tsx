@@ -72,7 +72,8 @@ export function PaddingOracleAttack() {
       setIv(ivBytes);
       setCtBlocks(blocks);
       setPhase('encrypt');
-    } catch (e) { setError(String(e)); }
+    } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/PaddingOracleAttack.tsx:75.', e); setError(String(e)); }
   }
 
   function doAttack() {
@@ -86,6 +87,7 @@ export function PaddingOracleAttack() {
       key = hexToBytesAES(keyHex);
       if (key.length !== 16) { setError('Key must be 16 bytes'); setAttacking(false); return; }
     } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/PaddingOracleAttack.tsx:88.', e);
       setError(String(e));
       setAttacking(false);
       return;

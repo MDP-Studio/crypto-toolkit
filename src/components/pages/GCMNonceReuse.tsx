@@ -35,7 +35,8 @@ export function GCMNonceReuse() {
       const r = aesGCM(pt, key, iv, []);
       setResult1({ ct: r.ciphertext, tag: r.tag, H: r.H });
       setPhase('encrypt1');
-    } catch (e) { setError(String(e)); }
+    } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/GCMNonceReuse.tsx:38.', e); setError(String(e)); }
   }
 
   function doEncrypt2() {
@@ -47,7 +48,8 @@ export function GCMNonceReuse() {
       const r = aesGCM(pt, key, iv, []);
       setResult2({ ct: r.ciphertext, tag: r.tag });
       setPhase('encrypt2');
-    } catch (e) { setError(String(e)); }
+    } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/GCMNonceReuse.tsx:50.', e); setError(String(e)); }
   }
 
   function doAttack() {
@@ -66,7 +68,8 @@ export function GCMNonceReuse() {
       setPtXor(bytesToHexAES(expectedXor));
 
       setPhase('attack');
-    } catch (e) { setError(String(e)); }
+    } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/GCMNonceReuse.tsx:69.', e); setError(String(e)); }
   }
 
   const getStatus = usePhaseStatus<Phase>(['setup', 'encrypt1', 'encrypt2', 'attack'], phase);

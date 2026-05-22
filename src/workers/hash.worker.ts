@@ -65,6 +65,7 @@ self.onmessage = async (e: MessageEvent<HashWorkerRequest>) => {
       error: null,
     });
   } catch (err) {
+      console.debug('Recovered from non-fatal error in src/workers/hash.worker.ts:67.', err);
     self.postMessage({ id, result: null, error: String(err) });
   }
 };

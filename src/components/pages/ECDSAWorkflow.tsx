@@ -85,7 +85,8 @@ export function ECDSAWorkflow() {
       const Q = scalarMultiply(d, G, A, p);
       setPubKey(Q);
       setPhase('hash');
-    } catch (e) { setSetupError(String(e)); }
+    } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/ECDSAWorkflow.tsx:88.', e); setSetupError(String(e)); }
   }
 
   async function doHash() {
@@ -118,7 +119,8 @@ export function ECDSAWorkflow() {
       if (s === 0n) { setSignError('s = 0, choose different k'); return; }
       setSignResult({ R, r, kInv, s, hrd });
       setPhase('verify');
-    } catch (e) { setSignError(String(e)); }
+    } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/ECDSAWorkflow.tsx:121.', e); setSignError(String(e)); }
   }
 
   const [verifyError, setVerifyError] = useState('');
@@ -145,6 +147,7 @@ export function ECDSAWorkflow() {
       const v = mod(P.x, q);
       setVerifyResult({ w, u1, u2, u1G, u2Q, P, v, valid: v === r });
     } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/ECDSAWorkflow.tsx:147.', e);
       setVerifyError(`Verification failed: ${e}. Ensure q is prime (curve subgroup order).`);
     }
   }

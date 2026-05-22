@@ -22,7 +22,8 @@ export function CurvePlot() {
     if (p < 3n || !isPrime(p)) return null;
     if (discriminant(A, B, p) === 0n) return null;
     if (p > 200n) return null;
-    try { return getAllPointsFast(A, B, p); } catch { return null; }
+    try { return getAllPointsFast(A, B, p); } catch (error) {
+      console.debug('Recovered from non-fatal error in src/components/pages/CurvePlot.tsx:25.', error); return null; }
   }, [A, B, p]);
 
   function loadPreset(idx: number) {

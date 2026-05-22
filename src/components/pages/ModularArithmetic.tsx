@@ -134,6 +134,7 @@ export function ModularArithmetic() {
             try {
               setInvResult(modInverse(a, m).toString());
             } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/ModularArithmetic.tsx:136.', e);
               setInvError(String(e));
               setInvResult('');
             }

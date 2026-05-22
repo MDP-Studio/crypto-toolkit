@@ -56,6 +56,7 @@ export function Factorization() {
 
         setResult({ n, factors, factorString, prime, totient, divisorCount, nextP });
       } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/Factorization.tsx:58.', e);
         setError(String(e));
       }
       setComputing(false);

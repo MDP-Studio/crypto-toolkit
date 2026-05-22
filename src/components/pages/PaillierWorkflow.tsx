@@ -60,7 +60,8 @@ export function PaillierWorkflow() {
       const mu = modInverse(lU, n);
       setKeyResult({ n, nSq, lambda, u, lU, mu });
       setPhase('encrypt');
-    } catch (e) { setKeyError(String(e)); }
+    } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/PaillierWorkflow.tsx:63.', e); setKeyError(String(e)); }
   }
 
   function doEncrypt() {

@@ -136,6 +136,7 @@ export function LLLVisualization() {
     try {
       setResult(lll2D({ x: x1, y: y1 }, { x: x2, y: y2 }, d));
     } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/LLLVisualization.tsx:138.', e);
       setError(String(e));
     }
   }

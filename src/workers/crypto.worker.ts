@@ -67,6 +67,7 @@ self.onmessage = (ev: MessageEvent<CryptoWorkerRequest>) => {
     };
     self.postMessage(response);
   } catch (err) {
+      console.debug('Recovered from non-fatal error in src/workers/crypto.worker.ts:69.', err);
     self.postMessage({ id, result: null, error: String(err) });
   }
 };

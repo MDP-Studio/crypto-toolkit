@@ -49,13 +49,15 @@ export function BaseConverter() {
       setBinOut(textToBinary(textInput));
       setDecOut(textToDecimal(textInput));
       setB64Out(textToBase64(textInput));
-    } catch { /* ignore */ }
+    } catch (error) {
+      console.debug('Recovered from non-fatal error in src/components/pages/BaseConverter.tsx:52.', error); /* ignore */ }
   }
 
   function decodeHex() {
     try {
       setHexDecoded(hexToText(hexInput));
-    } catch { setHexDecoded('Invalid hex'); }
+    } catch (error) {
+      console.debug('Recovered from non-fatal error in src/components/pages/BaseConverter.tsx:58.', error); setHexDecoded('Invalid hex'); }
   }
 
   function convertBase() {
@@ -70,6 +72,7 @@ export function BaseConverter() {
       const n = baseToNumber(numInput, fb);
       setNumResult(numberToBase(n, tb));
     } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/BaseConverter.tsx:72.', e);
       setNumError(String(e));
     }
   }
@@ -98,6 +101,7 @@ export function BaseConverter() {
       setSha1Dec(BigInt('0x' + sha1Hex).toString(10));
       setSha256Dec(BigInt('0x' + sha256Hex).toString(10));
     } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/BaseConverter.tsx:100.', e);
       setSha1Hash('Error: ' + String(e));
     }
   }

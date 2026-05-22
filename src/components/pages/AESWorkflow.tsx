@@ -78,7 +78,8 @@ export function AESWorkflow() {
       setAfterARK(ark);
 
       setPhase('subbytes');
-    } catch (e) { setError(String(e)); }
+    } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/AESWorkflow.tsx:81.', e); setError(String(e)); }
   }
 
   const phaseOrder: Phase[] = ['input', 'subbytes', 'shiftrows', 'mixcols', 'addrk'];

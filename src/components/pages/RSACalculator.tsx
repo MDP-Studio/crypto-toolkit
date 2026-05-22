@@ -101,6 +101,7 @@ export function RSACalculator() {
       setDecD(k.d.toString());
       setDecN(k.n.toString());
     } catch (err) {
+      console.debug('Recovered from non-fatal error in src/components/pages/RSACalculator.tsx:103.', err);
       if (genIdRef.current !== thisId) return;
       setGenError(String(err));
     }
@@ -129,6 +130,7 @@ export function RSACalculator() {
       setDecD(k.d.toString());
       setDecN(k.n.toString());
     } catch (err) {
+      console.debug('Recovered from non-fatal error in src/components/pages/RSACalculator.tsx:131.', err);
       setManError(String(err));
     }
   }

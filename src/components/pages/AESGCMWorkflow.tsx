@@ -33,7 +33,8 @@ export function AESGCMWorkflow() {
       const r = aesGCM(pt, key, iv, aad);
       setResult(r);
       setPhase('ctr');
-    } catch (e) { setError(String(e)); }
+    } catch (e) {
+      console.debug('Recovered from non-fatal error in src/components/pages/AESGCMWorkflow.tsx:36.', e); setError(String(e)); }
   }
 
   const phaseOrder: Phase[] = ['input', 'ctr', 'ghash', 'tag'];

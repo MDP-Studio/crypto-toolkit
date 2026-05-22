@@ -24,7 +24,7 @@ export function usePhaseStatus<T extends string>(
       return 'pending';
     },
     // phases is expected to be a stable array literal; currentIdx captures the position
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- agent-quality: allow: phases is a stable caller-owned array and currentIdx is the dependency
     [currentIdx]
   );
 }

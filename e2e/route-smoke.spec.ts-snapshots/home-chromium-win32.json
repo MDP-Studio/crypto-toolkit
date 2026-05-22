@@ -8,6 +8,8 @@
     "Real computation",
     "Browser-only lab",
     "Clear boundary",
+    "Use this lab to learn, not to protect production systems.",
+    "Searchable explainers for the most shareable crypto lessons.",
     "Cryptography",
     "Number Theory",
     "Workflows",
@@ -33,7 +35,10 @@
     "Show 2 more"
   ],
   "links": [
+    "View the MDP Studio project page",
+    "How AES-GCM failsNonce reuse, authentication limits, and why unique IVs matter.",
+    "RSA attacks explainedFactoring, textbook RSA, small d, padding oracles, broadcast, and CRT faults.",
     "Send feedback"
   ],
-  "textLength": 2361
+  "textLength": 3098
 }

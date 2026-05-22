@@ -30,5 +30,6 @@ This codebase has been through 6 internal audit sweeps covering:
 - CSPRNG usage audit (`Math.random` banned via ESLint)
 - Dependency placement audit (build tools in devDependencies)
 - BigInt falsy-zero audit (`0n` is falsy in JS)
+- Release transparency audit (SBOM, checksums, and local provenance checklist)
 
 Findings and resolutions are tracked in `tasks/todo.md`.
