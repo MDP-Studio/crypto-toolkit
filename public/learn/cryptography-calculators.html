@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cryptography Calculators - AES, RSA, HMAC, SHA and Encoding Tools</title>
+  <meta name="description" content="A searchable guide to CryptoToolkit calculators: AES-GCM, RSA keys, HMAC-SHA256, SHA hashing, Base64, hex, EC math, modular arithmetic, factorization, and ciphers." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ctool.mdpstudio.com.au/learn/cryptography-calculators.html" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #09090b; color: rgba(255,255,255,0.86); font-family: "Geist Variable", system-ui, sans-serif; line-height: 1.72; }
+    .container { max-width: 980px; margin: 0 auto; padding: 56px 24px 84px; }
+    a { color: #a78bfa; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .back { display: inline-block; margin-bottom: 32px; font-size: 13px; }
+    .meta { color: rgba(255,255,255,0.46); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0; margin-bottom: 14px; }
+    h1 { max-width: 850px; color: #fff; font-size: clamp(34px, 5vw, 58px); line-height: 1.04; margin-bottom: 18px; }
+    .lead { max-width: 760px; color: rgba(255,255,255,0.68); font-size: 18px; margin-bottom: 34px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; margin-top: 24px; }
+    article { border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; background: rgba(255,255,255,0.04); padding: 18px; }
+    h2 { color: #fff; font-size: 23px; margin: 34px 0 12px; }
+    h3 { color: #ddd6fe; font-size: 15px; margin-bottom: 8px; }
+    p, li { color: rgba(255,255,255,0.68); font-size: 15px; margin-bottom: 10px; }
+    ul { padding-left: 20px; }
+    .callout { margin-top: 30px; border: 1px solid rgba(167,139,250,0.28); background: rgba(167,139,250,0.08); border-radius: 8px; padding: 20px; }
+  </style>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "CryptoToolkit cryptography calculators",
+      "url": "https://ctool.mdpstudio.com.au/learn/cryptography-calculators.html",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "AES-GCM authenticated encryption calculator", "url": "https://ctool.mdpstudio.com.au/#/aes-gcm" },
+        { "@type": "ListItem", "position": 2, "name": "RSA key generator and encrypt/decrypt calculator", "url": "https://ctool.mdpstudio.com.au/#/rsa" },
+        { "@type": "ListItem", "position": 3, "name": "HMAC-SHA256 walkthrough", "url": "https://ctool.mdpstudio.com.au/#/hmac" },
+        { "@type": "ListItem", "position": 4, "name": "SHA-1, SHA-256, Base64, hex, binary, decimal, and text converter", "url": "https://ctool.mdpstudio.com.au/#/converter" },
+        { "@type": "ListItem", "position": 5, "name": "Elliptic curve point calculator", "url": "https://ctool.mdpstudio.com.au/#/ec-calculator" },
+        { "@type": "ListItem", "position": 6, "name": "Modular arithmetic calculator", "url": "https://ctool.mdpstudio.com.au/#/modular" },
+        { "@type": "ListItem", "position": 7, "name": "Integer factorization calculator", "url": "https://ctool.mdpstudio.com.au/#/factorization" },
+        { "@type": "ListItem", "position": 8, "name": "Caesar, Vigenere, ROT13, Atbash, and substitution cipher tools", "url": "https://ctool.mdpstudio.com.au/#/ciphers" }
+      ]
+    }
+  </script>
+</head>
+<body>
+  <main class="container" itemscope itemtype="https://schema.org/LearningResource">
+    <a href="/" class="back">&larr; Back to CryptoToolkit</a>
+    <p class="meta">Calculator guide</p>
+    <h1 itemprop="name">Cryptography calculators for AES, RSA, HMAC, SHA, Base64, EC math, and ciphers.</h1>
+    <p class="lead" itemprop="description">CryptoToolkit is a browser-only educational lab with exact calculators and attack demos. This page lists the high-intent tools searchers usually look for, then links into the interactive modules.</p>
+
+    <section class="grid" aria-label="Cryptography calculators">
+      <article>
+        <h3>AES and authenticated encryption</h3>
+        <p><a href="/#/aes-gcm">AES-GCM</a> shows authenticated encryption, GHASH, nonces, tags, and Web Crypto comparison. <a href="/#/aes">AES-128 Round</a> breaks down SubBytes, ShiftRows, MixColumns, and AddRoundKey.</p>
+      </article>
+      <article>
+        <h3>RSA keys and RSA attack math</h3>
+        <p><a href="/#/rsa">RSA Key Generator</a> creates browser-side teaching keys and performs encrypt/decrypt checks. Related RSA demos cover <a href="/#/rsa-attack">factoring</a>, <a href="/#/textbook-rsa">textbook RSA</a>, <a href="/#/wiener">Wiener's attack</a>, and <a href="/#/crt-fault">CRT fault recovery</a>.</p>
+      </article>
+      <article>
+        <h3>HMAC, SHA, and password hashing</h3>
+        <p><a href="/#/hmac">HMAC-SHA256</a> walks through ipad/opad and RFC test vectors. <a href="/#/converter">Base & Encoding</a> includes SHA-1 and SHA-256 hashing. <a href="/#/argon2">Argon2id</a> demonstrates memory-hard password hashing.</p>
+      </article>
+      <article>
+        <h3>Base64, hex, binary, decimal, and text</h3>
+        <p><a href="/#/converter">Base & Encoding</a> converts text, hex, binary, decimal, and Base64, with LF/CRLF-aware hashing for repeatable learning inputs.</p>
+      </article>
+      <article>
+        <h3>Elliptic curves and signatures</h3>
+        <p><a href="/#/ec-calculator">Elliptic Curves</a> includes point addition, scalar multiplication, Montgomery ladder, and baby-step giant-step ECDLP. <a href="/#/ecdsa">ECDSA Signing</a> shows hash, sign, verify, and nonce discipline.</p>
+      </article>
+      <article>
+        <h3>Number theory calculators</h3>
+        <p><a href="/#/modular">Modular Arithmetic</a> covers inverse, exponentiation, GCD, extended GCD, Euler's totient, square roots mod p, Legendre symbol, and Miller-Rabin primality. <a href="/#/factorization">Factorization</a> includes trial division, Pollard's rho, divisor count, and next-prime tools.</p>
+      </article>
+      <article>
+        <h3>Classical ciphers and analysis</h3>
+        <p><a href="/#/ciphers">Cipher Tools</a> includes Caesar encrypt/decrypt/brute force, Vigenere, ROT13, Atbash, and frequency analysis. <a href="/#/substitution">Substitution Analysis</a> adds interactive frequency, digraph, and trigraph support.</p>
+      </article>
+      <article>
+        <h3>Protocol and workflow demos</h3>
+        <p>Explore <a href="/#/diffie-hellman">Diffie-Hellman</a>, <a href="/#/tls13">TLS 1.3</a>, <a href="/#/paillier">Paillier</a>, <a href="/#/elgamal">ElGamal</a>, <a href="/#/shamir">Shamir Secret Sharing</a>, and <a href="/#/lwe">LWE</a> for applied crypto workflows.</p>
+      </article>
+    </section>
+
+    <h2>What is not included</h2>
+    <ul>
+      <li>No JWT decoder is listed because CryptoToolkit does not currently ship a JWT calculator.</li>
+      <li>The implementations are educational and client-side. They are not production cryptography libraries.</li>
+      <li>The app is hash-routed, so these search pages link into modules instead of creating fake server routes for each calculator.</li>
+    </ul>
+
+    <div class="callout">
+      <h2>Start with the exact tool</h2>
+      <p>Open the calculator you need from this guide, or return to the <a href="/">CryptoToolkit home page</a> to browse all learning modules, attack demos, challenges, and the assurance matrix.</p>
+    </div>
+  </main>
+</body>
+</html>

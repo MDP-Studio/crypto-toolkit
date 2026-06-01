@@ -2,8 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ctool.mdpstudio.com.au/</loc>
-    <lastmod>2026-05-18</lastmod>
+    <lastmod>2026-06-01</lastmod>
     <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://ctool.mdpstudio.com.au/learn/cryptography-calculators.html</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://ctool.mdpstudio.com.au/learn/aes-gcm-failures.html</loc>

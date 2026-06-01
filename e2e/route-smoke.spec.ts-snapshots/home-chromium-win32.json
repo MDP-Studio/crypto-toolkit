@@ -36,9 +36,10 @@
   ],
   "links": [
     "View the MDP Studio project page",
+    "Cryptography calculatorsAES-GCM, RSA keys, HMAC-SHA256, SHA hashing, Base64, EC math, and ciphers.",
     "How AES-GCM failsNonce reuse, authentication limits, and why unique IVs matter.",
     "RSA attacks explainedFactoring, textbook RSA, small d, padding oracles, broadcast, and CRT faults.",
     "Send feedback"
   ],
-  "textLength": 3098
+  "textLength": 3196
 }

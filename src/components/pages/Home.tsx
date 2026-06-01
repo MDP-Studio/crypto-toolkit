@@ -250,6 +250,10 @@ export function Home({ onNavigate }: HomeProps) {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 lg:w-[520px]">
+            <a href="/learn/cryptography-calculators.html" className="rounded-lg border border-border/70 bg-background/70 p-4 transition-colors hover:border-primary/35 hover:bg-primary/5">
+              <span className="text-sm font-semibold text-foreground">Cryptography calculators</span>
+              <span className="mt-2 block text-xs text-muted-foreground leading-relaxed">AES-GCM, RSA keys, HMAC-SHA256, SHA hashing, Base64, EC math, and ciphers.</span>
+            </a>
             <a href="/learn/aes-gcm-failures.html" className="rounded-lg border border-border/70 bg-background/70 p-4 transition-colors hover:border-primary/35 hover:bg-primary/5">
               <span className="text-sm font-semibold text-foreground">How AES-GCM fails</span>
               <span className="mt-2 block text-xs text-muted-foreground leading-relaxed">Nonce reuse, authentication limits, and why unique IVs matter.</span>

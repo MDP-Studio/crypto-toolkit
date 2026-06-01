@@ -11,7 +11,7 @@ All computation runs client-side using BigInt arithmetic with `crypto.getRandomV
 **MDP Studio project page:** [CipherLab / CryptoToolkit](https://mdpstudio.com.au/projects/cryptography-lab/)
 
 Search discovery is handled with `public/robots.txt` and `public/sitemap.xml` for the canonical live root. The app remains hash-routed, so the sitemap avoids listing fake server routes for individual modules.
-Static search-entry guides live under `/learn/` for high-intent topics such as AES-GCM nonce reuse and RSA attack demos; those pages link back into the interactive hash-routed modules.
+Static search-entry guides live under `/learn/` for high-intent topics such as exact cryptography calculators, AES-GCM nonce reuse, and RSA attack demos; those pages link back into the interactive hash-routed modules. The calculator guide lists AES-GCM, RSA key generation, HMAC-SHA256, SHA-1/SHA-256 hashing, Base64/hex/text conversion, elliptic curve math, modular arithmetic, factorization, and classical cipher tools.
 
 ## Modules (36 learning pages)
 
@@ -46,7 +46,7 @@ Static search-entry guides live under `/learn/` for high-intent topics such as A
 ### Cryptography
 - **Elliptic Curve Calculator** — Point addition, scalar multiply, Montgomery ladder, baby-step giant-step ECDLP, preset curves (secp256k1, P-192, P-256).
 - **RSA Key Generator** — 16–2048 bit key generation via Web Worker, manual key computation, encrypt/decrypt. NIST notes 2048 as a transitional minimum; production should use ≥3072 per SP 800-57.
-- **Cipher Tools** — Caesar (encrypt/decrypt/brute force), Vigenere, ROT13, Atbash, frequency analysis.
+- **Cipher Tools** — Caesar (encrypt/decrypt/brute force), Vigenere, ROT13, Atbash, frequency analysis, HMAC-SHA1, and AES-128-ECB/PKCS#7 document-ID helpers.
 
 ### Number Theory
 - **Modular Arithmetic** — Mod inverse, mod exponentiation, GCD/extended GCD, Euler's totient, sqrt mod p (Tonelli-Shanks), Legendre symbol, Miller-Rabin primality.
@@ -103,6 +103,8 @@ Both docs reinforce that the in-repo AES code is educational; production deploym
 | AES interop | Toolkit vs WebCrypto vs Python `cryptography` over shared NIST vector pack; OpenSSL CLI cross-check for AES-ECB |
 | SHA-256 | FIPS 180-4 (`"abc"`, empty string) |
 | HMAC-SHA256 | RFC 4231 Test Cases 1 & 2, AWS SigV4 kDate |
+| HMAC-SHA1 | RFC 2202 Test Cases 1 & 2 |
+| AES-128-ECB/PKCS#7 | Node/OpenSSL compatibility vectors for document IDs |
 | Miller-Rabin | Known primes + Carmichael numbers (561, 1105, 1729, 15841, 41041) |
 | MixColumns | FIPS 197 intermediate state roundtrip |
 | LWE | Encrypt/decrypt roundtrip, keygen consistency |
