@@ -11,7 +11,7 @@ All computation runs client-side using BigInt arithmetic with `crypto.getRandomV
 **MDP Studio project page:** [CipherLab / CryptoToolkit](https://mdpstudio.com.au/projects/cryptography-lab/)
 
 Search discovery is handled with `public/robots.txt` and `public/sitemap.xml` for the canonical live root. The app remains hash-routed, so the sitemap avoids listing fake server routes for individual modules.
-Static search-entry guides live under `/learn/` for high-intent topics such as exact cryptography calculators, AES-GCM nonce reuse, and RSA attack demos; those pages link back into the interactive hash-routed modules. The calculator guide lists AES-GCM, RSA key generation, HMAC-SHA256, SHA-1/SHA-256 hashing, Base64/hex/text conversion, elliptic curve math, modular arithmetic, factorization, and classical cipher tools.
+Static search-entry guides live under `/learn/` for high-intent topics such as exact cryptography calculators, AES-GCM nonce reuse, and RSA attack demos; those pages link back into the interactive hash-routed modules. The calculator guide lists AES-GCM, RSA key generation, HMAC-SHA256, legacy HMAC-SHA1 document-ID helpers, SHA-1/SHA-256 hashing, Base64/hex/text conversion, elliptic curve math, modular arithmetic, factorization, and classical cipher tools.
 
 ## Modules (36 learning pages)
 

@@ -10,8 +10,8 @@ CryptoToolkit should be the traffic magnet for the wider MDP Studio security por
 
 | Page | Search intent | Primary action |
 | --- | --- | --- |
-| `/` | cryptography calculator, AES calculator, RSA calculator, HMAC calculator | Open a module |
-| `/learn/cryptography-calculators.html` | AES-GCM calculator, RSA key generator, HMAC-SHA256, SHA hash, Base64 converter, elliptic curve calculator | Open the exact calculator |
+| `/` | cryptography calculator, AES calculator, RSA calculator, HMAC-SHA256, HMAC-SHA1 | Open a module |
+| `/learn/cryptography-calculators.html` | AES-GCM calculator, RSA key generator, HMAC-SHA256, legacy HMAC-SHA1, SHA hash, Base64 converter, elliptic curve calculator | Open the exact calculator |
 | `/learn/aes-gcm-failures.html` | how AES-GCM fails, GCM nonce reuse | Open the GCM nonce module |
 | `/learn/rsa-attacks.html` | RSA attacks explained | Open RSA attack demos |
 | `/#/challenges` | cryptography challenges | Start challenge hub |
@@ -30,7 +30,7 @@ Record this every Monday from Google Search Console:
 
 LinkedIn draft:
 
-> I added a searchable CryptoToolkit calculator guide so the site is clearer than "cryptography lab" in search: AES-GCM, RSA key generation, HMAC-SHA256, SHA-1/SHA-256 hashing, Base64/hex/text conversion, elliptic curve math, modular arithmetic, factorization, and classical cipher tools.
+> I added a searchable CryptoToolkit calculator guide so the site is clearer than "cryptography lab" in search: AES-GCM, RSA key generation, HMAC-SHA256, legacy HMAC-SHA1 compatibility checks, SHA-1/SHA-256 hashing, Base64/hex/text conversion, elliptic curve math, modular arithmetic, factorization, and classical cipher tools.
 >
 > Try it: https://ctool.mdpstudio.com.au/learn/cryptography-calculators.html
 >
@@ -52,6 +52,6 @@ Short video idea:
 
 1. Open `/learn/cryptography-calculators.html`.
 2. Click into the RSA key generator and show encrypt/decrypt.
-3. Return to the guide and open the HMAC-SHA256 walkthrough.
+3. Return to the guide and open the HMAC-SHA256 walkthrough or the legacy HMAC-SHA1 document-ID helper.
 4. Jump to `/learn/aes-gcm-failures.html`.
 5. Show two ciphertexts leaking plaintext relationship.
