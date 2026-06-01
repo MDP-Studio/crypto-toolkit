@@ -1,9 +1,21 @@
 import { describe, it, expect } from 'vitest';
-import { aesECB, aesECBDecrypt, aesGCM, mixColumns, invMixColumns, hexToBytesAES, bytesToHexAES } from '../lib/aes-math';
+import {
+  aesECB,
+  aesECBDecrypt,
+  aesECBPKCS7Decrypt,
+  aesECBPKCS7Encrypt,
+  aesGCM,
+  bytesToHexAES,
+  hexToBytesAES,
+  invMixColumns,
+  mixColumns,
+  pkcs7Pad,
+  pkcs7Unpad,
+} from '../lib/aes-math';
 import { SHA256 } from '../lib/sha256';
 import { hmacSHA256 } from '../lib/web-crypto';
 import { bytesToHex, encodeBytes, parseHexBytes } from '../lib/encoding';
-import { computeHmacSha256Steps } from '../lib/hmac';
+import { computeHmacSha1Hex, computeHmacSha256Steps } from '../lib/hmac';
 import { HMAC_EXAMPLES } from '../lib/hmac-examples';
 import { mod, modPow, modInverse, scalarMultiply, pointAdd, isInfinity, tonelliShanks, isOnCurve, pointStr, type ECPoint } from '../lib/ec-math';
 import {
@@ -393,6 +405,48 @@ describe('HMAC-SHA256', () => {
     const data = encodeBytes(example.message, 'text');
     const steps = computeHmacSha256Steps(key, data);
     expect(steps.outerHash).toBe(example.expectedHmac);
+  });
+});
+
+// ============= Document ID compatibility helpers =============
+
+describe('Document ID compatibility helpers', () => {
+  it('computes HMAC-SHA1 RFC 2202 Test Case 1', async () => {
+    const key = encodeBytes('0b'.repeat(20), 'hex');
+    const data = encodeBytes('Hi There', 'text');
+    await expect(computeHmacSha1Hex(key, data)).resolves.toBe('b617318655057264e28bc0b6fb378c8ef146be00');
+  });
+
+  it('computes HMAC-SHA1 RFC 2202 Test Case 2', async () => {
+    const key = encodeBytes('Jefe', 'text');
+    const data = encodeBytes('what do ya want for nothing?', 'text');
+    await expect(computeHmacSha1Hex(key, data)).resolves.toBe('effcdf6ae5eb2fa2d27416d5f184df9c259a7c79');
+  });
+
+  it('encrypts a document ID with AES-128-ECB and PKCS#7 padding', () => {
+    const key = hexToBytesAES('00112233445566778899aabbccddeeff');
+    const plaintext = encodeBytes('DOC-2026-00042', 'text');
+    const ciphertext = aesECBPKCS7Encrypt(plaintext, key);
+    expect(bytesToHexAES(ciphertext)).toBe('40cea86d4742337746bace5335bb7daf');
+    expect(new TextDecoder().decode(new Uint8Array(aesECBPKCS7Decrypt(ciphertext, key)))).toBe('DOC-2026-00042');
+  });
+
+  it('adds a full PKCS#7 padding block for block-aligned document IDs', () => {
+    const key = hexToBytesAES('00112233445566778899aabbccddeeff');
+    const plaintext = encodeBytes('1234567890abcdef', 'text');
+    const ciphertext = aesECBPKCS7Encrypt(plaintext, key);
+    expect(bytesToHexAES(ciphertext)).toBe('305a4c426ee6b1415bb2781b983a29f400657ea140655a44782747705d422fad');
+    expect(new TextDecoder().decode(new Uint8Array(aesECBPKCS7Decrypt(ciphertext, key)))).toBe('1234567890abcdef');
+  });
+
+  it('validates PKCS#7 padding bytes before returning plaintext', () => {
+    expect(pkcs7Pad([1, 2, 3], 8)).toEqual([1, 2, 3, 5, 5, 5, 5, 5]);
+    expect(pkcs7Unpad([1, 2, 3, 5, 5, 5, 5, 5], 8)).toEqual([1, 2, 3]);
+    expect(() => pkcs7Unpad([1, 2, 3, 5, 5, 4, 5, 5], 8)).toThrow('Invalid PKCS#7 padding bytes');
+  });
+
+  it('rejects non-128-bit AES keys for document-ID encryption', () => {
+    expect(() => aesECBPKCS7Encrypt(encodeBytes('DOC-1', 'text'), hexToBytesAES('001122'))).toThrow('AES-128 key');
   });
 });
 

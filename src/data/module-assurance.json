@@ -53,11 +53,11 @@
     "id": "ciphers",
     "title": "Cipher Tools",
     "category": "Cryptography",
-    "evidenceLevel": "limited",
-    "specSections": ["Classical Caesar, Vigenere, and ROT transforms"],
-    "vectorSources": ["UI-level deterministic transform checks through route smoke"],
-    "testIds": ["route-smoke.spec.ts: ciphers"],
-    "limitations": ["Classical ciphers only", "Not cryptographically secure", "Limited direct unit-vector coverage"]
+    "evidenceLevel": "moderate",
+    "specSections": ["Classical Caesar, Vigenere, and ROT transforms", "RFC 2104 HMAC construction", "AES-ECB block mode with PKCS#7 padding"],
+    "vectorSources": ["UI-level deterministic transform checks through route smoke", "RFC 2202 HMAC-SHA1 vectors", "Node/OpenSSL AES-128-ECB/PKCS#7 compatibility vectors"],
+    "testIds": ["route-smoke.spec.ts: ciphers", "crypto.test.ts: Document ID compatibility helpers"],
+    "limitations": ["Classical ciphers are not cryptographically secure", "HMAC-SHA1 is compatibility-only", "AES-ECB is deterministic and should not be used for new confidential storage", "Browser demo is not a production key-management library"]
   },
   {
     "id": "ecdsa",

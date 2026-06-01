@@ -11,6 +11,12 @@ export interface HmacSha256Steps {
   outerHash: string;
 }
 
+function toArrayBuffer(bytes: Uint8Array): ArrayBuffer {
+  const buffer = new ArrayBuffer(bytes.byteLength);
+  new Uint8Array(buffer).set(bytes);
+  return buffer;
+}
+
 // RFC 2104 Section 2 / RFC 4231: HMAC pads K to the hash block size,
 // then computes H((K xor opad) || H((K xor ipad) || text)).
 export function computeHmacSha256Steps(
@@ -54,4 +60,19 @@ export function computeHmacSha256Steps(
     innerHash,
     outerHash,
   };
+}
+
+export async function computeHmacSha1Hex(
+  keyBytes: Uint8Array,
+  messageBytes: Uint8Array
+): Promise<string> {
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw',
+    toArrayBuffer(keyBytes),
+    { name: 'HMAC', hash: 'SHA-1' },
+    false,
+    ['sign']
+  );
+  const signature = await crypto.subtle.sign('HMAC', cryptoKey, toArrayBuffer(messageBytes));
+  return bytesToHex(new Uint8Array(signature));
 }

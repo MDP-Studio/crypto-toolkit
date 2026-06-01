@@ -352,6 +352,93 @@ export function aesECBDecrypt(block: number[], keyBytes: number[]): number[] {
   return result;
 }
 
+const AES_BLOCK_BYTES = 16;
+
+function assertAes128Key(keyBytes: ArrayLike<number>): number[] {
+  const key = Array.from(keyBytes);
+  if (key.length !== AES_BLOCK_BYTES) {
+    throw new Error('AES-128 key must be exactly 16 bytes.');
+  }
+  for (const byte of key) {
+    if (!Number.isInteger(byte) || byte < 0 || byte > 255) {
+      throw new Error('AES key bytes must be integers from 0 to 255.');
+    }
+  }
+  return key;
+}
+
+function assertBytes(bytes: ArrayLike<number>, label: string): number[] {
+  const data = Array.from(bytes);
+  for (const byte of data) {
+    if (!Number.isInteger(byte) || byte < 0 || byte > 255) {
+      throw new Error(`${label} bytes must be integers from 0 to 255.`);
+    }
+  }
+  return data;
+}
+
+export function pkcs7Pad(dataBytes: ArrayLike<number>, blockSize = AES_BLOCK_BYTES): number[] {
+  if (!Number.isInteger(blockSize) || blockSize < 1 || blockSize > 255) {
+    throw new Error('PKCS#7 block size must be an integer from 1 to 255.');
+  }
+
+  const data = assertBytes(dataBytes, 'Plaintext');
+  const remainder = data.length % blockSize;
+  const paddingLength = remainder === 0 ? blockSize : blockSize - remainder;
+  return [...data, ...new Array(paddingLength).fill(paddingLength)];
+}
+
+export function pkcs7Unpad(paddedBytes: ArrayLike<number>, blockSize = AES_BLOCK_BYTES): number[] {
+  if (!Number.isInteger(blockSize) || blockSize < 1 || blockSize > 255) {
+    throw new Error('PKCS#7 block size must be an integer from 1 to 255.');
+  }
+
+  const padded = assertBytes(paddedBytes, 'Padded plaintext');
+  if (padded.length === 0 || padded.length % blockSize !== 0) {
+    throw new Error('PKCS#7 input must be non-empty and block aligned.');
+  }
+
+  const paddingLength = padded[padded.length - 1];
+  if (paddingLength < 1 || paddingLength > blockSize || paddingLength > padded.length) {
+    throw new Error('Invalid PKCS#7 padding length.');
+  }
+
+  for (let i = padded.length - paddingLength; i < padded.length; i++) {
+    if (padded[i] !== paddingLength) {
+      throw new Error('Invalid PKCS#7 padding bytes.');
+    }
+  }
+
+  return padded.slice(0, -paddingLength);
+}
+
+export function aesECBPKCS7Encrypt(plaintextBytes: ArrayLike<number>, keyBytes: ArrayLike<number>): number[] {
+  const key = assertAes128Key(keyBytes);
+  const padded = pkcs7Pad(plaintextBytes, AES_BLOCK_BYTES);
+  const ciphertext: number[] = [];
+
+  for (let i = 0; i < padded.length; i += AES_BLOCK_BYTES) {
+    ciphertext.push(...aesECB(padded.slice(i, i + AES_BLOCK_BYTES), key));
+  }
+
+  return ciphertext;
+}
+
+export function aesECBPKCS7Decrypt(ciphertextBytes: ArrayLike<number>, keyBytes: ArrayLike<number>): number[] {
+  const key = assertAes128Key(keyBytes);
+  const ciphertext = assertBytes(ciphertextBytes, 'Ciphertext');
+  if (ciphertext.length === 0 || ciphertext.length % AES_BLOCK_BYTES !== 0) {
+    throw new Error('AES-ECB ciphertext must be non-empty and a multiple of 16 bytes.');
+  }
+
+  const paddedPlaintext: number[] = [];
+  for (let i = 0; i < ciphertext.length; i += AES_BLOCK_BYTES) {
+    paddedPlaintext.push(...aesECBDecrypt(ciphertext.slice(i, i + AES_BLOCK_BYTES), key));
+  }
+
+  return pkcs7Unpad(paddedPlaintext, AES_BLOCK_BYTES);
+}
+
 // AES-CBC Decryption
 export function aesCBCDecrypt(blocks: number[][], key: number[], iv: number[]): number[] {
   const plaintext: number[] = [];

@@ -6,8 +6,8 @@ Generated from `src/data/module-assurance.json` by `npm run assurance`.
 
 - Modules covered: 36
 - Strong evidence: 3
-- Moderate evidence: 22
-- Limited evidence: 11
+- Moderate evidence: 23
+- Limited evidence: 10
 
 Evidence level means the current assurance quality for the educational module, not production cryptographic certification.
 
@@ -37,7 +37,7 @@ Evidence level means the current assurance quality for the educational module, n
 | [Argon2id Key Derivation](../#/argon2) | Composition | limited | Argon2id memory-hard password hashing model | WASM runtime route smoke | route-smoke.spec.ts: argon2 | Browser resource limits<br>No calibrated production policy<br>No direct Argon2 RFC vector test yet |
 | [HMAC-SHA256 Walkthrough](../#/hmac) | Composition | strong | RFC 4231 sections 4.2 and 4.3<br>AWS Signature Version 4 signing-key derivation | RFC 4231 HMAC-SHA256 vectors<br>AWS SigV4 kDate example<br>Web Crypto HMAC comparison | crypto.test.ts: HMAC-SHA256 | SHA-256 only<br>Browser demo is not a production MAC library<br>Key input supports text and raw hex bytes only |
 | [TLS 1.3 Handshake](../#/tls13) | Composition | limited | RFC 8446 TLS 1.3 handshake flow | Route smoke and staged handshake simulation | route-smoke.spec.ts: tls13 | Protocol visualization only<br>No packet-level transcript validation<br>No browser TLS stack integration |
-| [Cipher Tools](../#/ciphers) | Cryptography | limited | Classical Caesar, Vigenere, and ROT transforms | UI-level deterministic transform checks through route smoke | route-smoke.spec.ts: ciphers | Classical ciphers only<br>Not cryptographically secure<br>Limited direct unit-vector coverage |
+| [Cipher Tools](../#/ciphers) | Cryptography | moderate | Classical Caesar, Vigenere, and ROT transforms<br>RFC 2104 HMAC construction<br>AES-ECB block mode with PKCS#7 padding | UI-level deterministic transform checks through route smoke<br>RFC 2202 HMAC-SHA1 vectors<br>Node/OpenSSL AES-128-ECB/PKCS#7 compatibility vectors | route-smoke.spec.ts: ciphers<br>crypto.test.ts: Document ID compatibility helpers | Classical ciphers are not cryptographically secure<br>HMAC-SHA1 is compatibility-only<br>AES-ECB is deterministic and should not be used for new confidential storage<br>Browser demo is not a production key-management library |
 | [Elliptic Curve Calculator](../#/ec-calculator) | Cryptography | moderate | SEC 1 v2.0 elliptic curve group law | Toy curve points over F_p checked against independent arithmetic | crypto.test.ts: EC Math | Educational short-Weierstrass curves only<br>Not constant-time<br>No named-curve parameter validation |
 | [RSA Key Generator](../#/rsa) | Cryptography | moderate | PKCS #1 RSA primitive model<br>Euler theorem | Classic p=61 q=53 textbook RSA example<br>Generated small-key round trips | attacks.test.ts: RSA encrypt/decrypt | Toy key sizes<br>No OAEP or PSS production padding<br>Not suitable for key generation outside the lab |
 | [Integer Factorization](../#/factorization) | Number Theory | moderate | Trial division<br>Pollard Rho factorization | Composite factorizations<br>Semiprime Pollard Rho cases | crypto.test.ts: Number Theory<br>attacks.test.ts: factorize | Demo-scale integers only<br>Pollard Rho is probabilistic and not tuned for hard RSA moduli |

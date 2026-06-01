@@ -25,7 +25,7 @@
     "More",
     "Elliptic CurvesPoint addition, scalar multiply",
     "RSA GeneratorKey generation, encrypt/decrypt",
-    "Cipher ToolsCaesar, Vigenere, ROT13",
+    "Cipher ToolsCaesar, HMAC, AES-ECB",
     "Modular ArithmeticInverse, GCD, totient, primality",
     "FactorizationPrime factorization",
     "ECDSA SigningHash -> sign -> verify",
@@ -41,5 +41,5 @@
     "RSA attacks explainedFactoring, textbook RSA, small d, padding oracles, broadcast, and CRT faults.",
     "Send feedback"
   ],
-  "textLength": 3196
+  "textLength": 3194
 }

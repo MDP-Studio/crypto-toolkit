@@ -6,7 +6,49 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
+import { ByteInput } from '@/components/ByteInput';
+import { aesECBPKCS7Decrypt, aesECBPKCS7Encrypt, bytesToHexAES } from '@/lib/aes-math';
 import { caesarCipher, vigenereCipher, rot13, atbashCipher } from '@/lib/crypto-math';
+import { bytesToHex, encodeBytes, parseHexBytes, type ByteInputEncoding } from '@/lib/encoding';
+import { computeHmacSha1Hex } from '@/lib/hmac';
+import { hmacSHA256 } from '@/lib/web-crypto';
+
+type CiphertextEncoding = 'hex' | 'base64';
+
+interface DocumentIdCryptoResult {
+  hmacSha1Hex: string;
+  hmacSha1Base64: string;
+  hmacSha256Hex: string;
+  aesCiphertextHex: string;
+  aesCiphertextBase64: string;
+  aesRoundTrip: string;
+  blockCount: number;
+}
+
+function bytesToBase64(bytes: ArrayLike<number>): string {
+  let binary = '';
+  for (const byte of Array.from(bytes)) {
+    binary += String.fromCharCode(byte);
+  }
+  return btoa(binary);
+}
+
+function base64ToBytes(input: string): Uint8Array {
+  try {
+    const binary = atob(input.trim());
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes;
+  } catch {
+    throw new Error('Ciphertext must be valid base64.');
+  }
+}
+
+function decodeUtf8(bytes: ArrayLike<number>): string {
+  return new TextDecoder('utf-8', { fatal: true }).decode(new Uint8Array(Array.from(bytes)));
+}
 
 export function CipherTools() {
   // Caesar
@@ -32,6 +74,18 @@ export function CipherTools() {
   // Frequency analysis
   const [freqInput, setFreqInput] = useState('');
   const [freqResult, setFreqResult] = useState<{ char: string; count: number; pct: string }[]>([]);
+
+  // Document ID compatibility helpers
+  const [docIdInput, setDocIdInput] = useState('DOC-2026-00042');
+  const [docHmacKey, setDocHmacKey] = useState('partner-shared-secret');
+  const [docHmacKeyEncoding, setDocHmacKeyEncoding] = useState<ByteInputEncoding>('text');
+  const [docAesKey, setDocAesKey] = useState('00112233445566778899aabbccddeeff');
+  const [docAesKeyEncoding, setDocAesKeyEncoding] = useState<ByteInputEncoding>('hex');
+  const [docCiphertext, setDocCiphertext] = useState('');
+  const [docCiphertextEncoding, setDocCiphertextEncoding] = useState<CiphertextEncoding>('hex');
+  const [docCryptoResult, setDocCryptoResult] = useState<DocumentIdCryptoResult | null>(null);
+  const [docDecryptResult, setDocDecryptResult] = useState('');
+  const [docCryptoError, setDocCryptoError] = useState('');
 
   function doCaesar() {
     const shift = parseInt(caesarShift) || 0;
@@ -73,29 +127,78 @@ export function CipherTools() {
     setFreqResult(result);
   }
 
+  async function doDocumentIdCrypto() {
+    setDocCryptoError('');
+    setDocDecryptResult('');
+    try {
+      const documentIdBytes = encodeBytes(docIdInput, 'text');
+      const hmacKeyBytes = encodeBytes(docHmacKey, docHmacKeyEncoding);
+      const aesKeyBytes = encodeBytes(docAesKey, docAesKeyEncoding);
+
+      const hmacSha1Hex = await computeHmacSha1Hex(hmacKeyBytes, documentIdBytes);
+      const hmacSha256Hex = bytesToHex(await hmacSHA256(hmacKeyBytes, documentIdBytes));
+      const aesCiphertext = aesECBPKCS7Encrypt(documentIdBytes, aesKeyBytes);
+      const aesPlaintext = aesECBPKCS7Decrypt(aesCiphertext, aesKeyBytes);
+
+      const aesCiphertextHex = bytesToHexAES(aesCiphertext);
+      setDocCiphertext(aesCiphertextHex);
+      setDocCiphertextEncoding('hex');
+      setDocCryptoResult({
+        hmacSha1Hex,
+        hmacSha1Base64: bytesToBase64(parseHexBytes(hmacSha1Hex)),
+        hmacSha256Hex,
+        aesCiphertextHex,
+        aesCiphertextBase64: bytesToBase64(aesCiphertext),
+        aesRoundTrip: decodeUtf8(aesPlaintext),
+        blockCount: aesCiphertext.length / 16,
+      });
+    } catch (e) {
+      console.debug('Recovered from document ID crypto calculation error.', e);
+      setDocCryptoResult(null);
+      setDocCryptoError(e instanceof Error ? e.message : String(e));
+    }
+  }
+
+  function doDocumentIdDecrypt() {
+    setDocCryptoError('');
+    setDocDecryptResult('');
+    try {
+      const aesKeyBytes = encodeBytes(docAesKey, docAesKeyEncoding);
+      const ciphertextBytes = docCiphertextEncoding === 'hex'
+        ? parseHexBytes(docCiphertext)
+        : base64ToBytes(docCiphertext);
+      const plaintextBytes = aesECBPKCS7Decrypt(ciphertextBytes, aesKeyBytes);
+      setDocDecryptResult(decodeUtf8(plaintextBytes));
+    } catch (e) {
+      console.debug('Recovered from document ID decrypt error.', e);
+      setDocCryptoError(e instanceof Error ? e.message : String(e));
+    }
+  }
+
   return (
     <div className="space-y-6">
       <Card className="bg-primary/5 border-primary/20">
         <CardHeader className="pb-2">
-          <CardTitle className="text-lg">Classical Cipher Tools</CardTitle>
+          <CardTitle className="text-lg">Cipher & Document ID Tools</CardTitle>
           <CardDescription>
-            Encrypt, decrypt, and analyze text with classical ciphers — Caesar, Vigenere, ROT13, and Atbash.
+            Classical ciphers plus document-ID compatibility helpers for HMAC-SHA1 and AES-128-ECB with PKCS#7 padding.
           </CardDescription>
         </CardHeader>
       </Card>
 
       <div className="rounded-lg border bg-muted/30 p-4 text-sm space-y-2">
         <p className="font-semibold">The problem</p>
-        <p className="text-muted-foreground">Classical ciphers (Caesar, Vigenere, etc.) are the foundation of cryptography education — understanding why they are broken helps explain why modern ciphers are designed the way they are.</p>
+        <p className="text-muted-foreground">Classical ciphers teach why weak substitution leaks structure. Legacy integrations can also force deterministic document-ID signing or encryption formats that need careful byte-level verification.</p>
         <p className="font-semibold mt-3">The insight</p>
-        <p className="text-muted-foreground">Caesar shifts by a fixed amount (breakable by trying all 26 shifts). Vigenere uses a repeating keyword (breakable by Kasiski examination + frequency analysis on each column). These ciphers teach the core principles: confusion (substitution), diffusion (spreading plaintext influence), and key space size (why 26 possible keys is not enough).</p>
+        <p className="text-muted-foreground">Caesar and Vigenere show frequency leakage. HMAC-SHA1 shows keyed integrity for compatibility. AES-ECB/PKCS#7 shows a deterministic block-encryption envelope, useful for matching older systems but not recommended for new confidential storage.</p>
       </div>
 
       <Tabs defaultValue="caesar">
-        <TabsList className="w-full flex">
+        <TabsList className="w-full flex flex-wrap h-auto justify-start">
           <TabsTrigger value="caesar">Caesar</TabsTrigger>
           <TabsTrigger value="vigenere">Vigenere</TabsTrigger>
           <TabsTrigger value="rot13">ROT13/Atbash</TabsTrigger>
+          <TabsTrigger value="docid">Doc IDs</TabsTrigger>
           <TabsTrigger value="analysis">Analysis</TabsTrigger>
         </TabsList>
 
@@ -235,6 +338,130 @@ export function CipherTools() {
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Document ID compatibility helpers */}
+        <TabsContent value="docid">
+          <div className="grid grid-cols-1 xl:grid-cols-[1fr_1fr] gap-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Document ID Tokens</CardTitle>
+                <CardDescription>Generate HMAC-SHA1 and AES-128-ECB/PKCS#7 values for a document ID.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Document ID</Label>
+                  <Input
+                    value={docIdInput}
+                    onChange={e => setDocIdInput(e.target.value)}
+                    className="font-mono"
+                    placeholder="DOC-2026-00042"
+                  />
+                </div>
+                <ByteInput
+                  label="HMAC key"
+                  value={docHmacKey}
+                  encoding={docHmacKeyEncoding}
+                  onValueChange={setDocHmacKey}
+                  onEncodingChange={setDocHmacKeyEncoding}
+                  textPlaceholder="partner-shared-secret"
+                  hexPlaceholder="706172746e65722d7368617265642d736563726574"
+                  helper="Used for both HMAC-SHA1 and HMAC-SHA256 comparison."
+                />
+                <ByteInput
+                  label="AES-128 key"
+                  value={docAesKey}
+                  encoding={docAesKeyEncoding}
+                  onValueChange={setDocAesKey}
+                  onEncodingChange={setDocAesKeyEncoding}
+                  textPlaceholder="16-byte-key-here"
+                  hexPlaceholder="00112233445566778899aabbccddeeff"
+                  helper="Must resolve to exactly 16 bytes. No key derivation is applied."
+                />
+                <Button onClick={doDocumentIdCrypto} className="w-full">Generate Document ID Values</Button>
+                {docCryptoError && <p className="text-sm text-destructive">{docCryptoError}</p>}
+                <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-3 text-xs text-yellow-700 dark:text-yellow-300">
+                  ECB is deterministic: equal document ID blocks encrypt to equal ciphertext blocks. Keep this for compatibility testing, not new system design.
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Outputs</CardTitle>
+                <CardDescription>Hex and base64 forms for copy-safe integration checks.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {docCryptoResult ? (
+                  <>
+                    <div className="rounded-md border bg-muted/50 p-3 space-y-1">
+                      <Label className="text-xs text-muted-foreground">HMAC-SHA1 hex</Label>
+                      <p className="font-mono text-xs break-all">{docCryptoResult.hmacSha1Hex}</p>
+                      <Label className="text-xs text-muted-foreground">HMAC-SHA1 base64</Label>
+                      <p className="font-mono text-xs break-all">{docCryptoResult.hmacSha1Base64}</p>
+                    </div>
+                    <div className="rounded-md border bg-muted/50 p-3 space-y-1">
+                      <Label className="text-xs text-muted-foreground">HMAC-SHA256 hex</Label>
+                      <p className="font-mono text-xs break-all">{docCryptoResult.hmacSha256Hex}</p>
+                    </div>
+                    <div className="rounded-md border bg-muted/50 p-3 space-y-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Label className="text-xs text-muted-foreground">AES-128-ECB/PKCS#7 ciphertext</Label>
+                        <Badge variant="outline">{docCryptoResult.blockCount} block{docCryptoResult.blockCount === 1 ? '' : 's'}</Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground">Hex</p>
+                      <p className="font-mono text-xs break-all">{docCryptoResult.aesCiphertextHex}</p>
+                      <p className="text-xs text-muted-foreground">Base64</p>
+                      <p className="font-mono text-xs break-all">{docCryptoResult.aesCiphertextBase64}</p>
+                      <p className="text-xs text-muted-foreground">Decrypt check</p>
+                      <p className="font-mono text-xs break-all">{docCryptoResult.aesRoundTrip}</p>
+                    </div>
+                  </>
+                ) : (
+                  <p className="text-sm text-muted-foreground">Generate values to see HMAC and AES outputs.</p>
+                )}
+              </CardContent>
+            </Card>
+
+            <Card className="xl:col-span-2">
+              <CardHeader>
+                <CardTitle className="text-lg">Decrypt AES-128-ECB/PKCS#7</CardTitle>
+                <CardDescription>Paste a generated or external ciphertext and decode it with the AES key above.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex gap-2">
+                  <Badge
+                    variant={docCiphertextEncoding === 'hex' ? 'default' : 'outline'}
+                    className="cursor-pointer"
+                    onClick={() => setDocCiphertextEncoding('hex')}
+                  >
+                    Hex
+                  </Badge>
+                  <Badge
+                    variant={docCiphertextEncoding === 'base64' ? 'default' : 'outline'}
+                    className="cursor-pointer"
+                    onClick={() => setDocCiphertextEncoding('base64')}
+                  >
+                    Base64
+                  </Badge>
+                </div>
+                <Textarea
+                  value={docCiphertext}
+                  onChange={e => setDocCiphertext(e.target.value)}
+                  rows={3}
+                  className="font-mono"
+                  placeholder={docCiphertextEncoding === 'hex' ? 'ciphertext hex...' : 'ciphertext base64...'}
+                />
+                <Button onClick={doDocumentIdDecrypt} variant="outline" className="w-full">Decrypt Ciphertext</Button>
+                {docDecryptResult && (
+                  <div className="rounded-md border bg-muted/50 p-3">
+                    <Label className="text-xs text-muted-foreground">Plaintext document ID</Label>
+                    <p className="font-mono text-sm break-all">{docDecryptResult}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
 
         {/* Frequency Analysis */}

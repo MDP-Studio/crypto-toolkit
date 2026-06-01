@@ -38,7 +38,7 @@ const CATEGORIES: Category[] = [
     pages: [
       { id: 'ec-calculator', label: 'Elliptic Curves', desc: 'Point addition, scalar multiply' },
       { id: 'rsa', label: 'RSA Generator', desc: 'Key generation, encrypt/decrypt' },
-      { id: 'ciphers', label: 'Cipher Tools', desc: 'Caesar, Vigenere, ROT13' },
+      { id: 'ciphers', label: 'Cipher Tools', desc: 'Caesar, HMAC, AES-ECB' },
     ],
   },
   {
