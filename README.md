@@ -11,7 +11,7 @@ All computation runs client-side using BigInt arithmetic with `crypto.getRandomV
 **MDP Studio project page:** [CipherLab / CryptoToolkit](https://mdpstudio.com.au/projects/cryptography-lab/)
 
 Search discovery is handled with `public/robots.txt` and `public/sitemap.xml` for the canonical live root. The app remains hash-routed, so the sitemap avoids listing fake server routes for individual modules.
-Static search-entry guides live under `/learn/` for high-intent topics such as exact cryptography calculators, AES-GCM nonce reuse, and RSA attack demos; those pages link back into the interactive hash-routed modules. The calculator guide lists AES-GCM, RSA key generation, HMAC-SHA256, legacy HMAC-SHA1 document-ID helpers, SHA-1/SHA-256 hashing, Base64/hex/text conversion, elliptic curve math, modular arithmetic, factorization, and classical cipher tools.
+Static search-entry guides live under `/learn/` for high-intent topics such as exact cryptography calculators, AES-GCM nonce reuse, RSA attack demos, and the production handoff boundary; those pages link back into the interactive hash-routed modules. The calculator guide lists AES-GCM, RSA key generation, HMAC-SHA256, legacy HMAC-SHA1 document-ID helpers, SHA-1/SHA-256 hashing, Base64/hex/text conversion, elliptic curve math, modular arithmetic, factorization, and classical cipher tools.
 
 ## Modules (36 learning pages)
 
@@ -91,6 +91,15 @@ AES-ECB and AES-GCM ship with a published parity matrix against production refer
 - [docs/aes-lifecycle.md](docs/aes-lifecycle.md) - Key-rotation triggers, nonce-uniqueness bounds (NIST SP 800-38D §8.3), AAD metadata binding, envelope structure, and KEK/DEK separation. Tracks NIST SP 800-57 Part 1 Rev 5 and the OWASP Cryptographic Storage Cheat Sheet.
 
 Both docs reinforce that the in-repo AES code is educational; production deployments should use Web Crypto, libsodium, or Tink.
+
+## Production Crypto Handoff
+
+[docs/production-handoff.md](docs/production-handoff.md) and
+`/learn/production-crypto-handoff.html` define the safe transition from a
+CryptoToolkit lesson to a real product design. The checklist covers library
+selection, key ownership, AEAD envelopes, AAD binding, nonce allocation,
+negative misuse tests, and the line where a learner must stop using demo code
+and switch to Web Crypto, libsodium, Tink, or a mature backend library.
 
 ## Test Vectors & Coverage
 

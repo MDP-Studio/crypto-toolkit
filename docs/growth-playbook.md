@@ -14,6 +14,7 @@ CryptoToolkit should be the traffic magnet for the wider MDP Studio security por
 | `/learn/cryptography-calculators.html` | AES-GCM calculator, RSA key generator, HMAC-SHA256, legacy HMAC-SHA1, SHA hash, Base64 converter, elliptic curve calculator | Open the exact calculator |
 | `/learn/aes-gcm-failures.html` | how AES-GCM fails, GCM nonce reuse | Open the GCM nonce module |
 | `/learn/rsa-attacks.html` | RSA attacks explained | Open RSA attack demos |
+| `/learn/production-crypto-handoff.html` | production crypto checklist, AES-GCM implementation checklist, key management checklist | Move from the lesson to safe implementation guidance |
 | `/#/challenges` | cryptography challenges | Start challenge hub |
 | `/#/assurance` | crypto toolkit test vectors | Review assurance matrix |
 
@@ -25,6 +26,7 @@ Record this every Monday from Google Search Console:
 | --- | ---: | ---: | --- | --- | --- |
 | 2026-05-18 | TBD | TBD | TBD | TBD | Baseline after sitemap submission |
 | 2026-06-01 | TBD | TBD | TBD | TBD | Added exact calculator guide and root metadata for calculator-intent queries |
+| 2026-06-19 | TBD | TBD | TBD | TBD | Added production handoff checklist for safe-implementation searches |
 
 ## Distribution Assets
 
@@ -43,6 +45,14 @@ Existing guide-page draft:
 > Try it: https://ctool.mdpstudio.com.au
 >
 > #Cryptography #CyberSecurity #WebCrypto #SecurityEngineering #PortfolioProject
+
+Production handoff draft:
+
+> CryptoToolkit is a learning lab, not production crypto. I added a handoff checklist for the exact moment where the lesson should stop and a real implementation should start: AEAD envelopes, nonce allocation, AAD metadata binding, KMS/HSM boundaries, key rotation, and misuse tests.
+>
+> Try it: https://ctool.mdpstudio.com.au/learn/production-crypto-handoff.html
+>
+> #Cryptography #SecurityEngineering #AppSec #WebCrypto
 
 Community post angle:
 

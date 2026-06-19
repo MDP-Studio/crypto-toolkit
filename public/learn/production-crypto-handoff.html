@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Production Crypto Handoff Checklist - CryptoToolkit</title>
+  <meta name="description" content="A practical checklist for moving from CryptoToolkit's educational demos to production cryptography with safe libraries, key management, nonce discipline, and AEAD envelopes." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ctool.mdpstudio.com.au/learn/production-crypto-handoff.html" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #09090b; color: rgba(255,255,255,0.86); font-family: "Geist Variable", system-ui, sans-serif; line-height: 1.72; }
+    .container { max-width: 940px; margin: 0 auto; padding: 56px 24px 84px; }
+    a { color: #a78bfa; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .back { display: inline-block; margin-bottom: 32px; font-size: 13px; }
+    .meta { color: rgba(255,255,255,0.46); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0; margin-bottom: 14px; }
+    h1 { max-width: 820px; color: #fff; font-size: clamp(34px, 5vw, 58px); line-height: 1.04; margin-bottom: 18px; }
+    .lead { max-width: 740px; color: rgba(255,255,255,0.68); font-size: 18px; margin-bottom: 34px; }
+    section { border-top: 1px solid rgba(255,255,255,0.12); padding-top: 26px; margin-top: 30px; }
+    h2 { color: #fff; font-size: 23px; margin-bottom: 12px; }
+    h3 { color: #ddd6fe; font-size: 16px; margin: 18px 0 8px; }
+    p, li { color: rgba(255,255,255,0.68); font-size: 15px; margin-bottom: 10px; }
+    ul, ol { padding-left: 20px; }
+    code { background: rgba(167,139,250,0.14); border: 1px solid rgba(167,139,250,0.22); border-radius: 5px; padding: 2px 5px; color: #ddd6fe; }
+    pre { overflow-x: auto; margin: 14px 0; padding: 16px; border: 1px solid rgba(167,139,250,0.22); border-radius: 8px; background: rgba(167,139,250,0.08); color: #ddd6fe; }
+    table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 14px; }
+    th, td { border: 1px solid rgba(255,255,255,0.12); padding: 10px; text-align: left; vertical-align: top; }
+    th { color: #fff; background: rgba(255,255,255,0.06); }
+    .callout { margin-top: 30px; border: 1px solid rgba(167,139,250,0.28); background: rgba(167,139,250,0.08); border-radius: 8px; padding: 20px; }
+  </style>
+</head>
+<body>
+  <main class="container" itemscope itemtype="https://schema.org/LearningResource">
+    <a href="/" class="back">&larr; Back to CryptoToolkit</a>
+    <p class="meta">Production handoff</p>
+    <h1 itemprop="name">Learn with the lab. Ship with production cryptography.</h1>
+    <p class="lead" itemprop="description">CryptoToolkit makes crypto mechanics visible, but its browser demos should not protect real secrets. This checklist shows what has to change when a lesson becomes a real product design.</p>
+
+    <section>
+      <h2>Do not port the demo</h2>
+      <p>Use maintained production primitives instead of copying educational code. The handoff starts by naming the real library, key owner, rotation trigger, envelope format, and rollback plan.</p>
+      <table>
+        <thead>
+          <tr><th>Need</th><th>Use instead</th><th>Why</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Browser encryption</td><td>Web Crypto API</td><td>Native key objects and vetted AES-GCM implementation.</td></tr>
+          <tr><td>Backend AEAD</td><td>libsodium or Google Tink</td><td>Misuse-resistant wrappers, tested primitives, and keyset support.</td></tr>
+          <tr><td>Password hashing</td><td>Backend Argon2id library</td><td>Calibrated memory and iteration parameters under server policy.</td></tr>
+          <tr><td>Key storage</td><td>KMS, HSM, or Vault Transit</td><td>Keys are separated from app data and app logs.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Minimum questions before production</h2>
+      <ol>
+        <li>What exact asset is protected: message, file, database field, token, backup, or session?</li>
+        <li>What attacker is in scope: stolen storage, malicious admin, network attacker, offline guesser, or tenant escape?</li>
+        <li>Where are keys generated, stored, rotated, revoked, backed up, and destroyed?</li>
+        <li>How are nonces allocated and prevented from repeating?</li>
+        <li>Which metadata is authenticated as AAD?</li>
+        <li>How will old ciphertexts decrypt after a key or algorithm migration?</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Safe AEAD envelope shape</h2>
+      <p>A production envelope should bind security metadata into the authentication tag:</p>
+      <pre><code>suite_id || key_id || nonce || ciphertext || tag</code></pre>
+      <p>Pass fields such as <code>suite_id</code>, <code>key_id</code>, tenant, resource type, and resource ID as AAD when they are security-relevant. The AAD does not need to be secret, but it must not be silently mutable.</p>
+    </section>
+
+    <section>
+      <h2>Misuse tests to require</h2>
+      <ul>
+        <li>Repeated nonce or invocation counter is rejected before encryption.</li>
+        <li>Swapping metadata such as key ID, suite ID, tenant, or resource ID breaks authentication.</li>
+        <li>Old suite ciphertext can be decrypted but not newly encrypted.</li>
+        <li>Weak password or undersized Argon2id parameters are rejected.</li>
+        <li>Decrypt failure does not reveal whether the passphrase, tag, or metadata was wrong.</li>
+        <li>Logs and metrics never include plaintext, key material, passphrases, raw envelopes, or customer secrets.</li>
+      </ul>
+    </section>
+
+    <div class="callout">
+      <h2>Use CryptoToolkit for the lesson boundary</h2>
+      <p>Start with the <a href="/#/aes-gcm">AES-GCM</a>, <a href="/#/gcm-nonce">GCM nonce reuse</a>, <a href="/#/hmac">HMAC</a>, and <a href="/#/constant-time">constant-time</a> modules to understand what can fail. Then move production work to Web Crypto, libsodium, Tink, or a mature language-native library with key management around it.</p>
+      <p>For the repository version of this checklist, read <a href="https://github.com/MDP-Studio/crypto-toolkit/blob/master/docs/production-handoff.md">docs/production-handoff.md</a> on GitHub.</p>
+    </div>
+  </main>
+</body>
+</html>
