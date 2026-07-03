@@ -263,11 +263,11 @@
     "id": "dh-subgroup",
     "title": "DH Small Subgroup Attack",
     "category": "Attacks",
-    "evidenceLevel": "limited",
+    "evidenceLevel": "moderate",
     "specSections": ["Finite-field subgroup confinement attack"],
-    "vectorSources": ["Route smoke and toy subgroup examples"],
-    "testIds": ["route-smoke.spec.ts: dh-subgroup"],
-    "limitations": ["Toy parameters", "No safe-prime validation library", "Limited direct test vectors"]
+    "vectorSources": ["p=23, secret=7 small-subgroup residue vector", "Route smoke and toy subgroup examples"],
+    "testIds": ["attacks.test.ts: Diffie-Hellman small subgroup leak", "route-smoke.spec.ts: dh-subgroup"],
+    "limitations": ["Toy parameters", "No safe-prime validation library", "Does not combine residues with CRT into a full-key recovery"]
   },
   {
     "id": "wiener",

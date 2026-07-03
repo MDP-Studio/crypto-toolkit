@@ -13,6 +13,7 @@ import {
 } from '../lib/crypto-math';
 import { aesECB, aesECBDecrypt, hexToBytesAES, bytesToHexAES } from '../lib/aes-math';
 import { runBleichenbacher } from '../lib/bleichenbacher';
+import { findDHSmallSubgroupLeaks } from '../lib/dh-subgroup';
 import {
   encryptHastadBroadcast,
   recoverHastadBroadcast,
@@ -211,6 +212,17 @@ describe('factorize', () => {
     expect(f.get(2n)).toBe(10);
     expect(f.get(3n)).toBe(5);
     expect(f.get(7n)).toBe(1);
+  });
+});
+
+describe('Diffie-Hellman small subgroup leak', () => {
+  it('recovers the expected small-subgroup residues for p=23 and secret=7', () => {
+    const leaks = findDHSmallSubgroupLeaks(23n, 7n);
+    expect(leaks.map(leak => [leak.maliciousG, leak.order, leak.victimPub, leak.recoveredMod])).toEqual([
+      [1n, 1n, 1n, 0n],
+      [22n, 2n, 22n, 1n],
+      [4n, 11n, 8n, 7n],
+    ]);
   });
 });
 

@@ -6,8 +6,8 @@ Generated from `src/data/module-assurance.json` by `npm run assurance`.
 
 - Modules covered: 36
 - Strong evidence: 3
-- Moderate evidence: 23
-- Limited evidence: 10
+- Moderate evidence: 24
+- Limited evidence: 9
 
 Evidence level means the current assurance quality for the educational module, not production cryptographic certification.
 
@@ -22,7 +22,7 @@ Evidence level means the current assurance quality for the educational module, n
 | [Schnorr ZKP Protocol](../#/schnorr) | Advanced | limited | Schnorr identification protocol | Route smoke and visual protocol invariants | route-smoke.spec.ts: schnorr | Toy groups<br>No Fiat-Shamir transcript hashing<br>Limited direct unit-vector coverage |
 | [Bleichenbacher RSA Attack](../#/bleichenbacher) | Attacks | moderate | PKCS #1 v1.5 interval narrowing attack | Toy k=3 conforming-message recovery | attacks.test.ts: Bleichenbacher | Toy oracle and modulus<br>No real TLS oracle integration<br>Query and iteration budgets cap the demo |
 | [CRT-RSA Fault Injection](../#/crt-fault) | Attacks | moderate | Boneh-DeMillo-Lipton CRT-RSA fault model | gcd(sig_correct - sig_faulty, n) factor recovery | attacks.test.ts: RSA encrypt/decrypt | Toy fault model<br>No physical side-channel modeling<br>Small RSA example |
-| [DH Small Subgroup Attack](../#/dh-subgroup) | Attacks | limited | Finite-field subgroup confinement attack | Route smoke and toy subgroup examples | route-smoke.spec.ts: dh-subgroup | Toy parameters<br>No safe-prime validation library<br>Limited direct test vectors |
+| [DH Small Subgroup Attack](../#/dh-subgroup) | Attacks | moderate | Finite-field subgroup confinement attack | p=23, secret=7 small-subgroup residue vector<br>Route smoke and toy subgroup examples | attacks.test.ts: Diffie-Hellman small subgroup leak<br>route-smoke.spec.ts: dh-subgroup | Toy parameters<br>No safe-prime validation library<br>Does not combine residues with CRT into a full-key recovery |
 | [ECB Pattern Leakage](../#/ecb-penguin) | Attacks | moderate | ECB deterministic block encryption behavior | FIPS AES vectors for block primitive<br>Route smoke for pattern-leak UI | crypto.test.ts: AES-128<br>route-smoke.spec.ts: ecb-penguin | Synthetic image/pattern demo<br>No file upload assurance<br>ECB shown only as a misuse case |
 | [ECDSA Nonce Reuse Attack](../#/nonce-reuse) | Attacks | limited | ECDSA nonce-reuse private key equation | Route smoke and toy signing-flow examples | route-smoke.spec.ts: nonce-reuse | Toy curve arithmetic<br>No full production-chain signature ingestion<br>Limited direct test vectors |
 | [GCM Nonce Reuse Attack](../#/gcm-nonce) | Attacks | moderate | NIST SP 800-38D nonce uniqueness requirement<br>CTR keystream reuse | NIST GCM vectors for cipher substrate<br>Route smoke for nonce-reuse workflow | crypto.test.ts: AES-GCM<br>route-smoke.spec.ts: gcm-nonce | Toy plaintext examples<br>Does not recover GHASH key in full generality<br>No live traffic ingestion |

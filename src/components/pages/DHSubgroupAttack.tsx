@@ -10,6 +10,7 @@ import { MathText } from '@/components/MathText';
 import { modPow } from '@/lib/ec-math';
 import { isPrime } from '@/lib/crypto-math';
 import { parseBigInt } from '@/lib/parse';
+import { findDHSmallSubgroupLeaks } from '@/lib/dh-subgroup';
 
 type Phase = 'setup' | 'attack' | 'result';
 
@@ -41,61 +42,7 @@ export function DHSubgroupAttack() {
 
   function doAttack() {
     const p = parseBigInt(pStr)!, secret = parseBigInt(secretStr)!;
-    const results: typeof attackResults = [];
-
-    // Attack 1: g = 1 (trivial subgroup, order 1)
-    const g1 = 1n;
-    const pub1 = modPow(g1, secret, p); // Always 1
-    results.push({
-      maliciousG: g1,
-      order: 1n,
-      victimPub: pub1,
-      sharedSecret: modPow(pub1, secret, p),
-      recoveredMod: 0n,
-      explanation: 'g=1: every power is 1. Shared secret is always 1 regardless of private key.',
-    });
-
-    // Attack 2: g = p-1 (order 2)
-    const g2 = p - 1n;
-    const pub2 = modPow(g2, secret, p); // Either 1 or p-1
-    results.push({
-      maliciousG: g2,
-      order: 2n,
-      victimPub: pub2,
-      sharedSecret: modPow(pub2, secret, p),
-      recoveredMod: pub2 === 1n ? 0n : 1n,
-      explanation: `g=p-1: has order 2. Victim's public key reveals secret mod 2 = ${pub2 === 1n ? '0 (even)' : '1 (odd)'}.`,
-    });
-
-    // Attack 3: find a small-order element
-    // For p=23, p-1=22=2*11. Elements of order 11 exist.
-    const pMinus1 = p - 1n;
-    // Find factors of p-1
-    for (let factor = 2n; factor * factor <= pMinus1; factor++) {
-      if (pMinus1 % factor === 0n) {
-        const smallOrder = factor;
-        // Find element of this order: g3 = random^((p-1)/factor) mod p
-        const g3 = modPow(2n, pMinus1 / smallOrder, p);
-        if (g3 !== 1n && modPow(g3, smallOrder, p) === 1n) {
-          const pub3 = modPow(g3, secret, p);
-          // Brute-force secret mod smallOrder
-          let recovered = 0n;
-          for (let k = 0n; k < smallOrder; k++) {
-            if (modPow(g3, k, p) === pub3) { recovered = k; break; }
-          }
-          results.push({
-            maliciousG: g3,
-            order: smallOrder,
-            victimPub: pub3,
-            sharedSecret: modPow(pub3, secret, p),
-            recoveredMod: recovered,
-            explanation: `g=${g3}: has order ${smallOrder}. Leaked: secret ≡ ${recovered} (mod ${smallOrder}).`,
-          });
-          break;
-        }
-      }
-    }
-
+    const results = findDHSmallSubgroupLeaks(p, secret);
     setAttackResults(results);
     setPhase('result');
   }
