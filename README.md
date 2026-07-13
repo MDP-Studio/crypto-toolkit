@@ -210,7 +210,7 @@ docs/
 
 Deployed on Netlify (`public/_headers`) and Vercel (`vercel.json`) with matching headers:
 
-The current Coolify static deployment uses [`deploy/nginx.coolify.conf`](deploy/nginx.coolify.conf), which mirrors the same controls and SPA fallback. A generic nginx configuration is not an acceptable substitute because it drops the CSP and cross-origin isolation headers required by the documented posture.
+The current Coolify static deployment uses [`deploy/nginx.coolify.conf`](deploy/nginx.coolify.conf), which mirrors the same controls and SPA fallback. HTML responses also use `Cache-Control: public, no-cache, no-transform` so an edge proxy cannot inject analytics code that would contradict the no-tracking scope or violate the CSP. A generic nginx configuration is not an acceptable substitute because it drops these controls.
 
 | Header | Value | Notes |
 |--------|-------|-------|
@@ -223,7 +223,7 @@ The current Coolify static deployment uses [`deploy/nginx.coolify.conf`](deploy/
 | Cross-Origin-Resource-Policy | `same-origin` | |
 | X-Frame-Options | `DENY` | |
 | X-Content-Type-Options | `nosniff` | |
-| Cache-Control | `no-cache` (HTML), `immutable` (hashed assets) | |
+| Cache-Control | `public, no-cache, no-transform` (HTML), `immutable` (hashed assets) | `no-transform` preserves the audited no-tracking HTML at the edge |
 
 ## Motivation
 

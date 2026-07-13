@@ -28,6 +28,7 @@ This codebase has been through 6 internal audit sweeps covering:
 - Miller-Rabin correctness against Carmichael numbers
 - CSP header verification against deployed headers
 - Coolify nginx parity checks against `public/_headers`, `vercel.json`, and `deploy/nginx.coolify.conf`
+- Edge-transform prevention for HTML so a proxy cannot inject analytics code outside the reviewed CSP and no-tracking boundary
 - CSPRNG usage audit (`Math.random` banned via ESLint)
 - Dependency placement audit (build tools in devDependencies)
 - BigInt falsy-zero audit (`0n` is falsy in JS)
