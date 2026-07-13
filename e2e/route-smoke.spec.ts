@@ -89,3 +89,18 @@ test.describe('mobile route smoke', () => {
     });
   }
 });
+
+test('crypto-agility lab explains unsafe and safe migration decisions', async ({ page }) => {
+  await page.goto('/#/crypto-agility');
+  const firstScenario = page
+    .getByRole('heading', { name: '1. Change an encrypted-record format' })
+    .locator('xpath=ancestor::*[@data-slot="card"]');
+
+  await firstScenario.getByLabel('Silently replace the primitive under the existing format version').check();
+  await firstScenario.getByRole('button', { name: 'Check migration decision' }).click();
+  await expect(firstScenario.getByRole('status')).toContainText('Trust gap.');
+
+  await firstScenario.getByLabel(/Add a new algorithm ID and version/).check();
+  await firstScenario.getByRole('button', { name: 'Check migration decision' }).click();
+  await expect(firstScenario.getByRole('status')).toContainText('Safe decision.');
+});

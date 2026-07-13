@@ -51,6 +51,7 @@ const LLLVisualization = lazy(() => import('@/components/pages/LLLVisualization'
 const MeetInTheMiddle = lazy(() => import('@/components/pages/MeetInTheMiddle').then(m => ({ default: m.MeetInTheMiddle })));
 const AssuranceMatrix = lazy(() => import('@/components/pages/AssuranceMatrix').then(m => ({ default: m.AssuranceMatrix })));
 const ChallengeHub = lazy(() => import('@/components/pages/ChallengeHub').then(m => ({ default: m.ChallengeHub })));
+const CryptoAgilityLab = lazy(() => import('@/components/pages/CryptoAgilityLab').then(m => ({ default: m.CryptoAgilityLab })));
 
 export type Page =
   | 'home'
@@ -91,6 +92,7 @@ export type Page =
   | 'lll'
   | 'mitm'
   | 'challenges'
+  | 'crypto-agility'
   | 'assurance';
 
 const PAGE_COMPONENTS: Record<Page, React.FC> = {
@@ -132,6 +134,7 @@ const PAGE_COMPONENTS: Record<Page, React.FC> = {
   lll: LLLVisualization,
   mitm: MeetInTheMiddle,
   challenges: ChallengeHub,
+  'crypto-agility': CryptoAgilityLab,
   assurance: AssuranceMatrix,
 };
 
@@ -174,6 +177,7 @@ const PAGE_TITLES: Record<Page, string> = {
   lll: 'LLL Lattice Reduction',
   mitm: 'Meet-in-the-Middle Attack',
   challenges: 'Challenge Hub',
+  'crypto-agility': 'Crypto-Agility Inventory and Migration Lab',
   assurance: 'Assurance Matrix',
 };
 
@@ -204,7 +208,7 @@ const VALID_PAGES = new Set(Object.keys({
   argon2: 0, tls13: 0, 'padding-oracle': 0, 'textbook-rsa': 0, 'hash-extension': 0,
   shamir: 0, 'gcm-nonce': 0, hmac: 0, 'ecb-penguin': 0, 'dh-subgroup': 0, wiener: 0,
   'curve-plot': 0, bleichenbacher: 0, coppersmith: 0, 'crt-fault': 0, birthday: 0,
-  'constant-time': 0, lll: 0, mitm: 0, challenges: 0, assurance: 0,
+  'constant-time': 0, lll: 0, mitm: 0, challenges: 0, 'crypto-agility': 0, assurance: 0,
 } satisfies Record<Page, number>));
 
 function pageFromHash(): Page {

@@ -118,6 +118,7 @@ const CATEGORIES: Category[] = [
     bg: 'hover:bg-amber-500/5 border-amber-500/10 hover:border-amber-500/30',
     pages: [
       { id: 'challenges', label: 'Challenge Hub', desc: 'Standalone crypto exercises' },
+      { id: 'crypto-agility', label: 'Crypto-Agility Lab', desc: 'Inventory and migration decisions' },
     ],
   },
   {
@@ -137,7 +138,7 @@ const CATEGORIES: Category[] = [
 export function Home({ onNavigate }: HomeProps) {
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(() => new Set());
   const totalLearningModules = CATEGORIES.reduce(
-    (sum, cat) => sum + cat.pages.filter(page => page.id !== 'assurance' && page.id !== 'challenges').length,
+    (sum, cat) => sum + cat.pages.filter(page => page.id !== 'assurance' && page.id !== 'challenges' && page.id !== 'crypto-agility').length,
     0
   );
 

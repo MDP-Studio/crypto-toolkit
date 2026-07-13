@@ -358,5 +358,15 @@
     "vectorSources": ["S-DES helper tests", "Route smoke for 2DES workflow"],
     "testIds": ["sdes.test.ts", "route-smoke.spec.ts: mitm"],
     "limitations": ["S-DES toy cipher", "Small key space by design", "Does not attack modern block ciphers"]
+  },
+  {
+    "id": "crypto-agility",
+    "title": "Crypto-Agility Inventory and Migration Lab",
+    "category": "Practice",
+    "evidenceLevel": "moderate",
+    "specSections": ["NIST crypto-agility project guidance", "NIST post-quantum migration inventory principles"],
+    "vectorSources": ["Five-item fictional cryptographic inventory", "Four deterministic downgrade, PQC-priority, provider-boundary, and rollback scenarios"],
+    "testIds": ["crypto-agility.test.ts", "route-smoke.spec.ts: crypto-agility"],
+    "limitations": ["Fictional teaching inventory", "No ML-KEM or ML-DSA implementation", "No provider or KMS interoperability evidence", "Does not produce a production migration plan"]
   }
 ]

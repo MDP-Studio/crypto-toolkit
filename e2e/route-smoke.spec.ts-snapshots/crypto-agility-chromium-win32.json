@@ -1,0 +1,35 @@
+{
+  "header": [
+    "Crypto-Agility Inventory and Migration Lab"
+  ],
+  "headings": [
+    "Crypto-Agility Inventory and Migration Lab",
+    "1. Read the cryptographic inventory",
+    "Encrypt customer records at rest",
+    "Wrap long-lived backup data keys",
+    "Sign deployment approvals",
+    "Protect browser-to-API transport",
+    "Derive password verifiers",
+    "2. Reject unsafe migration plans",
+    "1. Change an encrypted-record format",
+    "2. Prioritize post-quantum migration",
+    "3. Respect the protocol boundary",
+    "4. Design a safe rollback",
+    "Crypto-Agility Inventory and Migration Lab",
+    "Found a bug, confusing step, or improvement idea?"
+  ],
+  "buttons": [
+    "Crypto-Agility Inventory and Migration Lab",
+    "More",
+    "Check migration decision",
+    "Check migration decision",
+    "Check migration decision",
+    "Check migration decision",
+    "Reset lab"
+  ],
+  "links": [
+    "Open full assurance matrix",
+    "Send feedback"
+  ],
+  "textLength": 4729
+}

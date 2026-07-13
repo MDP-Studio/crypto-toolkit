@@ -1,6 +1,6 @@
 # CryptoToolkit
 
-An interactive educational platform for learning cryptography by doing: 36 learning modules, a separate Challenge Hub, and an assurance matrix covering how crypto works, why it works, and how it breaks. Every attack is real: algorithms run to completion and recover secrets through the actual mathematical exploit, not pre-computed simulations.
+An interactive educational platform for learning cryptography by doing: 36 learning modules, a Challenge Hub, a crypto-agility migration lab, and an assurance matrix covering how crypto works, why it works, how it breaks, and how real systems should plan algorithm transitions. Every attack is real: algorithms run to completion and recover secrets through the actual mathematical exploit, not pre-computed simulations.
 
 All computation runs client-side using BigInt arithmetic with `crypto.getRandomValues()` — no server, no tracking, no data leaves your browser.
 
@@ -69,6 +69,12 @@ Static search-entry guides live under `/learn/` for high-intent topics such as e
 
 The live app includes a separate **Challenge Hub** at `#/challenges`. It keeps CryptoHack-style practice prompts separate from calculators and simulators, shows one challenge at a time, stores progress locally, and links back to the relevant learning module. The current bank has 30 custom instance challenges across 6 stages: First Contact, Building Blocks, Misuse Radar, Attack Workflows, Cryptanalysis Lab, and Human-Hard Gauntlet. The bank intentionally avoids lookup-only answers such as algorithm names, standard vector names, and generic definition recall.
 
+## Crypto-Agility Migration Lab
+
+The `#/crypto-agility` page provides a fictional but explicit cryptographic inventory and four migration-decision scenarios. Learners must reason about algorithm identifiers, versioned envelopes, long-lived post-quantum exposure, provider-owned TLS boundaries, downgrade rejection, and failure-safe rollback. Unsafe choices explain the trust gap instead of merely marking an answer wrong.
+
+See [docs/crypto-agility-lab.md](docs/crypto-agility-lab.md) for its evidence boundary. The lab does not implement ML-KEM, ML-DSA, custom TLS, or a production migration plan.
+
 ## Assurance Matrix
 
 The live app includes an **Assurance Matrix** page at `#/assurance`. It lists every module with its spec anchors, vector sources, test IDs, and known limitations. The same data generates [docs/assurance-matrix.md](docs/assurance-matrix.md) via `npm run assurance`, and `npm run ci` fails if a module is missing from the matrix.
@@ -103,7 +109,7 @@ and switch to Web Crypto, libsodium, Tink, or a mature backend library.
 
 ## Test Vectors & Coverage
 
-137 tests across 9 Vitest suites, plus Playwright route smoke snapshots for every learning module, the Challenge Hub, and the assurance page. Key vector sources:
+Vitest unit and vector suites plus Playwright route smoke snapshots cover every learning module, the Challenge Hub, the crypto-agility lab, and the assurance page. Key vector sources:
 
 | Module | Source |
 |--------|--------|
@@ -129,7 +135,7 @@ Coverage reporting is available with `npm run coverage` using the v8 provider an
 - **React 19** + **Vite 8** — Code-split with React.lazy (main bundle 220KB, 67KB gzipped)
 - **TypeScript 5.9** — Strict mode, noUnusedLocals, verbatimModuleSyntax
 - **Tailwind CSS v4** + **shadcn/ui** — Dark/light theme, responsive 320px–1280px+
-- **Vitest** - 137 tests with NIST/RFC/AWS vector attribution and derived challenge-answer checks
+- **Vitest** - vector, attack, assurance, challenge-answer, and crypto-agility decision tests
 - **Playwright** - route smoke snapshots across the app
 - **BigInt** — Arbitrary precision, no external math libraries
 - **Web Crypto API** — CSPRNG via `crypto.getRandomValues()`, `crypto.subtle` for ECDSA/AES/HMAC comparison
@@ -140,7 +146,7 @@ Coverage reporting is available with `npm run coverage` using the v8 provider an
 npm install
 npm run dev      # dev server at localhost:5173
 npm run build    # production build
-npm test         # 122 Vitest tests
+npm test         # run all Vitest suites
 npm run coverage # Vitest v8 coverage report
 npm run assurance # regenerate docs/assurance-matrix.md
 npm run e2e:routes # Playwright route smoke snapshots
@@ -178,7 +184,7 @@ src/
     StepCard.tsx          # Step-by-step workflow card
     AssuranceSummary.tsx  # Per-module evidence summary card
     ShiftRowsAnimation.tsx # CSS transform animation for AES ShiftRows
-    pages/                # 37 lazy-loaded page components
+    pages/                # lazy-loaded learning and practice page components
   data/
     module-assurance.json # Spec anchors, vector sources, tests, known limitations
   __tests__/

@@ -4,9 +4,9 @@ Generated from `src/data/module-assurance.json` by `npm run assurance`.
 
 ## Summary
 
-- Modules covered: 36
+- Modules covered: 37
 - Strong evidence: 3
-- Moderate evidence: 24
+- Moderate evidence: 25
 - Limited evidence: 9
 
 Evidence level means the current assurance quality for the educational module, not production cryptographic certification.
@@ -42,6 +42,7 @@ Evidence level means the current assurance quality for the educational module, n
 | [RSA Key Generator](../#/rsa) | Cryptography | moderate | PKCS #1 RSA primitive model<br>Euler theorem | Classic p=61 q=53 textbook RSA example<br>Generated small-key round trips | attacks.test.ts: RSA encrypt/decrypt | Toy key sizes<br>No OAEP or PSS production padding<br>Not suitable for key generation outside the lab |
 | [Integer Factorization](../#/factorization) | Number Theory | moderate | Trial division<br>Pollard Rho factorization | Composite factorizations<br>Semiprime Pollard Rho cases | crypto.test.ts: Number Theory<br>attacks.test.ts: factorize | Demo-scale integers only<br>Pollard Rho is probabilistic and not tuned for hard RSA moduli |
 | [Modular Arithmetic](../#/modular) | Number Theory | moderate | Extended Euclidean algorithm<br>Euler totient<br>Miller-Rabin primality checks | Known GCD, inverse, totient, Carmichael, and Mersenne-prime cases | crypto.test.ts: Number Theory<br>attacks.test.ts: Miller-Rabin edge cases | Deterministic enough for demo-scale integers<br>Not a replacement for cryptographic prime generation |
+| [Crypto-Agility Inventory and Migration Lab](../#/crypto-agility) | Practice | moderate | NIST crypto-agility project guidance<br>NIST post-quantum migration inventory principles | Five-item fictional cryptographic inventory<br>Four deterministic downgrade, PQC-priority, provider-boundary, and rollback scenarios | crypto-agility.test.ts<br>route-smoke.spec.ts: crypto-agility | Fictional teaching inventory<br>No ML-KEM or ML-DSA implementation<br>No provider or KMS interoperability evidence<br>Does not produce a production migration plan |
 | [Base & Text Converter](../#/converter) | Utilities | moderate | RFC 4648 Base64<br>UTF-8 byte encoding<br>FIPS 180-4 SHA-256 | UTF-8 round trips<br>Malformed byte parser rejection<br>FIPS SHA-256 digest vectors | crypto.test.ts: Base conversions<br>crypto.test.ts: SHA-256 | Text decoding is browser UTF-8 focused<br>Visual converter is not a forensic encoding suite |
 | [EC Curve Visualization](../#/curve-plot) | Utilities | moderate | Short-Weierstrass curve equation over F_p | sqrtModP and Legendre-symbol residue tests<br>Route smoke for plotted UI | attacks.test.ts: sqrtModP<br>route-smoke.spec.ts: curve-plot | Small prime fields<br>Visualization only<br>No named-curve security claims |
 | [Substitution Analysis](../#/substitution) | Utilities | limited | Monoalphabetic substitution frequency analysis | Route smoke and deterministic UI examples | route-smoke.spec.ts: substitution | Heuristic language model only<br>English-frequency focused<br>Limited direct test vectors |

@@ -44,6 +44,7 @@ const expectedIds = [
   'constant-time',
   'lll',
   'mitm',
+  'crypto-agility',
 ];
 
 const requiredFields = [

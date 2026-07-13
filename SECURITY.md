@@ -31,5 +31,8 @@ This codebase has been through 6 internal audit sweeps covering:
 - Dependency placement audit (build tools in devDependencies)
 - BigInt falsy-zero audit (`0n` is falsy in JS)
 - Release transparency audit (SBOM, checksums, and local provenance checklist)
+- Crypto-agility inventory and misuse-decision coverage (versioning, downgrade rejection, protocol ownership, PQC prioritization, and rollback)
+
+The crypto-agility lab is design education. It does not implement post-quantum algorithms, replace browser or provider TLS, or certify a migration plan. Production migration requires supported libraries, protocol-owner coordination, interoperability evidence, staged telemetry, and an approved rollback policy.
 
 Findings and resolutions are tracked in `tasks/todo.md`.

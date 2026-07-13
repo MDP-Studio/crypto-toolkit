@@ -29,6 +29,7 @@ import {
   Orbit,
   PenTool,
   RadioTower,
+  RefreshCcw,
   Route,
   ScanSearch,
   SearchCheck,
@@ -90,6 +91,7 @@ export const NAV_ITEMS: NavItem[] = [
   { id: 'lll', label: 'LLL Reduction', category: 'Advanced', icon: ChartNoAxesCombined },
 
   { id: 'challenges', label: 'Challenge Hub', category: 'Practice', icon: Flag },
+  { id: 'crypto-agility', label: 'Crypto-Agility Lab', category: 'Practice', icon: RefreshCcw },
 
   { id: 'converter', label: 'Base & Encoding', category: 'Utilities', icon: Braces },
   { id: 'substitution', label: 'Substitution Analysis', category: 'Utilities', icon: FileSearch },
