@@ -27,6 +27,7 @@ This codebase has been through 6 internal audit sweeps covering:
 - RFC 4231 test vector verification (HMAC-SHA256)
 - Miller-Rabin correctness against Carmichael numbers
 - CSP header verification against deployed headers
+- Coolify nginx parity checks against `public/_headers`, `vercel.json`, and `deploy/nginx.coolify.conf`
 - CSPRNG usage audit (`Math.random` banned via ESLint)
 - Dependency placement audit (build tools in devDependencies)
 - BigInt falsy-zero audit (`0n` is falsy in JS)

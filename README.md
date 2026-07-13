@@ -210,6 +210,8 @@ docs/
 
 Deployed on Netlify (`public/_headers`) and Vercel (`vercel.json`) with matching headers:
 
+The current Coolify static deployment uses [`deploy/nginx.coolify.conf`](deploy/nginx.coolify.conf), which mirrors the same controls and SPA fallback. A generic nginx configuration is not an acceptable substitute because it drops the CSP and cross-origin isolation headers required by the documented posture.
+
 | Header | Value | Notes |
 |--------|-------|-------|
 | Content-Security-Policy | `script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; worker-src 'self'; frame-ancestors 'none'` | `unsafe-inline` for Tailwind v4 + React `style={}`; `wasm-unsafe-eval` for hash-wasm's `WebAssembly.compile()` (Argon2id) |
