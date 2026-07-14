@@ -3,17 +3,20 @@
     "GCM Nonce Reuse Attack"
   ],
   "headings": [
+    "Break unsafe crypto",
     "GCM Nonce Reuse Attack",
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
     "GCM Nonce Reuse Attack",
     "More",
-    "Encrypt Message 1"
+    "Encrypt Message 1",
+    "ECDSA Nonce Reuse",
+    "Next: Padding Oracle"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 1627
+  "textLength": 1760
 }

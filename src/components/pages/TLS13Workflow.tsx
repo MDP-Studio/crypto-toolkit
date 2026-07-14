@@ -163,8 +163,8 @@ export function TLS13Workflow() {
 
       {/* Two-column: Client | Server */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="text-center"><Badge className="bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30" variant="outline">Client</Badge></div>
-        <div className="text-center"><Badge className="bg-green-500/20 text-green-600 dark:text-green-400 border-green-500/30" variant="outline">Server</Badge></div>
+        <div className="text-center"><Badge className="bg-blue-500/20 text-blue-800 dark:text-blue-300 border-blue-500/30" variant="outline">Client</Badge></div>
+        <div className="text-center"><Badge className="bg-green-500/20 text-green-800 dark:text-green-300 border-green-500/30" variant="outline">Server</Badge></div>
       </div>
 
       {/* Step 1: ClientHello + ServerHello */}

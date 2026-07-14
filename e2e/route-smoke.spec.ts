@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 interface AssuranceEntry {
@@ -21,8 +22,6 @@ const routes = [
   { id: 'assurance', title: 'Assurance Matrix', path: '/#/assurance' },
 ];
 
-test.describe.configure({ mode: 'serial' });
-
 for (const route of routes) {
   test(`route smoke: ${route.id}`, async ({ page }) => {
     const consoleErrors: string[] = [];
@@ -36,6 +35,19 @@ for (const route of routes) {
     await expect(page.locator('#main-content')).not.toContainText('Loading...');
     await expect(page.getByText('Something went wrong')).toHaveCount(0);
     await expect(page.locator('#main-content')).toContainText(route.title);
+
+    const accessibility = await new AxeBuilder({ page })
+      .include('#main-content')
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .analyze();
+    expect(
+      accessibility.violations.map(violation => ({
+        id: violation.id,
+        impact: violation.impact,
+        targets: violation.nodes.map(node => node.target.join(' ')),
+      })),
+      `Accessibility violations on ${route.id}`,
+    ).toEqual([]);
 
     const snapshot = await page.locator('#main-content').evaluate(element => {
       const textOf = (selector: string) => Array.from(element.querySelectorAll(selector))
@@ -103,4 +115,28 @@ test('crypto-agility lab explains unsafe and safe migration decisions', async ({
   await firstScenario.getByLabel(/Add a new algorithm ID and version/).check();
   await firstScenario.getByRole('button', { name: 'Check migration decision' }).click();
   await expect(firstScenario.getByRole('status')).toContainText('Safe decision.');
+});
+
+test('primary learning flow works with a keyboard', async ({ page }) => {
+  await page.goto('/');
+
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('link', { name: 'Skip to main content' })).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#main-content')).toBeFocused();
+
+  const search = page.getByLabel('Search modules');
+  await search.focus();
+  await page.keyboard.type('elliptic curve');
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/#\/ec-calculator$/);
+  await expect(page.getByText('Elliptic Curve Calculator').first()).toBeVisible();
+
+  await page.goto('/');
+  const startPath = page.getByRole('button', { name: 'Start build the foundations' });
+  await startPath.focus();
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/#\/converter$/);
+  await expect(page.getByText('Base & Text Converter').first()).toBeVisible();
+  await expect(page.getByRole('button', { name: /Next: Modular Arithmetic/ })).toBeVisible();
 });

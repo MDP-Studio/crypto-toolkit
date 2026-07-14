@@ -3,11 +3,14 @@
     "Assurance Matrix"
   ],
   "headings": [
+    "Develop production judgment",
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
     "Assurance Matrix",
-    "More"
+    "More",
+    "Crypto-Agility Lab",
+    "Choose another path"
   ],
   "links": [
     "Elliptic Curve Calculator",
@@ -19,5 +22,5 @@
     "ECDSA Signing Workflow",
     "Paillier Cryptosystem"
   ],
-  "textLength": 11455
+  "textLength": 11597
 }

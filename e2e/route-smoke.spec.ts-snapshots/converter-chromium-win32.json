@@ -3,6 +3,7 @@
     "Base & Text Converter"
   ],
   "headings": [
+    "Build the foundations",
     "Base & Text Converter",
     "Found a bug, confusing step, or improvement idea?"
   ],
@@ -12,11 +13,12 @@
     "Hashing",
     "Text Encoding",
     "Number Base",
-    "Compute Hash"
+    "Compute Hash",
+    "Next: Modular Arithmetic"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 891
+  "textLength": 1002
 }

@@ -16,7 +16,8 @@
     "release:artifacts": "node scripts/generate-release-artifacts.mjs",
     "e2e:routes": "playwright test e2e/route-smoke.spec.ts",
     "e2e:routes:update": "playwright test e2e/route-smoke.spec.ts --update-snapshots",
-    "ci": "tsc -b && npm run lint && npm run assurance && npm run interop && npm run coverage && npm run build && npm run e2e:routes && npm audit --omit=dev --audit-level=high"
+    "performance": "node scripts/check-performance-budget.mjs",
+    "ci": "tsc -b && npm run lint && npm run assurance && npm run interop && npm run coverage && npm run build && npm run performance && npm run e2e:routes && npm audit --omit=dev --audit-level=high"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
@@ -30,6 +31,7 @@
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.1",
     "@eslint/js": "^9.39.4",
     "@playwright/test": "^1.59.1",
     "@tailwindcss/vite": "^4.2.2",

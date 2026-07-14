@@ -2,10 +2,15 @@ import * as React from "react"
 import { Input as InputPrimitive } from "@base-ui/react/input"
 
 import { cn } from "@/lib/utils"
+import { useAssociatedControlId } from "@/components/ui/use-associated-control-id"
 
-function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+function Input({ className, type, id: explicitId, ref: forwardedRef, ...props }: React.ComponentProps<"input">) {
+  const { id, ref } = useAssociatedControlId<HTMLInputElement>(explicitId, forwardedRef)
+
   return (
     <InputPrimitive
+      id={id}
+      ref={ref}
       type={type}
       data-slot="input"
       className={cn(

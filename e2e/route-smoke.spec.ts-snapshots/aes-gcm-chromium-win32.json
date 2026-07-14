@@ -3,17 +3,20 @@
     "AES-GCM Authenticated Encryption"
   ],
   "headings": [
+    "Build the foundations",
     "AES-GCM Authenticated Encryption",
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
     "AES-GCM Authenticated Encryption",
     "More",
-    "Encrypt with AES-GCM"
+    "Encrypt with AES-GCM",
+    "AES Round",
+    "Choose another path"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 2520
+  "textLength": 2646
 }

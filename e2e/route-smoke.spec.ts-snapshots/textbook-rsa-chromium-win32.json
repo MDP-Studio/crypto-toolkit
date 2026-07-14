@@ -3,17 +3,20 @@
     "Textbook RSA Attack"
   ],
   "headings": [
+    "Break unsafe crypto",
     "Textbook RSA Attack",
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
     "Textbook RSA Attack",
     "More",
-    "Encrypt: c = me mod n"
+    "Encrypt: c = me mod n",
+    "Padding Oracle",
+    "Next: RSA Factoring"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 2340
+  "textLength": 2462
 }

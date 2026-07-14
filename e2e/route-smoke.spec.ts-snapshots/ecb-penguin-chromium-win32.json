@@ -3,17 +3,19 @@
     "ECB Pattern Leakage"
   ],
   "headings": [
+    "Break unsafe crypto",
     "ECB Pattern Leakage",
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
     "ECB Pattern Leakage",
     "More",
-    "Encrypt (ECB Mode)"
+    "Encrypt (ECB Mode)",
+    "Next: ECDSA Nonce Reuse"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 1640
+  "textLength": 1769
 }

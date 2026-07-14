@@ -9,6 +9,10 @@
     "Browser-only lab",
     "Clear boundary",
     "Use this lab to learn, not to protect production systems.",
+    "Follow a sequence instead of guessing what comes next.",
+    "Build the foundations",
+    "Break unsafe crypto",
+    "Develop production judgment",
     "Searchable explainers for the most shareable crypto lessons.",
     "Cryptography",
     "Number Theory",
@@ -23,16 +27,16 @@
   "buttons": [
     "CryptoToolkit",
     "More",
-    "Elliptic CurvesPoint addition, scalar multiply",
-    "RSA GeneratorKey generation, encrypt/decrypt",
-    "Cipher ToolsCaesar, HMAC, AES-ECB",
-    "Modular ArithmeticInverse, GCD, totient, primality",
-    "FactorizationPrime factorization",
-    "ECDSA SigningHash -> sign -> verify",
-    "PaillierHomomorphic encryption",
-    "ElGamalHomomorphic multiply",
-    "Diffie-HellmanKey exchange",
-    "Show 2 more"
+    "Base & Encoding",
+    "Modular Arithmetic",
+    "Diffie-Hellman",
+    "AES Round",
+    "AES-GCM",
+    "Start build the foundations",
+    "ECB Pattern Leakage",
+    "ECDSA Nonce Reuse",
+    "GCM Nonce Reuse",
+    "Padding Oracle"
   ],
   "links": [
     "View the MDP Studio project page",
@@ -41,5 +45,5 @@
     "RSA attacks explainedFactoring, textbook RSA, small d, padding oracles, broadcast, and CRT faults.",
     "Send feedback"
   ],
-  "textLength": 3263
+  "textLength": 4370
 }

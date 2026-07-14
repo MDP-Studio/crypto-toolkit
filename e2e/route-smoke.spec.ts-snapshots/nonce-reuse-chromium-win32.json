@@ -3,17 +3,20 @@
     "ECDSA Nonce Reuse Attack"
   ],
   "headings": [
+    "Break unsafe crypto",
     "ECDSA Nonce Reuse Attack",
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
     "ECDSA Nonce Reuse Attack",
     "More",
-    "Setup"
+    "Setup",
+    "ECB Pattern Leakage",
+    "Next: GCM Nonce Reuse"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 2132
+  "textLength": 2260
 }

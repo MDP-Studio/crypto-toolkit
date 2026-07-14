@@ -300,7 +300,7 @@ export function ECCalculator() {
             </div>
           )}
           {curveContradiction?.type === 'custom' && (
-            <Badge variant="outline" className="text-yellow-600 dark:text-yellow-400 border-yellow-500/30 bg-yellow-500/10">
+            <Badge variant="outline" className="text-yellow-700 dark:text-yellow-300 border-yellow-500/30 bg-yellow-500/10">
               {curveContradiction.message}
             </Badge>
           )}

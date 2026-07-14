@@ -1,6 +1,6 @@
 # CryptoToolkit
 
-An interactive educational platform for learning cryptography by doing: 36 learning modules, a Challenge Hub, a crypto-agility migration lab, and an assurance matrix covering how crypto works, why it works, how it breaks, and how real systems should plan algorithm transitions. Every attack is real: algorithms run to completion and recover secrets through the actual mathematical exploit, not pre-computed simulations.
+An interactive educational platform for learning cryptography by doing: 36 learning modules, three guided learning paths, a Challenge Hub, a crypto-agility migration lab, and an assurance matrix covering how crypto works, why it works, how it breaks, and how real systems should plan algorithm transitions. Every attack is real: algorithms run to completion and recover secrets through the actual mathematical exploit, not pre-computed simulations.
 
 All computation runs client-side using BigInt arithmetic with `crypto.getRandomValues()` — no server, no tracking, no data leaves your browser.
 
@@ -65,6 +65,16 @@ Static search-entry guides live under `/learn/` for high-intent topics such as e
 - **Substitution Analysis** — Interactive cipher breaker with frequency/digraph/trigraph analysis.
 - **EC Curve Plot** — Scatter plot of all F_p points for small primes with interactive selection.
 
+## Guided Learning Paths
+
+The home page offers three ordered paths for learners who do not yet know which module should come next:
+
+- **Build the foundations** moves from representation and modular arithmetic through Diffie-Hellman, AES internals, and AES-GCM.
+- **Break unsafe crypto** follows concrete pattern leakage, nonce-reuse, padding-oracle, and RSA failure modes.
+- **Develop production judgment** connects timing behavior, password hashing, TLS composition, crypto-agility decisions, and the assurance matrix.
+
+Every step displays its path position plus previous and next controls. The paths teach concepts and review judgment only. They do not qualify these browser implementations for production use.
+
 ## Challenge Hub
 
 The live app includes a separate **Challenge Hub** at `#/challenges`. It keeps CryptoHack-style practice prompts separate from calculators and simulators, shows one challenge at a time, stores progress locally, and links back to the relevant learning module. The current bank has 30 custom instance challenges across 6 stages: First Contact, Building Blocks, Misuse Radar, Attack Workflows, Cryptanalysis Lab, and Human-Hard Gauntlet. The bank intentionally avoids lookup-only answers such as algorithm names, standard vector names, and generic definition recall.
@@ -128,7 +138,9 @@ Vitest unit and vector suites plus Playwright route smoke snapshots cover every 
 | Bleichenbacher | End-to-end interval narrowing on 24-bit modulus |
 | Hastad broadcast | e=3 CRT recovery and precondition rejection |
 
-Coverage reporting is available with `npm run coverage` using the v8 provider and is included in `npm run ci`.
+Coverage reporting is available with `npm run coverage` using the v8 provider and is included in `npm run ci`. The Playwright route suite runs axe WCAG 2 A/AA checks across every app route and includes a keyboard-only learning-flow test. Shared inputs, textareas, and select triggers generate stable IDs and associate an unambiguous sibling label automatically; complex field groups retain explicit naming.
+
+The production build is also held to checked-in performance budgets via `npm run performance`: entry JavaScript stays below 290 KiB raw / 90 KiB gzip, entry CSS below 110 KiB raw / 18 KiB gzip, the largest JavaScript asset below 300 KiB, and all JavaScript assets below 1,100 KiB. Pull requests and pushes to `master` run the full gate in GitHub Actions.
 
 ## Tech Stack
 
@@ -136,7 +148,7 @@ Coverage reporting is available with `npm run coverage` using the v8 provider an
 - **TypeScript 5.9** — Strict mode, noUnusedLocals, verbatimModuleSyntax
 - **Tailwind CSS v4** + **shadcn/ui** — Dark/light theme, responsive 320px–1280px+
 - **Vitest** - vector, attack, assurance, challenge-answer, and crypto-agility decision tests
-- **Playwright** - route smoke snapshots across the app
+- **Playwright + axe-core** - route smoke snapshots, WCAG checks across every route, and keyboard-flow coverage
 - **BigInt** — Arbitrary precision, no external math libraries
 - **Web Crypto API** — CSPRNG via `crypto.getRandomValues()`, `crypto.subtle` for ECDSA/AES/HMAC comparison
 - **hash-wasm** — Argon2id WASM in dedicated Web Worker
@@ -150,7 +162,8 @@ npm test         # run all Vitest suites
 npm run coverage # Vitest v8 coverage report
 npm run assurance # regenerate docs/assurance-matrix.md
 npm run e2e:routes # Playwright route smoke snapshots
-npm run ci       # full check: tsc + lint + assurance + coverage + build + routes + prod audit
+npm run performance # enforce production asset-size budgets after a build
+npm run ci       # full check: tsc + lint + assurance + coverage + build + budgets + axe/routes + prod audit
 ```
 
 ## Architecture
@@ -179,6 +192,7 @@ src/
     hash.worker.ts        # Dedicated Argon2id WASM worker (loads once, reuses)
   components/
     Sidebar.tsx           # Right-side collapsible nav with category toggles
+    LearningPathProgress.tsx # Previous/next guidance for ordered learning paths
     ErrorBoundary.tsx     # Catches computation errors without crashing app
     SecurityBanner.tsx    # Collapsible timing attack warning
     StepCard.tsx          # Step-by-step workflow card
@@ -186,12 +200,15 @@ src/
     ShiftRowsAnimation.tsx # CSS transform animation for AES ShiftRows
     pages/                # lazy-loaded learning and practice page components
   data/
+    learning-paths.ts     # Typed path sequence, outcomes, and scope boundary
     module-assurance.json # Spec anchors, vector sources, tests, known limitations
   __tests__/
     crypto.test.ts        # AES, SHA-256, EC math, number theory, LWE test vectors
     attacks.test.ts       # Attack primitive tests
 e2e/
-  route-smoke.spec.ts     # Playwright route smoke and regression snapshots
+  route-smoke.spec.ts     # Route snapshots, axe scans, and keyboard flows
+scripts/
+  check-performance-budget.mjs # Fails builds that exceed asset-size budgets
 docs/
   assurance-matrix.md     # Generated module assurance report
 ```

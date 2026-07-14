@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import type { Page } from '@/App';
 import { Card, CardContent } from '@/components/ui/card';
+import { LEARNING_PATH_SCOPE_NOTICE, LEARNING_PATHS } from '@/data/learning-paths';
 import {
+  ArrowRight,
   Atom,
   Binary,
+  BookOpenCheck,
   ChevronDown,
   ChevronUp,
   CircuitBoard,
+  Clock3,
   Flag,
   Link2,
   LockKeyhole,
@@ -228,7 +232,7 @@ export function Home({ onNavigate }: HomeProps) {
       </section>
 
       <section aria-labelledby="safe-educational-use" className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-5">
-        <p className="text-xs font-mono uppercase text-amber-300 tracking-normal">Safe educational use</p>
+        <p className="text-xs font-mono uppercase text-amber-800 dark:text-amber-300 tracking-normal">Safe educational use</p>
         <h2 id="safe-educational-use" className="mt-2 text-2xl font-semibold tracking-normal">
           Use this lab to learn, not to protect production systems.
         </h2>
@@ -237,6 +241,61 @@ export function Home({ onNavigate }: HomeProps) {
           production crypto library, does not promise constant-time behavior, and should not be copied into real
           payment, identity, messaging, or secrets-management systems.
         </p>
+      </section>
+
+      <section aria-labelledby="guided-learning-paths" className="space-y-4">
+        <div className="max-w-3xl">
+          <p className="text-xs font-mono uppercase text-primary tracking-normal">Guided learning paths</p>
+          <h2 id="guided-learning-paths" className="mt-2 text-2xl font-semibold tracking-normal">
+            Follow a sequence instead of guessing what comes next.
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+            Each path orders the interactive modules around a concrete outcome. Every module includes previous and next controls so the sequence stays visible while you work.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          {LEARNING_PATHS.map(path => (
+            <Card key={path.id} className="border-primary/15 bg-card/70">
+              <CardContent className="flex h-full flex-col p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.12em] text-primary">
+                    <BookOpenCheck className="h-4 w-4" aria-hidden="true" />
+                    {path.audience}
+                  </span>
+                  <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                    <Clock3 className="h-3.5 w-3.5" aria-hidden="true" />
+                    {path.estimatedMinutes} min
+                  </span>
+                </div>
+                <h3 className="mt-3 text-lg font-semibold">{path.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{path.outcome}</p>
+                <ol className="my-4 space-y-2 border-l border-border pl-4">
+                  {path.steps.map((step, index) => (
+                    <li key={step.id} className="text-sm">
+                      <span className="font-mono text-xs text-muted-foreground">{index + 1}.</span>{' '}
+                      <button
+                        type="button"
+                        onClick={() => onNavigate(step.id)}
+                        className="rounded-sm text-left font-medium text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      >
+                        {step.label}
+                      </button>
+                    </li>
+                  ))}
+                </ol>
+                <button
+                  type="button"
+                  onClick={() => onNavigate(path.steps[0].id)}
+                  className="mt-auto inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/85"
+                >
+                  Start {path.title.toLowerCase()}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <p className="text-xs text-muted-foreground">{LEARNING_PATH_SCOPE_NOTICE}</p>
       </section>
 
       <section aria-labelledby="popular-guides" className="border border-border/70 rounded-xl bg-card/50 p-5">

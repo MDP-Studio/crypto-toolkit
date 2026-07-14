@@ -3,17 +3,20 @@
     "Padding Oracle Attack"
   ],
   "headings": [
+    "Break unsafe crypto",
     "Padding Oracle Attack",
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
     "Padding Oracle Attack",
     "More",
-    "Encrypt (AES-CBC + PKCS#7 Padding)"
+    "Encrypt (AES-CBC + PKCS#7 Padding)",
+    "GCM Nonce Reuse",
+    "Next: Textbook RSA"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 3011
+  "textLength": 3135
 }

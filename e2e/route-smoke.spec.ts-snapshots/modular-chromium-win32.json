@@ -3,6 +3,7 @@
     "Modular Arithmetic"
   ],
   "headings": [
+    "Build the foundations",
     "Modular Arithmetic",
     "Found a bug, confusing step, or improvement idea?"
   ],
@@ -15,11 +16,13 @@
     "Calculate",
     "Calculate",
     "Calculate",
-    "Test"
+    "Test",
+    "Base & Encoding",
+    "Next: Diffie-Hellman"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 2507
+  "textLength": 2636
 }

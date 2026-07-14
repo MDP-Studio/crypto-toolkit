@@ -3,17 +3,20 @@
     "RSA Attack Workflow"
   ],
   "headings": [
+    "Break unsafe crypto",
     "RSA Attack Workflow",
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
     "RSA Attack Workflow",
     "More",
-    "Attack: Factor n & Decrypt"
+    "Attack: Factor n & Decrypt",
+    "Textbook RSA",
+    "Choose another path"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 1521
+  "textLength": 1643
 }

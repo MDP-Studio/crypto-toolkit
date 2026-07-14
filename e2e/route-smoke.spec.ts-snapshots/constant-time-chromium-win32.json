@@ -3,17 +3,19 @@
     "Constant-Time Comparison"
   ],
   "headings": [
+    "Develop production judgment",
     "Constant-Time Comparison",
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
     "Constant-Time Comparison",
     "More",
-    "Measure Timing (1000 trials each)"
+    "Measure Timing (1000 trials each)",
+    "Next: Argon2id"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 3840
+  "textLength": 3960
 }

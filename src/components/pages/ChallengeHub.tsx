@@ -116,7 +116,7 @@ export function ChallengeHub() {
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block truncate font-semibold">{stage.title}</span>
-                      <span className="mt-0.5 block truncate text-xs opacity-80">
+                      <span className="mt-0.5 block truncate text-xs">
                         {stage.difficulty} | {stageSolved}/{stageChallenges.length} solved
                       </span>
                     </span>
@@ -180,9 +180,9 @@ export function ChallengeHub() {
                 <div className="flex flex-wrap items-center gap-2">
                   <Trophy className="h-4 w-4 text-primary" />
                   <p className="text-sm font-medium text-foreground">{activeChallenge.title}</p>
-                  <span className="text-xs text-muted-foreground">{activeChallenge.points} pts</span>
+                  <span className="text-xs text-foreground/75">{activeChallenge.points} pts</span>
                 </div>
-                <p className="mt-1 text-xs text-muted-foreground">{activeChallenge.category} | {activeChallenge.difficulty}</p>
+                <p className="mt-1 text-xs text-foreground/75">{activeChallenge.category} | {activeChallenge.difficulty}</p>
               </div>
             </div>
           </div>

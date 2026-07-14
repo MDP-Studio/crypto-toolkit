@@ -136,7 +136,7 @@ export function CurvePlot() {
           )}
 
           {p && p > 200n && (
-            <Badge variant="outline" className="text-yellow-600 dark:text-yellow-400">
+            <Badge variant="outline" className="text-yellow-700 dark:text-yellow-300">
               p must be ≤ 200 for visualization (too many pixels for larger primes)
             </Badge>
           )}

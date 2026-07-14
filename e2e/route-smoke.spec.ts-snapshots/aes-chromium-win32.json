@@ -3,17 +3,20 @@
     "AES-128 Round Visualization"
   ],
   "headings": [
+    "Build the foundations",
     "AES-128 Round Visualization",
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
     "AES-128 Round Visualization",
     "More",
-    "Compute Round 1"
+    "Compute Round 1",
+    "Diffie-Hellman",
+    "Next: AES-GCM"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 2572
+  "textLength": 2687
 }

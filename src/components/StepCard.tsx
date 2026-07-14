@@ -15,7 +15,7 @@ export function StepCard({ step, title, status, children }: StepCardProps) {
     <Card className={cn(
       'transition-all',
       status === 'active' && 'ring-2 ring-primary/50',
-      status === 'pending' && 'opacity-60',
+      status === 'pending' && 'bg-muted/20',
     )}>
       <CardHeader className="pb-3 px-4 md:px-6">
         <div className="flex items-center gap-2 md:gap-3 flex-wrap">

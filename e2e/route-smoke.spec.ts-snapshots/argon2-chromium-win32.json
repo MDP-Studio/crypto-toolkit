@@ -3,17 +3,20 @@
     "Argon2id Key Derivation"
   ],
   "headings": [
+    "Develop production judgment",
     "Argon2id Key Derivation",
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
     "Argon2id Key Derivation",
     "More",
-    "Hash with Argon2id + SHA-256"
+    "Hash with Argon2id + SHA-256",
+    "Constant-Time Comparison",
+    "Next: TLS 1.3"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 2725
+  "textLength": 2862
 }

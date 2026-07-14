@@ -216,7 +216,7 @@ export function ECDSAWorkflow() {
           <Label className="text-xs">Line Endings:</Label>
           <Badge variant={lineEnding === 'lf' ? 'default' : 'outline'} className="cursor-pointer" onClick={() => setLineEnding('lf')}>LF</Badge>
           <Badge variant={lineEnding === 'crlf' ? 'default' : 'outline'} className="cursor-pointer" onClick={() => setLineEnding('crlf')}>CRLF</Badge>
-          <span className="text-xs text-yellow-600 dark:text-yellow-400">Line endings change the hash!</span>
+          <span className="text-xs text-yellow-700 dark:text-yellow-300">Line endings change the hash!</span>
         </div>
         <Button onClick={doHash} className="w-full">Compute SHA-256 Hash</Button>
         {hashHex && (

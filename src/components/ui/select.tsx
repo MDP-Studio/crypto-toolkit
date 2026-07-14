@@ -2,6 +2,7 @@ import * as React from "react"
 import { Select as SelectPrimitive } from "@base-ui/react/select"
 
 import { cn } from "@/lib/utils"
+import { useAssociatedControlId } from "@/components/ui/use-associated-control-id"
 import { ChevronDownIcon, CheckIcon, ChevronUpIcon } from "lucide-react"
 
 const Select = SelectPrimitive.Root
@@ -30,12 +31,18 @@ function SelectTrigger({
   className,
   size = "default",
   children,
+  id: explicitId,
+  ref: forwardedRef,
   ...props
 }: SelectPrimitive.Trigger.Props & {
   size?: "sm" | "default"
 }) {
+  const { id, ref } = useAssociatedControlId<HTMLButtonElement>(explicitId, forwardedRef)
+
   return (
     <SelectPrimitive.Trigger
+      id={id}
+      ref={ref}
       data-slot="select-trigger"
       data-size={size}
       className={cn(

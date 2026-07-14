@@ -3,17 +3,20 @@
     "Diffie-Hellman Key Exchange"
   ],
   "headings": [
+    "Build the foundations",
     "Diffie-Hellman Key Exchange",
     "Found a bug, confusing step, or improvement idea?"
   ],
   "buttons": [
     "Diffie-Hellman Key Exchange",
     "More",
-    "Set Public Parameters"
+    "Set Public Parameters",
+    "Modular Arithmetic",
+    "Next: AES Round"
   ],
   "links": [
     "Open full assurance matrix",
     "Send feedback"
   ],
-  "textLength": 2359
+  "textLength": 2484
 }

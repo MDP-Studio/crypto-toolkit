@@ -153,7 +153,7 @@ export function BaseConverter() {
                     CRLF (\r\n)
                   </Badge>
                 </div>
-                <span className="text-xs text-yellow-600 dark:text-yellow-400">
+                <span className="text-xs text-yellow-700 dark:text-yellow-300">
                   Line endings change the hash! Be careful.
                 </span>
               </div>

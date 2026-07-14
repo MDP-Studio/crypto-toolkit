@@ -9,6 +9,7 @@ import { SecurityBanner } from '@/components/SecurityBanner';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { AssuranceSummary } from '@/components/AssuranceSummary';
 import { CryptoLogo } from '@/components/CryptoLogo';
+import { LearningPathProgress } from '@/components/LearningPathProgress';
 import { Home } from '@/components/pages/Home';
 import { NAV_ITEMS } from '@/data/nav-items';
 
@@ -276,6 +277,7 @@ function HeaderModuleSearch({ onNavigate }: { onNavigate: (page: Page) => void }
     <div className="relative w-full md:max-w-xl md:flex-1">
       <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/65" />
       <Input
+        role="combobox"
         type="text"
         value={query}
         onChange={event => setQuery(event.target.value)}
@@ -292,6 +294,8 @@ function HeaderModuleSearch({ onNavigate }: { onNavigate: (page: Page) => void }
         className="h-9 bg-background/70 pl-9 pr-9 text-sm"
         aria-label="Search modules"
         aria-expanded={normalizedQuery.length > 0}
+        aria-controls="module-search-results"
+        aria-autocomplete="list"
       />
       {query && (
         <button
@@ -304,7 +308,12 @@ function HeaderModuleSearch({ onNavigate }: { onNavigate: (page: Page) => void }
         </button>
       )}
       {normalizedQuery && (
-        <div className="absolute left-0 right-0 top-[calc(100%+0.45rem)] z-30 max-h-80 overflow-y-auto rounded-lg border border-border bg-card p-1 shadow-xl">
+        <div
+          id="module-search-results"
+          role="listbox"
+          aria-label="Module search results"
+          className="absolute left-0 right-0 top-[calc(100%+0.45rem)] z-30 max-h-80 overflow-y-auto rounded-lg border border-border bg-card p-1 shadow-xl"
+        >
           {results.length > 0 ? (
             results.map(item => {
               const Icon = item.icon;
@@ -312,6 +321,8 @@ function HeaderModuleSearch({ onNavigate }: { onNavigate: (page: Page) => void }
                 <button
                   key={item.id}
                   type="button"
+                  role="option"
+                  aria-selected="false"
                   onClick={() => navigateTo(item.id)}
                   className="flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-left transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
                 >
@@ -419,6 +430,7 @@ export default function App() {
                 </Suspense>
               )}
             </ErrorBoundary>
+            {page !== 'home' && <LearningPathProgress page={page} onNavigate={setPage} />}
             <AssuranceSummary page={page} />
             <ProjectFeedback page={page} />
           </div>
