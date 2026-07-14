@@ -6,6 +6,9 @@ const previewUrl = `http://${previewHost}:${previewPort}`;
 
 export default defineConfig({
   testDir: './e2e',
+  // Route snapshots contain DOM text only, so keep one platform-neutral baseline
+  // for local Windows runs and Linux CI.
+  snapshotPathTemplate: '{testDir}/{testFilePath}-snapshots/{arg}-{projectName}{ext}',
   timeout: 30_000,
   expect: {
     timeout: 5_000,
