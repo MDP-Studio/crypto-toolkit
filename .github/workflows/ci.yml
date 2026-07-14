@@ -18,9 +18,9 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Check out repository
-        uses: actions/checkout@df4cb13b5d0a5d9f928a7e9e4839c70d2cbed8f7 # v6.0.3
+        uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
       - name: Set up Node.js
-        uses: actions/setup-node@249970cdfa4971c3d2f92c25238a60b73d294b83 # v6.5.0
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: 24
           cache: npm
